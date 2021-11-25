@@ -8,6 +8,9 @@
     <link rel="stylesheet" href="{{ asset('dashboard/assets/vendors/css/vendor.bundle.base.css') }}">
     <link rel="stylesheet" href="{{ asset('dashboard/assets/css/style.css') }}">
     <link rel="shortcut icon" href="{{ asset('dashboard/assets/images/favicon.ico') }}" />
+    {{-- CDN --}}
+    {{-- Toster Notification --}}
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css">
   </head>
   <body>
     <div class="container-scroller">
@@ -60,5 +63,17 @@
     <script src="{{ asset('dashboard/assets/js/off-canvas.js') }}"></script>
     <script src="{{ asset('dashboard/assets/js/hoverable-collapse.js') }}"></script>
     <script src="{{ asset('dashboard/assets/js/misc.js') }}"></script>
+    {{-- CDN --}}
+    {{-- Toster Notification --}}
+    <script src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+
+    <script>
+        @if(Session::has('success'))
+            toastr["success"]("{{ Session::get('success') }}")
+        @elseif(Session::has('error'))
+            toastr["error"]("{{ Session::get('error') }}")
+        @endif
+    </script>
+
   </body>
 </html>

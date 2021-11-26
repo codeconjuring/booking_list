@@ -1,9 +1,22 @@
 <?php
 
+use App\Models\Widget;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Session\flash;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
+
+if (!function_exists('widgets')) {
+    function widgets($name)
+    {
+        try {
+            return Widget::where('name', $name)->first();
+        } catch (\Exception $e) {
+
+        }
+
+    }
+}
 
 // Return tag string
 if (!function_exists('tagString')) {

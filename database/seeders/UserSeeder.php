@@ -19,17 +19,19 @@ class UserSeeder extends Seeder
 
         if ($admin) {
             $admin->update([
-                'name'      => 'admin',
-                'email'     => 'admin@app.com',
-                'password'  => Hash::make('password'),
-                'user_type' => 'admin',
+                'first_name' => 'admin',
+                'last_name'  => 'admin',
+                'email'      => 'admin@app.com',
+                'password'   => Hash::make('password'),
+                'user_type'  => 'admin',
             ]);
         } else {
             User::create([
-                'name'      => 'admin',
-                'email'     => 'admin@app.com',
-                'password'  => Hash::make('password'),
-                'user_type' => 'admin',
+                'first_name' => 'admin',
+                'last_name'  => 'admin',
+                'email'      => 'admin@app.com',
+                'password'   => Hash::make('password'),
+                'user_type'  => 'admin',
             ]);
         }
 

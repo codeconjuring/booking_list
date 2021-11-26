@@ -19,7 +19,8 @@ class LoginController extends Controller
 
     public function dashboard()
     {
-        return view('admin.dashboard');
+        $page_title = "Dashboard";
+        return view('admin.dashboard', compact('page_title'));
     }
 
     public function logout()

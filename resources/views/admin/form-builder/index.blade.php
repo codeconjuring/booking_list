@@ -20,12 +20,18 @@
                     <li>Series</li>
                     <li>Title</li>
                     <li>Language</li>
+                    @if($form_builer->content)
                     @foreach($form_builer->content as $key=>$content)
                     <div id="item{{ $key }}">
-                        <input type="text" value="" name="compare[{{ $key }}]" class="compare-class-{{ $key }} d-none">
-                        <li><input type="text" class="form-control mb-1" onkeyup="trackValue('{{ $key }}','{{ $content }}')" required name="contents[{{ $key }}]" value="{{ $content }}"><a href="#" onclick="removeItem({{ $key }})" class="btn btn-danger"><i class="fas fa-trash-alt"></i></a></li>
+                        <input type="text" value="" name="compare[{{ $key }}]['value']" class="compare-class-{{ $key }}">
+                        <li>
+                            <input type="text" class="form-control mb-1" onkeyup="trackValue('{{ $key }}','{{ $content['value'] }}')" required name="contents[{{ $key }}][value]" value="{{ $content['value'] }}"><a href="#" onclick="removeItem({{ $key }})" class="btn btn-danger"><i class="fas fa-trash-alt"></i></a>
+
+                            <span>Dropdown<input type="radio"  name="contents[{{ $key }}][type]" {{ $content['type']=="dropdown"?'checked':'' }}  value="dropdown">Text Field<input type="radio" name="contents[{{ $key }}][type]" {{ $content['type']=="text"?'checked':'' }}  value="text"></span>
+                        </li>
                      </div>
                     @endforeach
+                    @endif
                     <div id="newItem"></div>
                 </ul>
 
@@ -49,16 +55,18 @@
 
 @section('js')
     <script>
-        let i={{ count($form_builer->content) }}+1;
+        let i={{ $form_builer->content?count($form_builer->content):0 }}+1;
         function addMore()
         {
-            $('#newItem').append(`<li id="item${i}"><input type="text" class="form-control mb-1" required name="contents[${i}]" value=""><a href="#" onclick="removeItem(${i})" class="btn btn-danger"><i class="fas fa-trash-alt"></i></a></li>`);
+            $('#newItem').append(`<li id="item${i}">
+                <input type="text" class="form-control mb-1" required name="contents[${i}][value]" value=""><a href="#" onclick="removeItem(${i})" class="btn btn-danger"><i class="fas fa-trash-alt"></i></a>
+                <span>Dropdown<input type="radio"  name="contents[${i}][type]" checked value="dropdown">Text Field<input type="radio" name="contents[${i}][type]" value="text"></span></li>`);
             i+=1;
         }
 
-        function removeItem(i)
+        function removeItem(item)
         {
-            $(`#item${i}`).remove();
+            $(`#item${item}`).remove();
         }
 
         // Track Order

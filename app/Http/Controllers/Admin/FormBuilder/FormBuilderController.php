@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Admin\FormBuilder;
 
 use App\Http\Controllers\Controller;
-use App\Models\BookList;
 use App\Models\FormBuilder;
 use Illuminate\Http\Request;
 
@@ -39,41 +38,41 @@ class FormBuilderController extends Controller
      */
     public function store(Request $request)
     {
-        try {
-            $chage_array = [];
-            // return $request->all();
-            foreach ($request->compare as $key => $compare) {
-                if ($compare != null && $request->contents[$key] != $compare) {
-                    $chage_array[$compare] = $request->contents[$key];
-                }
-            }
-            // return $chage_array;
-            $form_builer = FormBuilder::whereType('form-builder')->firstOrFail();
+        // try {
+        // $chage_array = [];
+        // return $request->all();
+        // foreach ($request->compare as $key => $compare) {
+        //     if ($compare != null && $request->contents[$key] != $compare) {
+        //         $chage_array[$compare] = $request->contents[$key];
+        //     }
+        // }
+        // return $chage_array;
+        $form_builer = FormBuilder::whereType('form-builder')->firstOrFail();
 
-            $form_builer->update([
-                'content' => $request->contents,
-            ]);
-            $books = BookList::all();
-            foreach ($books as $book) {
-                foreach ($book->content as $key => $content) {
-                    // return $book->content;
-                    $new_data = $book->content;
-                    if (array_key_exists($key, $chage_array)) {
-                        $value = $content;
-                        unset($new_data[$key]);
-                        $new_data[$chage_array[$key]] = $value;
-                    }
-                    $book->content = $new_data;
-                    $book->save();
-                    // return;
-                }
-            }
-            sendFlash("Form Builder Update Successfully");
-            return back();
-        } catch (\Exception $e) {
-            sendFlash($e->getMessage(), 'error');
-            return back();
-        }
+        $form_builer->update([
+            'content' => $request->contents,
+        ]);
+        // $books = BookList::all();
+        // foreach ($books as $book) {
+        //     foreach ($book->content as $key => $content) {
+        //         // return $book->content;
+        //         $new_data = $book->content;
+        //         if (array_key_exists($key, $chage_array)) {
+        //             $value = $content;
+        //             unset($new_data[$key]);
+        //             $new_data[$chage_array[$key]] = $value;
+        //         }
+        //         $book->content = $new_data;
+        //         $book->save();
+        //         // return;
+        //     }
+        // }
+        sendFlash("Form Builder Update Successfully");
+        return back();
+        // } catch (\Exception $e) {
+        //     sendFlash($e->getMessage(), 'error');
+        //     return back();
+        // }
 
     }
 

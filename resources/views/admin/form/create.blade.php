@@ -51,20 +51,21 @@
                         <span class="text-danger">{{ $message }}</span>
                     @enderror
                 </div>
-
                 @foreach($form_builder->content as $key=>$form_build)
                 <div class="form-group">
-                    <label for="exampleInputUsername1">{{ $form_build }}</label><span class="text-danger">*</span>
-                    <select name="content[{{ $form_build }}]" id="" class="form-control">
-                        <option value="">Select Status</option>
-                        @foreach($table_status as $key=>$status)
-                            <option value="{{ $status }}">{{ $status }}</option>
-                        @endforeach
-                    </select>
-
-                    @error('series_id')
-                        <span class="text-danger">{{ $message }}</span>
-                    @enderror
+                    <label for="exampleInputUsername1">{{ $form_build['value'] }}</label><span class="text-danger">*</span>
+                    @if($form_build['type']=="dropdown")
+                        <select name="content[{{ $key }}][{{ $form_build['value'] }}]" id="" class="form-control">
+                            <option value="">Select Status</option>
+                            @foreach($statues as $k=>$status)
+                                <option value="{{ $status->status }}">{{ $status->status }}</option>
+                            @endforeach
+                        </select>
+                        <input type="text" name="content[{{ $key }}][type]" value="dropdown">
+                    @elseif($form_build['type']=="text")
+                        <input type="text" class="form-control" name="content[{{ $key }}][{{ $form_build['value'] }}]" placeholder="{{ $form_build['value'] }}">
+                        <input type="text" name="content[{{ $key }}][type]" value="text">
+                    @endif
                 </div>
                 @endforeach
 

@@ -7,6 +7,7 @@ use App\Models\BookList;
 use App\Models\Category;
 use App\Models\FormBuilder;
 use App\Models\Language;
+use App\Models\Status;
 use Illuminate\Http\Request;
 
 class FormController extends Controller
@@ -37,7 +38,8 @@ class FormController extends Controller
         $languages    = Language::all();
         $form_builder = FormBuilder::whereType('form-builder')->firstOrFail();
         $table_status = FormBuilder::TABLE_STATUS;
-        return view('admin.form.create', compact('page_title', 'series', 'languages', 'form_builder', 'table_status'));
+        $statues      = Status::all();
+        return view('admin.form.create', compact('page_title', 'series', 'languages', 'form_builder', 'table_status', 'statues'));
     }
 
     /**

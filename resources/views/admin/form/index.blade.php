@@ -20,7 +20,7 @@
                     <th> Title</th>
                     <th> LAN </th>
                     @foreach($form_builder->content as $key=>$form_bui)
-                    <th>{{ $form_bui }}</th>
+                    <th>{{ $form_bui['value'] }}</th>
                     @endforeach
                   </tr>
                 </thead>
@@ -37,7 +37,15 @@
                             <td> {{ $book->title }} </td>
                             <td> {{ $book->language }} </td>
                             @foreach($form_builder->content as $key=>$form_bui)
-                                <td>{{ $book->content[$form_bui]??'N/A' }}</td>
+
+                                {{-- @dd($book->content); --}}
+                                @foreach($book->content as $b=>$b_content)
+                                    @if(array_key_exists($form_bui['value'],$b_content))
+                                        <td>{{ $b_content[$form_bui['value']] }}</td>
+
+                                    @endif
+                                @endforeach
+
                             @endforeach
                         </tr>
                   @endforeach

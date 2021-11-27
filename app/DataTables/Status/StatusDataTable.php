@@ -1,14 +1,14 @@
 <?php
 
-namespace App\DataTables\Category;
+namespace App\DataTables\Status;
 
-use App\Models\Category;
-use Illuminate\Support\Facades\Auth;
+use App\Models\Status;
 use Illuminate\Support\Str;
 use PDF;
+use Spatie\Permission\Models\Role;
 use Yajra\DataTables\Services\DataTable;
 
-class CategoryDataTable extends DataTable
+class StatusDataTable extends DataTable
 {
     /**
      * Build DataTable class.
@@ -20,22 +20,21 @@ class CategoryDataTable extends DataTable
     {
         return datatables()
             ->eloquent($query)
-            ->addColumn('action', function ($category) {
-                $authUser = Auth::user();
-                $buttons  = '';
-                if ($authUser->can('Edit Series')) {
-                    $buttons .= '<a class="dropdown-item text-success" href="' . route('admin.series.edit',
-                        $category->id) . '" title="Edit Category">
+            ->editColumn('color', function ($status) {
+                return '<span class="dot" style="background-color:' . $status->color . '"></span>';
+            })
+            ->addColumn('action', function ($status) {
+                $buttons = '';
+                $buttons .= '<a class="dropdown-item text-success" href="' . route('admin.status.edit',
+                    $status->id) . '" title="Edit Category">
                         <i class="fas fa-edit"></i>&nbsp;Edit
                     </a>';
-                }
-                if ($authUser->can('Delete Series')) {
-                    $buttons .= '<form action="' . route('admin.series.destroy', $category->id) . '"  id="deleteForm' . $category->id . '" method="post" style="display: none">
+                $buttons .= '<form action="' . route('admin.status.destroy', $status->id) . '"  id="deleteForm' . $status->id . '" method="post" style="display: none">
                 <input type="hidden" name="_token" value="' . csrf_token() . '">
                 <input type="hidden" name="_method" value="DELETE">
                 </form>
-                <a href="javascript:void(0)" class="dropdown-item text-danger" onclick="makeDeleteRequest(event, ' . $category->id . ')" title="Delete Role"><i class="fas fa-trash"></i>&nbsp;Delete</a>';
-                }
+                <a href="javascript:void(0)" class="dropdown-item text-danger" onclick="makeDeleteRequest(event, ' . $status->id . ')" title="Delete status"><i class="fas fa-trash"></i>&nbsp;Delete</a>';
+
                 return '<div class="dropdown">
                     <button class="btn btn-info btn-sm" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         <i class="mdi mdi-dots-vertical"></i>
@@ -44,7 +43,11 @@ class CategoryDataTable extends DataTable
                         ' . $buttons . '
                     </div>
                     </div>';
-            })->addIndexColumn();
+            })->rawColumns([
+            'action',
+            'color',
+        ])->addIndexColumn();
+
     }
 
     /**
@@ -53,7 +56,7 @@ class CategoryDataTable extends DataTable
      * @param Role $model
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    public function query(Category $model)
+    public function query(Status $model)
     {
         return $model->newQuery()->orderBy('id', 'desc');
     }
@@ -65,20 +68,11 @@ class CategoryDataTable extends DataTable
      */
     public function html()
     {
-        $data = $this->builder()
+        return $this->builder()
             ->columns($this->getColumns())
             ->minifiedAjax()
             ->addAction(['width' => '100px', 'printable' => false, 'title' => 'Action'])
             ->parameters($this->getBuilderParameters());
-        if (!(Auth::user()->can('Edit Series') || Auth::user()->can('Delete Series')
-        )) {
-            $data = $this->builder()
-                ->columns($this->getColumns())
-                ->minifiedAjax()
-                ->parameters($this->getBuilderParameters());
-        }
-        return $data;
-
     }
 
     /**
@@ -103,9 +97,14 @@ class CategoryDataTable extends DataTable
                 'width'          => '100px',
             ],
             [
-                'title' => 'Name',
-                'name'  => 'name',
-                'data'  => 'name',
+                'title' => 'Status',
+                'name'  => 'status',
+                'data'  => 'status',
+            ],
+            [
+                'title' => 'Color',
+                'name'  => 'color',
+                'data'  => 'color',
             ],
         ];
     }

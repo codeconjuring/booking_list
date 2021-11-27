@@ -85,6 +85,6 @@ return [
         /*
          * Default DOM to generate when not set.
          */
-        'dom' => 'Bfrtip',
+        'dom'     => 'Bfrtip',
     ],
 ];

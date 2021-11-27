@@ -13,5 +13,7 @@ Route::middleware(['auth'])->group(function () {
         'series'       => Category\CategoryController::class,
         'form-builder' => FormBuilder\FormBuilderController::class,
         'form'         => Form\FormController::class,
+        'role'         => Role\RoleController::class,
+        'status'       => Status\StatusController::class,
     ]);
 });

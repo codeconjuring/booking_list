@@ -23,16 +23,18 @@ class UserSeeder extends Seeder
                 'last_name'  => 'admin',
                 'email'      => 'admin@app.com',
                 'password'   => Hash::make('password'),
-                'user_type'  => 'admin',
+                'user_type'  => 'Admin',
             ]);
+            $admin->syncRoles('Admin');
         } else {
-            User::create([
+            $admin = User::create([
                 'first_name' => 'admin',
                 'last_name'  => 'admin',
                 'email'      => 'admin@app.com',
                 'password'   => Hash::make('password'),
-                'user_type'  => 'admin',
+                'user_type'  => 'Admin',
             ]);
+            $admin->syncRoles('Admin');
         }
 
     }

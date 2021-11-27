@@ -39,36 +39,41 @@ class FormBuilderController extends Controller
      */
     public function store(Request $request)
     {
-        $chage_array = [];
-        // return $request->all();
-        foreach ($request->compare as $key => $compare) {
-            if ($compare != null && $request->contents[$key] != $compare) {
-                $chage_array[$compare] = $request->contents[$key];
-            }
-        }
-        // return $chage_array;
-        $form_builer = FormBuilder::whereType('form-builder')->firstOrFail();
-
-        $form_builer->update([
-            'content' => $request->contents,
-        ]);
-        $books = BookList::all();
-        foreach ($books as $book) {
-            foreach ($book->content as $key => $content) {
-                // return $book->content;
-                $new_data = $book->content;
-                if (array_key_exists($key, $chage_array)) {
-                    $value = $content;
-                    unset($new_data[$key]);
-                    $new_data[$chage_array[$key]] = $value;
+        try {
+            $chage_array = [];
+            // return $request->all();
+            foreach ($request->compare as $key => $compare) {
+                if ($compare != null && $request->contents[$key] != $compare) {
+                    $chage_array[$compare] = $request->contents[$key];
                 }
-                $book->content = $new_data;
-                $book->save();
-                // return;
             }
+            // return $chage_array;
+            $form_builer = FormBuilder::whereType('form-builder')->firstOrFail();
+
+            $form_builer->update([
+                'content' => $request->contents,
+            ]);
+            $books = BookList::all();
+            foreach ($books as $book) {
+                foreach ($book->content as $key => $content) {
+                    // return $book->content;
+                    $new_data = $book->content;
+                    if (array_key_exists($key, $chage_array)) {
+                        $value = $content;
+                        unset($new_data[$key]);
+                        $new_data[$chage_array[$key]] = $value;
+                    }
+                    $book->content = $new_data;
+                    $book->save();
+                    // return;
+                }
+            }
+            sendFlash("Form Builder Update Successfully");
+            return back();
+        } catch (\Exception $e) {
+            sendFlash($e->getMessage(), 'error');
+            return back();
         }
-        sendFlash("Form Builder Update Successfully");
-        return back();
 
     }
 

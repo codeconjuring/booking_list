@@ -9,6 +9,15 @@ use Illuminate\Http\Request;
 
 class CategoryController extends Controller
 {
+
+    public function __construct()
+    {
+        $this->middleware(['permission:Add Series'])->only(['create']);
+        $this->middleware(['permission:Edit Series'])->only(['edit', 'update']);
+        $this->middleware(['permission:Show Series'])->only(['index']);
+        $this->middleware(['permission:Delete Series'])->only(['destroy']);
+    }
+
     /**
      * Display a listing of the resource.
      *

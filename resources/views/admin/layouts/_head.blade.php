@@ -4,6 +4,7 @@
 <link rel="stylesheet" href="{{ asset('dashboard/assets/vendors/mdi/css/materialdesignicons.min.css') }}">
 <link rel="stylesheet" href="{{ asset('dashboard/assets/vendors/css/vendor.bundle.base.css') }}">
 <link rel="stylesheet" href="{{ asset('dashboard/assets/css/style.css') }}">
+<link rel="stylesheet" href="{{ asset('dashboard/assets/css/custome.css') }}">
 
 @if(Settings::get('favicon'))
     <link rel="shortcut icon" href="{{ asset(Storage::url(Settings::get('favicon'))) }}" />

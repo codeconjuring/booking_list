@@ -11,6 +11,8 @@
 <script src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
 {{-- Swtte alert --}}
 <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+{{-- select2 --}}
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 
 <script>
     // Toster notification
@@ -37,4 +39,22 @@
                 }
             })
     }
+
+    function makeDeleteRequest(event,id)
+    {
+        Swal.fire({
+            title: 'Are you sure?',
+            text: "Delete This!!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, Delete it!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $(`#deleteForm${id}`).submit();
+                }
+            })
+    }
+
 </script>

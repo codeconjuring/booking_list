@@ -171,6 +171,10 @@ return [
         Intervention\Image\ImageServiceProvider::class,
         UniSharp\LaravelFilemanager\LaravelFilemanagerServiceProvider::class,
         EmailConfigServiceProvider::class,
+        Yajra\Datatables\DatatablesServiceProvider::class,
+        Yajra\DataTables\DataTablesServiceProvider::class,
+        Yajra\DataTables\ButtonsServiceProvider::class,
+        Yajra\DataTables\FractalServiceProvider::class,
         /*
          * Application Service Providers...
          */
@@ -236,6 +240,7 @@ return [
         'View'         => Illuminate\Support\Facades\View::class,
         'Settings'     => Robiussani152\Settings\Facades\Settings::class,
         'Image'        => Intervention\Image\Facades\Image::class,
+        'Datatables'   => Yajra\Datatables\Facades\Datatables::class,
 
     ],
 

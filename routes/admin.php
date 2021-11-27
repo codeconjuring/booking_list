@@ -7,8 +7,11 @@ Route::middleware(['auth'])->group(function () {
     Route::post('logout', 'LoginController@logout')->name('logout');
 
     Route::resources([
-        'setting' => Setting\SettingController::class,
-        'profile' => Profile\ProfileController::class,
-        'email'   => EmailConfig\EmailConfigSettingController::class,
+        'setting'      => Setting\SettingController::class,
+        'profile'      => Profile\ProfileController::class,
+        'email'        => EmailConfig\EmailConfigSettingController::class,
+        'series'       => Category\CategoryController::class,
+        'form-builder' => FormBuilder\FormBuilderController::class,
+        'form'         => Form\FormController::class,
     ]);
 });

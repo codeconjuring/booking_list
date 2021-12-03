@@ -51,20 +51,27 @@
                         <span class="text-danger">{{ $message }}</span>
                     @enderror
                 </div>
-                @foreach($form_builder->content as $key=>$form_build)
+
+                @foreach($form_builder as $key=>$form_build)
                 <div class="form-group">
-                    <label for="exampleInputUsername1">{{ $form_build['value'] }}</label><span class="text-danger">*</span>
-                    @if($form_build['type']=="dropdown")
-                        <select name="content[{{ $key }}][{{ $form_build['value'] }}]" id="" class="form-control">
+                    <label for="exampleInputUsername1">{{ $form_build->label }}</label><span class="text-danger">*</span>
+
+
+                    @if($form_build->type=="1")
+                        <select name="content[{{ $form_build->id }}][text]" id="" class="form-control">
                             <option value="">Select Status</option>
                             @foreach($statues as $k=>$status)
-                                <option value="{{ $status->status }}">{{ $status->status }}</option>
+                                <option value="{{ $status->id }}">{{ $status->status }}</option>
                             @endforeach
                         </select>
-                        <input type="text" name="content[{{ $key }}][type]" value="dropdown">
-                    @elseif($form_build['type']=="text")
-                        <input type="text" class="form-control" name="content[{{ $key }}][{{ $form_build['value'] }}]" placeholder="{{ $form_build['value'] }}">
-                        <input type="text" name="content[{{ $key }}][type]" value="text">
+
+                        <input type="hidden" name="content[{{ $form_build->id }}][type]" value="1">
+
+                    @elseif($form_build->type=="0")
+                        <input type="text" class="form-control" name="content[{{ $form_build->id }}][text]" placeholder="{{ $form_build->label }}">
+
+                        <input type="hidden" name="content[{{ $form_build->id }}][type]" value="0">
+
                     @endif
                 </div>
                 @endforeach

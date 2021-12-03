@@ -8,9 +8,9 @@ use Illuminate\Database\Eloquent\Model;
 class FormBuilder extends Model
 {
     use HasFactory;
-    protected $casts = ['content' => 'array'];
+    // protected $casts = ['content' => 'array'];
 
-    public const TABLE_STATUS = ['Done', 'Progress', 'ToDo'];
+    // public const TABLE_STATUS = ['Done', 'Progress', 'ToDo'];
 
-    protected $fillable = ['type', 'content'];
+    protected $fillable = ['label', 'type'];
 }

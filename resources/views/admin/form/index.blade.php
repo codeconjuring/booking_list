@@ -19,36 +19,43 @@
                     <th> No </th>
                     <th> Title</th>
                     <th> LAN </th>
-                    @foreach($form_builder->content as $key=>$form_bui)
-                    <th>{{ $form_bui['value'] }}</th>
+                    @foreach($form_builder as $key=>$form_bui)
+                    <th>{{ $form_bui->label }}</th>
                     @endforeach
                   </tr>
                 </thead>
                 <tbody>
-
                     @php
-                       $i=1;
+                        $i=1;
                     @endphp
 
-                    @foreach($books as $key=>$book)
-                        <tr>
-                            <td> {{ $book->serise->name }}</td>
-                            <td> {{ $i++ }} </td>
-                            <td> {{ $book->title }} </td>
-                            <td> {{ $book->language }} </td>
-                            @foreach($form_builder->content as $key=>$form_bui)
+                    @foreach ($books as $b=>$book)
+                    <tr>
+                        <td>{{ $book->serise->name }}</td>
+                        <td>{{ $i++ }}</td>
+                        <td>{{ $book->title }}</td>
+                        <td>{{ $book->language }}</td>
+                        @foreach ($form_builder as $form_bui)
+                            @foreach ($book->content as $bc=>$bookContent)
 
-                                {{-- @dd($book->content); --}}
-                                @foreach($book->content as $b=>$b_content)
-                                    @if(array_key_exists($form_bui['value'],$b_content))
-                                        <td>{{ $b_content[$form_bui['value']] }}</td>
-
+                                @if($form_bui->id==$bc)
+                                    @if($bookContent['type']=='1')
+                                        @php
+                                            $status=App\Models\Status::whereId($bookContent['text'])->first();
+                                        @endphp
+                                    <td style="background:{{ $status->color }}">{{ $status->status }}</td>
+                                    @elseif($bookContent['text']==0)
+                                    <td>{{ $bookContent['text'] }}</td>
+                                    @else
+                                    <td>N/A</td>
                                     @endif
-                                @endforeach
-
+                                @endif
                             @endforeach
-                        </tr>
-                  @endforeach
+                        @endforeach
+                    </tr>
+                    @endforeach
+
+
                 </tbody>
               </table>
             </div>

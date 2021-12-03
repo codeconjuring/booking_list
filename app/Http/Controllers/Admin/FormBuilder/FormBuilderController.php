@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin\FormBuilder;
 
+use App\DataTables\FormBuilter\FormBuilderDataTable;
 use App\Http\Controllers\Controller;
 use App\Models\FormBuilder;
 use Illuminate\Http\Request;
@@ -13,11 +14,10 @@ class FormBuilderController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(FormBuilderDataTable $dataTable)
     {
-        $page_title  = "Form Builder";
-        $form_builer = FormBuilder::whereType('form-builder')->firstOrFail();
-        return view('admin.form-builder.index', compact('page_title', 'form_builer'));
+        $page_title = "Form Builder";
+        return $dataTable->render('admin.form-builder.index', ['page_title' => $page_title]);
     }
 
     /**
@@ -27,7 +27,8 @@ class FormBuilderController extends Controller
      */
     public function create()
     {
-        //
+        $page_title = "Form Builder Create";
+        return view('admin.form-builder.create', compact('page_title'));
     }
 
     /**
@@ -38,42 +39,18 @@ class FormBuilderController extends Controller
      */
     public function store(Request $request)
     {
-        // try {
-        // $chage_array = [];
-        // return $request->all();
-        // foreach ($request->compare as $key => $compare) {
-        //     if ($compare != null && $request->contents[$key] != $compare) {
-        //         $chage_array[$compare] = $request->contents[$key];
-        //     }
-        // }
-        // return $chage_array;
-        $form_builer = FormBuilder::whereType('form-builder')->firstOrFail();
 
-        $form_builer->update([
-            'content' => $request->contents,
+        $request->validate([
+            'label' => 'required|unique:form_builders,label',
+            'type'  => 'required',
         ]);
-        // $books = BookList::all();
-        // foreach ($books as $book) {
-        //     foreach ($book->content as $key => $content) {
-        //         // return $book->content;
-        //         $new_data = $book->content;
-        //         if (array_key_exists($key, $chage_array)) {
-        //             $value = $content;
-        //             unset($new_data[$key]);
-        //             $new_data[$chage_array[$key]] = $value;
-        //         }
-        //         $book->content = $new_data;
-        //         $book->save();
-        //         // return;
-        //     }
-        // }
-        sendFlash("Form Builder Update Successfully");
-        return back();
-        // } catch (\Exception $e) {
-        //     sendFlash($e->getMessage(), 'error');
-        //     return back();
-        // }
 
+        FormBuilder::create([
+            'label' => $request->label,
+            'type'  => $request->type,
+        ]);
+        sendFlash("Form Builder Create Successfully");
+        return redirect()->route('admin.form-builder.index');
     }
 
     /**
@@ -95,7 +72,9 @@ class FormBuilderController extends Controller
      */
     public function edit($id)
     {
-        //
+        $formBuilder = FormBuilder::findOrFail($id);
+        $page_title  = "Form Builder Edit";
+        return view('admin.form-builder.edit', compact('page_title', 'formBuilder'));
     }
 
     /**
@@ -107,7 +86,19 @@ class FormBuilderController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+
+        $request->validate([
+            'label' => 'required|unique:form_builders,label,' . $id,
+            'type'  => 'required',
+        ]);
+
+        FormBuilder::where(['id' => $id])->update([
+            'label' => $request->label,
+            'type'  => $request->type,
+        ]);
+
+        sendFlash("Form Builder Update Successfully");
+        return redirect()->route('admin.form-builder.index');
     }
 
     /**
@@ -118,6 +109,8 @@ class FormBuilderController extends Controller
      */
     public function destroy($id)
     {
-        //
+        FormBuilder::findOrFail($id)->delete();
+        sendFlash("Delete Successfully");
+        return back();
     }
 }

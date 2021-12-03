@@ -15,8 +15,8 @@ class CreateFormBuildersTable extends Migration
     {
         Schema::create('form_builders', function (Blueprint $table) {
             $table->id();
-            $table->string('type')->nullable();
-            $table->string('content')->nullable();
+            $table->string('label')->nullable();
+            $table->string('type')->comment('0=text,1=dropdown');
             $table->timestamps();
         });
     }

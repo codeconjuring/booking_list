@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin\Form;
 
 use App\Http\Controllers\Controller;
 use App\Models\BookList;
+use App\Models\BookListTitle;
 use App\Models\Category;
 use App\Models\FormBuilder;
 use App\Models\Language;
@@ -20,6 +21,7 @@ class FormController extends Controller
      */
     public function index()
     {
+
         $page_title      = "Book lists";
         $form_builder    = FormBuilder::all();
         $series_group_by = BookList::select('category_id')->groupBy('category_id')->orderBy('id', 'DESC')->get();
@@ -38,8 +40,16 @@ class FormController extends Controller
 
         }
 
-        $books = BookList::orderBy('id', 'DESC')->get();
-        return view('admin.form.index', compact('page_title', 'form_builder', 'books'));
+        $books      = BookList::with('childs')->get();
+        $getSeriyes = BookList::select('category_id')->groupBy('category_id')->get();
+        $series_ids = [];
+        foreach ($getSeriyes as $key => $series) {
+            array_push($series_ids, $series->category_id);
+        }
+
+        $series = Category::whereIn('id', $series_ids)->get();
+
+        return view('admin.form.index', compact('page_title', 'form_builder', 'books', 'series'));
 
     }
 
@@ -73,12 +83,18 @@ class FormController extends Controller
             'language'  => 'required',
         ]);
 
-        BookList::create([
+        $bookList = BookList::create([
             'category_id' => $request->series_id,
             'title'       => $request->title,
             'language'    => $request->language,
             'content'     => $request->content,
+            'parent'      => 1,
         ]);
+
+        BookListTitle::create([
+            'book_list_id' => $bookList->id,
+        ]);
+
         sendFlash("Book list Create Successfully");
         return back();
     }
@@ -91,7 +107,7 @@ class FormController extends Controller
      */
     public function show($id)
     {
-        //
+
     }
 
     /**
@@ -102,7 +118,7 @@ class FormController extends Controller
      */
     public function edit($id)
     {
-        //
+
     }
 
     /**
@@ -125,6 +141,52 @@ class FormController extends Controller
      */
     public function destroy($id)
     {
-        //
+
+        $book = BookList::findOrFail($id);
+        $book->delete();
+        sendFlash("Book Delete Successfully");
+        return back();
+    }
+
+    public function addMore(Request $request)
+    {
+
+        $request->validate([
+            'series_id' => 'required',
+        ]);
+
+        $page_title    = "Create Another Book List";
+        $series        = Category::orderBy('name')->get();
+        $languages     = Language::all();
+        $form_builder  = FormBuilder::all();
+        $statues       = Status::all();
+        $select_series = Category::findOrFail($request->series_id);
+        $book          = BookList::whereCategoryId($request->series_id)->whereParent(1)->first();
+        return view('admin.form.create_another', compact('page_title', 'series', 'languages', 'form_builder', 'statues', 'select_series', 'book'));
+    }
+
+    public function storeAnother(Request $request, $book)
+    {
+
+        $request->validate([
+            'series_id' => 'required',
+            'language'  => 'required',
+        ]);
+
+        $bookList = BookList::create([
+            'category_id' => $request->series_id,
+            'title'       => $request->title,
+            'language'    => $request->language,
+            'content'     => $request->content,
+        ]);
+
+        BookListTitle::create([
+            'book_list_id' => $bookList->id,
+            'parent'       => 0,
+            'parent_id'    => $book,
+        ]);
+
+        sendFlash("Book list Create Successfully");
+        return back();
     }
 }

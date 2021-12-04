@@ -6,6 +6,9 @@ Route::middleware(['auth'])->group(function () {
     Route::get('dashboard', 'LoginController@dashboard')->name('dashboard');
     Route::post('logout', 'LoginController@logout')->name('logout');
 
+    // Add Another Book
+    Route::get('form/add-more', 'Form\FormController@addMore')->name('form.add-more');
+    Route::post('form/store-another/{book}', 'Form\FormController@storeAnother')->name('form.store-another');
     Route::resources([
         'setting'      => Setting\SettingController::class,
         'profile'      => Profile\ProfileController::class,

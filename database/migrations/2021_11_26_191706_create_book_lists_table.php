@@ -16,11 +16,12 @@ class CreateBookListsTable extends Migration
         Schema::create('book_lists', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('category_id');
+            $table->unsignedBigInteger('book_id');
             $table->string('title')->nullable();
             $table->string('language')->nullable();
             $table->string('content')->nullable();
-            $table->integer('parent')->default(0);
             $table->foreign('category_id')->references('id')->on('categories')->onDelete('cascade');
+            $table->foreign('book_id')->references('id')->on('books')->onDelete('cascade');
             $table->timestamps();
         });
     }

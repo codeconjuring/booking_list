@@ -12,17 +12,12 @@
           <div class="card">
             <div class="card-body">
               <h4 class="card-title">{{ $page_title }}</h4>
-              <form class="forms-sample" action="{{ route('admin.form.store-another',$book) }}" method="POST">
+              <form class="forms-sample" action="{{ route('admin.add-another-book-list') }}" method="POST">
                 @csrf
 
+                <input type="hidden" name="book_id" value="{{ $book->id }}">
                 <div class="form-group">
-                  <label for="exampleInputUsername1">Series Name</label><span class="text-danger">*</span>
-                    <select name="series_id" id="" class="form-control select2" >
-                            <option value="">Select Series</option>
-                        @foreach($series as $key=>$ser)
-                            <option {{ $select_series->id==$ser->id?'selected':'' }} value="{{ $ser->id }}">{{ $ser->name }}</option>
-                        @endforeach
-                    </select>
+                    <input type="hidden" name="series_id" value="{{ $series->id }}">
 
                   @error('series_id')
                     <span class="text-danger">{{ $message }}</span>

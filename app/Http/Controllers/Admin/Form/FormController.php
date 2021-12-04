@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin\Form;
 
 use App\Http\Controllers\Controller;
+use App\Models\Book;
 use App\Models\BookList;
 use App\Models\BookListTitle;
 use App\Models\Category;
@@ -40,7 +41,7 @@ class FormController extends Controller
 
         }
 
-        $books      = BookList::with('childs')->get();
+        $books      = BookList::all();
         $getSeriyes = BookList::select('category_id')->groupBy('category_id')->get();
         $series_ids = [];
         foreach ($getSeriyes as $key => $series) {
@@ -49,7 +50,7 @@ class FormController extends Controller
 
         $series = Category::whereIn('id', $series_ids)->get();
 
-        return view('admin.form.index', compact('page_title', 'form_builder', 'books', 'series'));
+        return view('admin.form.index', compact('page_title', 'books', 'form_builder', 'series'));
 
     }
 
@@ -61,8 +62,8 @@ class FormController extends Controller
     public function create()
     {
 
-        $page_title   = "Create New Book List";
         $series       = Category::orderBy('name')->get();
+        $page_title   = "Create New Book List";
         $languages    = Language::all();
         $form_builder = FormBuilder::all();
         $statues      = Status::all();
@@ -82,17 +83,16 @@ class FormController extends Controller
             'series_id' => 'required',
             'language'  => 'required',
         ]);
+        $book = Book::create([
+            'category_id' => $request->series_id,
+        ]);
 
         $bookList = BookList::create([
             'category_id' => $request->series_id,
+            'book_id'     => $book->id,
             'title'       => $request->title,
             'language'    => $request->language,
             'content'     => $request->content,
-            'parent'      => 1,
-        ]);
-
-        BookListTitle::create([
-            'book_list_id' => $bookList->id,
         ]);
 
         sendFlash("Book list Create Successfully");
@@ -188,5 +188,38 @@ class FormController extends Controller
 
         sendFlash("Book list Create Successfully");
         return back();
+    }
+
+    public function addAnotherTitle($book_list_id)
+    {
+        $book_list    = BookList::findOrFail($book_list_id);
+        $book         = Book::findOrFail($book_list->book_id);
+        $series       = Category::findOrFail($book_list->category_id);
+        $page_title   = "Create Another New Book List";
+        $languages    = Language::all();
+        $form_builder = FormBuilder::all();
+        $statues      = Status::all();
+        return view('admin.form.create_another', compact('series', 'page_title', 'languages', 'form_builder', 'statues', 'book'));
+    }
+
+    public function storeAnotherTitle(Request $request)
+    {
+        $request->validate([
+            'book_id'   => 'required',
+            'series_id' => 'required',
+            'title'     => 'required',
+            'language'  => 'required',
+        ]);
+
+        $book_list = BookList::create([
+            'category_id' => $request->series_id,
+            'book_id'     => $request->book_id,
+            'title'       => $request->title,
+            'language'    => $request->language,
+            'content'     => $request->content,
+        ]);
+        sendFlash("Another Book titile Add Successfully");
+        return redirect()->route('admin.form.index');
+
     }
 }

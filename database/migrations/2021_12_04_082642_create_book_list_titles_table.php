@@ -15,12 +15,7 @@ class CreateBookListTitlesTable extends Migration
     {
         Schema::create('book_list_titles', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('book_list_id');
             $table->string('title')->nullable();
-            $table->integer('parent')->default(1)->comment('parent title=1,child title=0');
-            $table->integer('parent_id')->nullable();
-
-            $table->foreign('book_list_id')->references('id')->on('book_lists')->onDelete('cascade');
             $table->timestamps();
         });
     }

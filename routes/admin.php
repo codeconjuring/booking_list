@@ -9,6 +9,8 @@ Route::middleware(['auth'])->group(function () {
     // Add Another Book
     Route::get('form/add-more', 'Form\FormController@addMore')->name('form.add-more');
     Route::post('form/store-another/{book}', 'Form\FormController@storeAnother')->name('form.store-another');
+    Route::get('form/add-another-title/{id}', 'Form\FormController@addAnotherTitle')->name('form.add-another-title');
+    Route::post('form/add-another-book-list', 'Form\FormController@storeAnotherTitle')->name('add-another-book-list');
     Route::resources([
         'setting'      => Setting\SettingController::class,
         'profile'      => Profile\ProfileController::class,

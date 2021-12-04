@@ -8,11 +8,21 @@
         </a>
       </li>
 
+
+
       <li class="nav-item">
-        <a class="nav-link" href="{{ route('admin.form-builder.index') }}">
+        <a class="nav-link" data-toggle="collapse" href="#ui-form" aria-expanded="false" aria-controls="ui-form">
           <span class="menu-title">Form Builder</span>
-          <i class="mdi mdi-newspaper menu-icon"></i>
+          <i class="menu-arrow"></i>
+          <i class="mdi mdi-format-line-style menu-icon"></i>
         </a>
+        <div class="collapse" id="ui-form">
+          <ul class="nav flex-column sub-menu">
+            <li class="nav-item"> <a class="nav-link" href="{{ route('admin.form-builder.index') }}">Build Form</a></li>
+            <li class="nav-item"> <a class="nav-link" href="{{ route('admin.series.index') }}">Series</a></li>
+            <li class="nav-item"> <a class="nav-link" href="{{ route('admin.status.index') }}">Status</a></li>
+          </ul>
+        </div>
       </li>
 
       <li class="nav-item">
@@ -43,25 +53,6 @@
           </ul>
         </div>
       </li>
-
-
-      @canany(['Show Series'])
-      <li class="nav-item">
-        <a class="nav-link" href="{{ route('admin.series.index') }}">
-          <span class="menu-title">Series</span>
-          <i class="mdi mdi-attachment menu-icon"></i>
-        </a>
-      </li>
-      @endcanany
-
-      <li class="nav-item">
-        <a class="nav-link" href="{{ route('admin.status.index') }}">
-          <span class="menu-title">Status</span>
-          <i class="mdi mdi-arrow-down-bold-hexagon-outline menu-icon"></i>
-        </a>
-      </li>
-
-
 
       <li class="nav-item">
         <a class="nav-link" data-toggle="collapse" href="#ui-basic" aria-expanded="false" aria-controls="ui-basic">

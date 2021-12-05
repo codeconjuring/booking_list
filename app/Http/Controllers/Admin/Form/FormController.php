@@ -12,6 +12,7 @@ use App\Models\Language;
 use App\Models\Status;
 use DB;
 use Illuminate\Http\Request;
+use PDF;
 
 class FormController extends Controller
 {
@@ -240,5 +241,39 @@ class FormController extends Controller
     public function selectLanguageSeries(Request $request)
     {
         return $request->all();
+    }
+
+    public function downloadPdf()
+    {
+
+        $page_title      = "Book lists";
+        $form_builder    = FormBuilder::all();
+        $series_group_by = BookList::select('category_id')->groupBy('category_id')->orderBy('id', 'DESC')->get();
+        $series_count    = BookList::select('category_id', DB::raw('count(*) as total'))->groupBy('category_id')->orderBy('id', 'DESC')->get();
+
+        $data = [];
+        foreach ($series_group_by as $single_group) {
+            $collections = BookList::whereCategoryId($single_group->category_id)->get();
+            if (count($collections) > 1) {
+                foreach ($collections as $key => $collection) {
+                    array_push($data, $collection);
+                }
+            } elseif (count($collections) == 1) {
+                array_push($data, $collections[0]);
+            }
+
+        }
+
+        $getSeriyes = BookList::select('category_id')->groupBy('category_id')->get();
+        $series_ids = [];
+        foreach ($getSeriyes as $key => $series) {
+            array_push($series_ids, $series->category_id);
+        }
+
+        $series = Category::whereIn('id', $series_ids)->get();
+        // return view('admin.form.report', ['page_title' => $page_title, 'form_builder' => $form_builder, 'series' => $series, 'getSeriyes' => $getSeriyes]);
+        $pdf = PDF::loadView('admin.form.report', ['page_title' => $page_title, 'form_builder' => $form_builder, 'series' => $series, 'getSeriyes' => $getSeriyes])->setPaper('a4', 'landscape');
+        // $pdf->save(storage_path() . '_report.pdf');
+        return $pdf->download('book_' . date("Y/m/d") . 'report.pdf');
     }
 }

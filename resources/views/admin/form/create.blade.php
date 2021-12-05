@@ -18,7 +18,7 @@
 
                 <div class="form-group">
                     <label for="exampleInputUsername1">Language</label><span class="text-danger">*</span>
-                    <select name="language" id="" onchange="selectLanguage($(this).val())" class="form-control select2">
+                    <select name="language" id=""  class="form-control select2">
                         <option value="">Select Language</option>
                             @foreach($languages as $key=>$language)
                                 <option value="{{ $language->upper_case }}">{{ $language->upper_case }}</option>
@@ -32,7 +32,7 @@
 
                 <div class="form-group">
                   <label for="exampleInputUsername1">Series Name</label><span class="text-danger">*</span>
-                    <select name="series_id" id="" onchange="selectSeries($(this).val())" class="form-control select2">
+                    <select name="series_id" id=""  class="form-control select2">
                             <option value="">Select Series</option>
                         @foreach($series as $key=>$ser)
                             <option value="{{ $ser->id }}">{{ $ser->name }}</option>

@@ -17,7 +17,9 @@
         <div class="col-md-12 grid-margin stretch-card">
           <div class="card">
             <div class="card-body">
-              <h4 class="card-title">{{ $page_title }}</h4>
+              <h4 class="card-title">{{ $page_title }}
+                <a href="{{ route('admin.form.download') }}" class="btn btn-info btn-sm float-right mb-1"><i class="fas fa-download"></i> &nbsp;Download Report</a>
+            </h4>
 
 
               <table class="table table-bordered" id="myTable">
@@ -34,11 +36,12 @@
                   </tr>
                 </thead>
                 <tbody>
+
                     @php
                         $i=1;
                     @endphp
-
                     @foreach ($getSeriyes as $key=>$getSeriye)
+
                         @php
                             $books=App\Models\BookList::whereCategoryId($getSeriye->category_id)->get();
 

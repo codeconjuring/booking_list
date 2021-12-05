@@ -69,7 +69,11 @@
                                 <td>{{ $i++ }}</td>
                                 <td>{{ $book->title }}</td>
                                 <td>{{ $book->language }}</td>
-
+                                @php
+                                    $count_form_builder=count($form_builder);
+                                    $book_content_count=count($book->content);
+                                    $result=$count_form_builder-$book_content_count;
+                                @endphp
                                 @foreach ($form_builder as $form_bui)
                                             @foreach ($book->content as $bc=>$bookContent)
 
@@ -88,8 +92,11 @@
                                                 @endif
 
                                             @endforeach
-                                @endforeach
 
+                                @endforeach
+                                    @for ($i = 0; $i < $result; $i++)
+                                    <td>N/A</td>
+                                    @endfor
                                         </tr>
                                 @endforeach
                     @endforeach

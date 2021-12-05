@@ -9,4 +9,9 @@ class Book extends Model
 {
     use HasFactory;
     protected $fillable = ['category_id'];
+
+    public function serise()
+    {
+        return $this->belongsTo(Category::class, 'category_id', 'id')->withDefault();
+    }
 }

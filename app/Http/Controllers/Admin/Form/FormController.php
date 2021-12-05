@@ -41,7 +41,6 @@ class FormController extends Controller
 
         }
 
-        $books      = BookList::all();
         $getSeriyes = BookList::select('category_id')->groupBy('category_id')->get();
         $series_ids = [];
         foreach ($getSeriyes as $key => $series) {
@@ -50,7 +49,7 @@ class FormController extends Controller
 
         $series = Category::whereIn('id', $series_ids)->get();
 
-        return view('admin.form.index', compact('page_title', 'books', 'form_builder', 'series'));
+        return view('admin.form.index', compact('page_title', 'form_builder', 'series', 'getSeriyes'));
 
     }
 
@@ -192,18 +191,33 @@ class FormController extends Controller
 
     public function addAnotherTitle($book_list_id)
     {
-        $book_list    = BookList::findOrFail($book_list_id);
-        $book         = Book::findOrFail($book_list->book_id);
-        $series       = Category::findOrFail($book_list->category_id);
-        $page_title   = "Create Another New Book List";
-        $languages    = Language::all();
+        $book_list               = BookList::findOrFail($book_list_id);
+        $get_language_book_lists = BookList::whereBookId($book_list_id)->get(['language'])->toArray();
+        $remove_language         = [];
+        foreach ($get_language_book_lists as $key => $get_language_book_list) {
+            array_push($remove_language, $get_language_book_list['language']);
+        }
+
+        $book          = Book::findOrFail($book_list->book_id);
+        $series        = Category::findOrFail($book_list->category_id);
+        $page_title    = "Add Another Translation";
+        $new_languages = [];
+
+        $languages = Language::all();
+        foreach ($languages as $key => $language) {
+            if (!in_array(strtoupper($language->short_hand), $remove_language)) {
+                array_push($new_languages, strtoupper($language->short_hand));
+            }
+
+        }
         $form_builder = FormBuilder::all();
         $statues      = Status::all();
-        return view('admin.form.create_another', compact('series', 'page_title', 'languages', 'form_builder', 'statues', 'book'));
+        return view('admin.form.create_another', compact('series', 'page_title', 'new_languages', 'form_builder', 'statues', 'book'));
     }
 
     public function storeAnotherTitle(Request $request)
     {
+
         $request->validate([
             'book_id'   => 'required',
             'series_id' => 'required',
@@ -221,5 +235,10 @@ class FormController extends Controller
         sendFlash("Another Book titile Add Successfully");
         return redirect()->route('admin.form.index');
 
+    }
+
+    public function selectLanguageSeries(Request $request)
+    {
+        return $request->all();
     }
 }

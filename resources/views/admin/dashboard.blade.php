@@ -21,23 +21,14 @@
 </div>
 
 <div class="row">
-    <div class="col-md-4 stretch-card grid-margin">
-    <div class="card bg-gradient-danger card-img-holder text-white">
-        <div class="card-body">
-        <img src="{{ asset('dashboard/assets/images/dashboard/circle.svg') }}" class="card-img-absolute" alt="circle-image" />
-        <h4 class="font-weight-normal mb-3">Number Of Unique Title <i class="mdi mdi-chart-line mdi-24px float-right"></i>
-        </h4>
-        <h2 class="mb-5">$ 15,0000</h2>
-        </div>
-    </div>
-    </div>
+
     <div class="col-md-4 stretch-card grid-margin">
     <div class="card bg-gradient-info card-img-holder text-white">
         <div class="card-body">
         <img src="{{ asset('dashboard/assets/images/dashboard/circle.svg') }}" class="card-img-absolute" alt="circle-image" />
-        <h4 class="font-weight-normal mb-3">Weekly Orders <i class="mdi mdi-bookmark-outline mdi-24px float-right"></i>
-        </h4>
-        <h2 class="mb-5">45,6334</h2>
+        <h3 class="font-weight-normal mb-3">Total Series <i class="mdi mdi-bookmark-outline mdi-24px float-right"></i>
+        </h3>
+        <h1 class="mb-5">{{ $total_series }}</h1>
         </div>
     </div>
     </div>
@@ -45,22 +36,78 @@
     <div class="card bg-gradient-success card-img-holder text-white">
         <div class="card-body">
         <img src="{{ asset('dashboard/assets/images/dashboard/circle.svg') }}" class="card-img-absolute" alt="circle-image" />
-        <h4 class="font-weight-normal mb-3">Visitors Online <i class="mdi mdi-diamond mdi-24px float-right"></i>
-        </h4>
-        <h2 class="mb-5">95,5741</h2>
+        <h3 class="font-weight-normal mb-3">Total Book <i class="mdi mdi-diamond mdi-24px float-right"></i>
+        </h3>
+        <h1 class="mb-5">{{ $book }}</h1>
         </div>
     </div>
     </div>
+    <div class="col-md-4 stretch-card grid-margin">
+        <div class="card bg-gradient-danger card-img-holder text-white">
+            <div class="card-body">
+            <img src="{{ asset('dashboard/assets/images/dashboard/circle.svg') }}" class="card-img-absolute" alt="circle-image" />
+            <h3 class="font-weight-normal mb-3">Number Of Unique Title <i class="mdi mdi-chart-line mdi-24px float-right"></i>
+            </h3>
+            <h1 class="mb-5">{{ $unique_title }}</h1>
+            </div>
+        </div>
+        </div>
 
 
-    <div class="col-lg-12 grid-margin stretch-card">
+        <div class="col-lg-12 grid-margin stretch-card">
+            <div class="card">
+              <div class="card-body">
+                <h3 class="card-title text-center" style="font-size: 2.125rem">Number of books in a given language</h3>
+                <hr>
+                <div class="row">
+                    <div class="col-md-6 text-center">
+                        <h1 style="font-size: 100px;" id="NumberOfBook">0</h1>
+                    </div>
+                    <div class="col-md-6">
+                        <select name="" id="" onchange="selectLanguage($(this).val())" class="form-control mt-5 select2">
+                            <option value="">Select Language</option>
+                            @foreach ($languages as $key=>$language)
+                            <option value="{{ $language->id }}">{{ strtoupper($language->short_hand) }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-lg-12 grid-margin stretch-card">
+            <div class="card">
+              <div class="card-body">
+                <h3 class="card-title text-center" style="font-size: 2.125rem">Number of books in a given series</h3>
+                <hr>
+                <div class="row">
+                    <div class="col-md-6 text-center">
+                        <h1 style="font-size: 100px;" id="SeriesCount">0</h1>
+                    </div>
+                    <div class="col-md-6">
+                        <select name="" id="" onchange="selectSeries($(this).val())" class="form-control mt-5 select2">
+                            <option value="">Select Serise</option>
+                            @foreach ($series as $key=>$serie)
+                            <option value="{{ $serie->id }}">{{ $serie->name }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+
+
+    {{-- <div class="col-lg-12 grid-margin stretch-card">
         <div class="card">
           <div class="card-body">
             <h4 class="card-title">This Number Of Unique Title</h4>
             <canvas id="barChart" style="height:230px"></canvas>
           </div>
         </div>
-      </div>
+      </div> --}}
 
 
 </div>
@@ -81,6 +128,11 @@
 
 <script>
 $(function () {
+
+    $(document).ready(function() {
+        $('.select2').select2();
+    });
+
   var data = {
     labels: [
         @foreach($number_of_unique_titles as $key=>$number_of_unique_title)
@@ -152,5 +204,60 @@ $(function () {
 
 });
 
+// Select Language
+function selectLanguage(val)
+{
+    if(val!=''){
+        $.ajax({
+            url:'{{ route("admin.dashboard") }}',
+            method:"GET",
+            data:{'language_id':val},
+            success:function(response){
+                if(response.language_count){
+                    $('#NumberOfBook').html(response.language_count);
+                }else{
+                    $('#NumberOfBook').html(0);
+                    toastr["error"]("Not Found ! ! !");
+                }
+
+            },
+            error:function(error){
+                toastr["error"](error);
+            }
+        });
+    }else{
+        toastr["error"]("Please Select Language");
+    }
+}
+
+// Slelect Series
+function selectSeries(val)
+{
+    if(val!=''){
+        $.ajax({
+            url:'{{ route("admin.dashboard") }}',
+            method:"GET",
+            data:{'service_id':val},
+            success:function(response){
+
+
+                if(response.series_count){
+                    $('#SeriesCount').html(response.series_count);
+                }else{
+                    $('#SeriesCount').html(0);
+                    toastr["error"]("Not Found ! ! !");
+                }
+
+            },
+            error:function(error){
+                toastr["error"](error);
+            }
+        });
+    }else{
+        toastr["error"]("Please Select Service");
+    }
+}
+
 </script>
+
 @endsection

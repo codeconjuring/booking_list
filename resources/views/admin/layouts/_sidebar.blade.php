@@ -12,7 +12,7 @@
 
       <li class="nav-item">
         <a class="nav-link" data-toggle="collapse" href="#ui-form" aria-expanded="false" aria-controls="ui-form">
-          <span class="menu-title">Form Builder</span>
+          <span class="menu-title">Table Column Builder</span>
           <i class="menu-arrow"></i>
           <i class="mdi mdi-format-line-style menu-icon"></i>
         </a>
@@ -26,12 +26,12 @@
       </li>
 
       <li class="nav-item">
-        <a class="nav-link" data-toggle="collapse" href="#ui-form" aria-expanded="false" aria-controls="ui-form">
+        <a class="nav-link" data-toggle="collapse" href="#ui-form1" aria-expanded="false" aria-controls="ui-form1">
           <span class="menu-title">Form</span>
           <i class="menu-arrow"></i>
           <i class="mdi mdi-format-line-style menu-icon"></i>
         </a>
-        <div class="collapse" id="ui-form">
+        <div class="collapse" id="ui-form1">
           <ul class="nav flex-column sub-menu">
             <li class="nav-item"> <a class="nav-link" href="{{ route('admin.form.create') }}">Form Submit</a></li>
             <li class="nav-item"> <a class="nav-link" href="{{ route('admin.form.index') }}">Book List</a></li>

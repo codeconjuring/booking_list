@@ -15,9 +15,24 @@
               <form class="forms-sample" action="{{ route('admin.form.store') }}" method="POST">
                 @csrf
 
+
+                <div class="form-group">
+                    <label for="exampleInputUsername1">Language</label><span class="text-danger">*</span>
+                    <select name="language" id="" onchange="selectLanguage($(this).val())" class="form-control select2">
+                        <option value="">Select Language</option>
+                            @foreach($languages as $key=>$language)
+                                <option value="{{ $language->upper_case }}">{{ $language->upper_case }}</option>
+                            @endforeach
+                        </select>
+
+                    @error('language')
+                        <span class="text-danger">{{ $message }}</span>
+                    @enderror
+                </div>
+
                 <div class="form-group">
                   <label for="exampleInputUsername1">Series Name</label><span class="text-danger">*</span>
-                    <select name="series_id" id="" class="form-control select2">
+                    <select name="series_id" id="" onchange="selectSeries($(this).val())" class="form-control select2">
                             <option value="">Select Series</option>
                         @foreach($series as $key=>$ser)
                             <option value="{{ $ser->id }}">{{ $ser->name }}</option>
@@ -29,26 +44,16 @@
                   @enderror
                 </div>
 
+
+
+
+
                 <div class="form-group">
                     <label for="exampleInputUsername1">Title</label><span class="text-danger">*</span>
                     <input type="text" name="title" class="form-control" placeholder="Title">
 
                     @error('title')
                       <span class="text-danger">{{ $message }}</span>
-                    @enderror
-                </div>
-
-                <div class="form-group">
-                    <label for="exampleInputUsername1">Language</label><span class="text-danger">*</span>
-                    <select name="language" id="" class="form-control select2">
-                        <option value="">Select Language</option>
-                            @foreach($languages as $key=>$language)
-                                <option value="{{ $language->upper_case }}">{{ $language->upper_case }}</option>
-                            @endforeach
-                        </select>
-
-                    @error('language')
-                        <span class="text-danger">{{ $message }}</span>
                     @enderror
                 </div>
 
@@ -97,6 +102,52 @@
     $(document).ready(function() {
         $('.select2').select2();
     });
+
+    // let series='';
+    // let language='';
+
+    // // Select Lanugate
+    // function selectLanguage(val)
+    // {
+    //     language=val;
+
+    // }
+    // // Select Series
+    // function selectSeries(val)
+    // {
+    //     series=val;
+    //     let val_data=validation(series,language);
+
+    //     if(val_data)
+    //     {
+    //         $.ajax({
+    //             url:'{{ route("admin.form.api_request") }}',
+    //             method:"GET",
+    //             data:{'series':series,'language':language},
+    //             success:function(response){
+    //                 console.log(response);
+    //             },
+    //             error:function(err){
+    //                 console.log(err);
+    //             }
+    //         });
+    //     }
+
+    // }
+
+    // function validation(s,l)
+    // {
+    //     if(s=='')
+    //     {
+    //         toastr["error"]("Pleas Select Series");
+    //     }
+
+    //     if(l==''){
+    //         toastr["error"]("Pleas Select Language");
+    //     }
+    //     return true;
+    // }
+
 </script>
 
 @endsection

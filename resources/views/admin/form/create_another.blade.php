@@ -37,8 +37,8 @@
                     <label for="exampleInputUsername1">Language</label><span class="text-danger">*</span>
                     <select name="language" id="" class="form-control select2">
                         <option value="">Select Language</option>
-                            @foreach($languages as $key=>$language)
-                                <option value="{{ $language->upper_case }}">{{ $language->upper_case }}</option>
+                            @foreach($new_languages as $key=>$new_language)
+                                <option value="{{ $new_language }}">{{ $new_language }}</option>
                             @endforeach
                         </select>
 

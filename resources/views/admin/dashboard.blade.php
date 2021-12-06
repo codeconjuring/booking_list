@@ -36,7 +36,7 @@
     <div class="card bg-gradient-success card-img-holder text-white">
         <div class="card-body">
         <img src="{{ asset('dashboard/assets/images/dashboard/circle.svg') }}" class="card-img-absolute" alt="circle-image" />
-        <h3 class="font-weight-normal mb-3">Total Book <i class="mdi mdi-diamond mdi-24px float-right"></i>
+        <h3 class="font-weight-normal mb-3">Total Books <i class="mdi mdi-diamond mdi-24px float-right"></i>
         </h3>
         <h1 class="mb-5">{{ $book }}</h1>
         </div>
@@ -46,7 +46,7 @@
         <div class="card bg-gradient-danger card-img-holder text-white">
             <div class="card-body">
             <img src="{{ asset('dashboard/assets/images/dashboard/circle.svg') }}" class="card-img-absolute" alt="circle-image" />
-            <h3 class="font-weight-normal mb-3">Number Of Unique Title <i class="mdi mdi-chart-line mdi-24px float-right"></i>
+            <h3 class="font-weight-normal mb-3">Number Of Unique Titles <i class="mdi mdi-chart-line mdi-24px float-right"></i>
             </h3>
             <h1 class="mb-5">{{ $unique_title }}</h1>
             </div>
@@ -87,11 +87,35 @@
                     </div>
                     <div class="col-md-6">
                         <select name="" id="" onchange="selectSeries($(this).val())" class="form-control mt-5 select2">
-                            <option value="">Select Serise</option>
+                            <option value="">Select Series</option>
                             @foreach ($series as $key=>$serie)
                             <option value="{{ $serie->id }}">{{ $serie->name }}</option>
                             @endforeach
                         </select>
+                    </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-lg-12 grid-margin stretch-card">
+            <div class="card">
+              <div class="card-body">
+                <h3 class="card-title text-center" style="font-size: 2.125rem">Language Wise Status Count</h3>
+                <hr>
+                <div class="col-md-4 offset-4">
+                    <select name="" id="" onchange="selectStatusLanguage($(this).val())" class="form-control mt-5 select2">
+                        <option value="">Select Language</option>
+                        @foreach ($languages as $key=>$lan)
+                        <option value="{{ strtoupper($lan->short_hand) }}">{{ strtoupper($lan->short_hand) }}</option>
+                        @endforeach
+                    </select>
+
+                </div>
+
+                <div class="row">
+                    <div class="col-md-12 text-center">
+                        <div id="languageTable"></div>
                     </div>
                 </div>
               </div>
@@ -255,6 +279,25 @@ function selectSeries(val)
         });
     }else{
         toastr["error"]("Please Select Service");
+    }
+}
+
+// Select language
+function selectStatusLanguage(val){
+    if(val){
+        $.ajax({
+            url:"{{ route('admin.dashboard')  }}",
+            method:"get",
+            data:{'language':val},
+            success:function(response){
+                if(response.table){
+                    $('#languageTable').html(response.table);
+                }
+            },
+            error:function(error){
+                console.log(error);
+            }
+        });
     }
 }
 

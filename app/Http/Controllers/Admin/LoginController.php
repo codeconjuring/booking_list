@@ -6,7 +6,9 @@ use App\Http\Controllers\Controller;
 use App\Models\Book;
 use App\Models\BookList;
 use App\Models\Category;
+use App\Models\FormBuilder;
 use App\Models\Language;
+use App\Models\Status;
 use App\Models\User;
 use Carbon\Carbon;
 use DB;
@@ -44,6 +46,64 @@ class LoginController extends Controller
 
                 $book_language = BookList::whereLanguage(strtoupper($get_language->short_hand))->distinct('title')->count();
                 return response()->json(['language_count' => $book_language]);
+            }
+
+            if ($request->language) {
+                $form_builders             = FormBuilder::get();
+                $col_array                 = [];
+                $col_status_array          = [];
+                $colum_status_map          = [];
+                $col_map                   = [];
+                $col_final_array           = [];
+                $col_status_map_name_array = [];
+                $get_status                = Status::all();
+                foreach ($get_status as $s => $get_statu) {
+                    $col_status_array[$get_statu->id] = 0;
+                    $colum_status_map[$get_statu->id] = $get_statu->status;
+                }
+
+                foreach ($form_builders as $key => $form_builder) {
+                    $col_array[$form_builder->id] = $col_status_array;
+                    $col_map[$form_builder->id]   = $form_builder->label;
+                }
+
+                $book_list_contents = BookList::whereLanguage($request->language)->get('content');
+                foreach ($book_list_contents as $key => $book_list_content) {
+
+                    foreach ($book_list_content->content as $s => $single_content) {
+
+                        if ($single_content['type'] == 1) {
+                            $col_array[$s][$single_content['text']] += 1;
+                        }
+                    }
+                    foreach ($col_array as $c => $col) {
+                        foreach ($col as $k => $co) {
+                            $col_status_map_name_array[$colum_status_map[$k]] = $col[$k];
+                        }
+                        $col_final_array[$col_map[$c]] = $col_status_map_name_array;
+                    }
+
+                }
+                $table = "<table class='table table-striped table-bordered mt-2'><thead><tr><th>#</th>";foreach ($colum_status_map as $m => $colum_status_ma) {$table .= "<th>" . $colum_status_ma . "</th>";}
+                $table .= "</tr></thead>
+                    <tbody>
+                    ";
+                foreach ($col_final_array as $f => $final) {$table .= "
+                        <tr>
+                            <th>$f</th>
+                            ";
+                    foreach ($colum_status_map as $key => $value) {
+                        if (array_key_exists($value, $final)) {
+                            $table .= "<td>$final[$value]</td>";
+                        } else {
+                            $table .= "<td>-</td>";
+                        }
+                    }
+                    $table .= "</tr>
+                    ";}
+                $table .= "</tbody>
+                </table>";
+                return response()->json(['table' => $table]);
             }
 
         }

@@ -18,7 +18,7 @@
 
                 <div class="form-group">
                     <label for="exampleInputUsername1">Language</label><span class="text-danger">*</span>
-                    <select name="language" id=""  class="form-control select2">
+                    <select name="language" id="" onchange="selectSeries($(this).val(),'language')" class="form-control select2">
                         <option value="">Select Language</option>
                             @foreach($languages as $key=>$language)
                                 <option value="{{ $language->upper_case }}">{{ $language->upper_case }}</option>
@@ -32,7 +32,8 @@
 
                 <div class="form-group">
                   <label for="exampleInputUsername1">Series Name</label><span class="text-danger">*</span>
-                    <select name="series_id" id=""  class="form-control select2">
+
+                    <select name="series_id" id="" onchange="selectSeries($(this).val(),'series')" class="form-control select2">
                             <option value="">Select Series</option>
                         @foreach($series as $key=>$ser)
                             <option value="{{ $ser->id }}">{{ $ser->name }}</option>
@@ -49,8 +50,11 @@
 
 
                 <div class="form-group">
-                    <label for="exampleInputUsername1">Title</label><span class="text-danger">*</span>
-                    <input type="text" name="title" class="form-control" placeholder="Title">
+
+
+
+                    <div id="selectOption"></div>
+
 
                     @error('title')
                       <span class="text-danger">{{ $message }}</span>
@@ -103,50 +107,75 @@
         $('.select2').select2();
     });
 
-    // let series='';
-    // let language='';
+    let series='';
+    let language='';
 
-    // // Select Lanugate
-    // function selectLanguage(val)
-    // {
-    //     language=val;
 
-    // }
-    // // Select Series
-    // function selectSeries(val)
-    // {
-    //     series=val;
-    //     let val_data=validation(series,language);
+    // Select Series
+    function selectSeries(val,type)
+    {
+        if(type=='series')
+        {
+            series=val;
+        }else{
+            language=val;
+        }
+        let val_data=validation(series,language);
 
-    //     if(val_data)
-    //     {
-    //         $.ajax({
-    //             url:'{{ route("admin.form.api_request") }}',
-    //             method:"GET",
-    //             data:{'series':series,'language':language},
-    //             success:function(response){
-    //                 console.log(response);
-    //             },
-    //             error:function(err){
-    //                 console.log(err);
-    //             }
-    //         });
-    //     }
+        if(val_data)
+        {
+            $.ajax({
+                url:'{{ route("admin.form.api_request") }}',
+                method:"GET",
+                data:{'series':series,'language':language},
+                success:function(response){
+                    $('#selectOption').html(' ');
 
-    // }
+                    console.log('response'+response);
 
-    // function validation(s,l)
-    // {
-    //     if(s=='')
-    //     {
-    //         toastr["error"]("Pleas Select Series");
-    //     }
+                    if(response.titles.length>0){
 
-    //     if(l==''){
-    //         toastr["error"]("Pleas Select Language");
-    //     }
-    //     return true;
-    // }
+                        console.log(response.titles);
+
+                        $('#selectOption').append(`<label for="exampleInputUsername1" class="">Title</label><span class="text-danger">*</span><select name="title" class="form-control" id="selectTitle"></select>`);
+
+                        $('#selectTitle').find('option').remove();
+
+                        for (let index = 0; index < response.titles.length; index++) {
+                            $('#selectTitle').append(`<option value="${response.titles[index].title}">${response.titles[index].title}</option>`);
+                        }
+                        $('#selectTitle').select2();
+                    }else{
+                        console.log('input text');
+                        $('#selectOption').append(`<label for="exampleInputUsername1" class="">Title</label><span class="text-danger">*</span><input type="text" name="title" class="form-control" placeholder="Title">`);
+                    }
+
+                },
+                error:function(err){
+                    toastr["error"]("Something is problem");
+                }
+            });
+        }
+
+    }
+
+    function validation(s,l)
+    {
+        if((s=='') ||  (l==''))
+        {
+            if((s==''))
+            {
+                toastr["error"]("Pleas Select Series");
+            }
+            if((l=='')){
+                toastr["error"]("Pleas Select Language");
+            }
+
+        }else{
+            return true;
+        }
+
+    }
 
 </script>
 

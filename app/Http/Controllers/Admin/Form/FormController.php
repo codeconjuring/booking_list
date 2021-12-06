@@ -240,7 +240,9 @@ class FormController extends Controller
 
     public function selectLanguageSeries(Request $request)
     {
-        return $request->all();
+
+        $titles = BookList::whereLanguage($request->language)->whereCategoryId($request->series)->select('title')->groupBy('title')->get();
+        return response()->json(['titles' => $titles]);
     }
 
     public function downloadPdf()

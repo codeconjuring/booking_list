@@ -70,12 +70,21 @@ class CategoryDataTable extends DataTable
             ->minifiedAjax()
             ->addAction(['width' => '100px', 'printable' => false, 'title' => 'Action'])
             ->parameters($this->getBuilderParameters());
-        if (!(Auth::user()->can('Edit Series') || Auth::user()->can('Delete Series')
-        )) {
+        if (!(Auth::user()->can('Edit Series') || Auth::user()->can('Delete Series'))) {
             $data = $this->builder()
                 ->columns($this->getColumns())
                 ->minifiedAjax()
-                ->parameters($this->getBuilderParameters());
+                ->parameters([
+                    'dom'     => 'Bfrtip',
+                    'order'   => [[0, 'desc']],
+                    'buttons' => [
+                        'create',
+                        'export',
+                        'print',
+                        'reset',
+                        'reload',
+                    ],
+                ]);
         }
         return $data;
 

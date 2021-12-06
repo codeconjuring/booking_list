@@ -26,72 +26,103 @@
 
 
                 <table class="table table-bordered" id="myTable">
-                  <thead>
-                    <tr>
-                      <th> Serise </th>
-                      <th> No </th>
-                      <th> Title</th>
-                      <th> LAN </th>
-                      @foreach($form_builder as $key=>$form_bui)
-                      <th>{{ $form_bui->label }}</th>
-                      @endforeach
-                    </tr>
-                  </thead>
-                  <tbody>
-                      @php
-                          $i=1;
-                      @endphp
+                    <thead>
+                      <tr>
+                        <th> Series </th>
+                        <th>Book No </th>
+                        <th> Title</th>
+                        <th> LAN </th>
+                        @foreach($form_builder as $key=>$form_bui)
+                        <th>{{ $form_bui->label }}</th>
+                        @endforeach
+                      </tr>
+                    </thead>
+                    <tbody>
 
-                      @foreach ($getSeriyes as $key=>$getSeriye)
-                          @php
-                              $books=App\Models\BookList::whereCategoryId($getSeriye->category_id)->get();
+                        @php
+                            $book_i=1;
+                        @endphp
+                        @foreach ($getSeriyes as $key=>$getSeriye)
 
-                          @endphp
+                            @php
+                                $entry=App\Models\Book::whereCategoryId($getSeriye->category_id)->get();
+
+                                $series_wise_titles=App\Models\BookList::whereCategoryId($getSeriye->category_id)->get();
+                                $books_count=count($series_wise_titles);
+                                $series_flag=0;
+
+                            @endphp
+
+                            @foreach ($entry as $e)
+                                @php
+                                    $books=App\Models\BookList::whereBookId($e->id)->get();
+                                    $entry_count=count($books);
+                                    $entry_flag=0;
+
+                                @endphp
+
+                                    @foreach ($books as $b=>$book)
+
+                                    <tr>
+                                        @if ($series_flag==0)
+                                            <td >{{ $book->serise->name }}</td>
+                                            @php
+                                                $series_flag=1;
+                                            @endphp
+
+                                        @else
+                                        <td></td>
+                                        @endif
+                                        @if ($entry_flag==0)
+                                            <td >Book  {{ $book_i++ }}</td>
+                                            @php
+                                                $entry_flag=1;
+                                            @endphp
+                                        @else
+                                        <td></td>
+                                        @endif
+
+                                        <td>{{ $book->title }}</td>
+                                        <td>{{ $book->language }}</td>
+                                        @php
+                                            $count_form_builder=count($form_builder);
+                                            $book_content_count=count($book->content);
+                                            $result=$count_form_builder-$book_content_count;
+                                        @endphp
+                                        @foreach ($form_builder as $form_bui)
+                                                    @foreach ($book->content as $bc=>$bookContent)
+
+                                                        @if($form_bui->id==$bc)
+                                                            @if($bookContent['type']=='1')
+                                                                @php
+                                                                    $status=App\Models\Status::whereId($bookContent['text'])->first();
+                                                                @endphp
+                                                            <td style="background:{{ $status?$status->color:'' }}">{{ $status?$status->status:'N/A' }}</td>
+                                                            @elseif($bookContent['text']==0)
+                                                            <td>{{ $bookContent['text'] }}</td>
+                                                            @else
+                                                            <td>N/A</td>
+                                                            @endif
+                                                        @else
+                                                        @endif
+
+                                                    @endforeach
+
+                                        @endforeach
+                                            @for ($i = 0; $i < $result; $i++)
+                                            <td>N/A</td>
+                                            @endfor
+                                                </tr>
+                                        @endforeach
+                                    @endforeach
 
 
-                          @foreach ($books as $b=>$book)
-
-                              <tr>
-                                  <td>{{ $book->serise->name }}</td>
-                                  <td>{{ $i++ }}</td>
-                                  <td>{{ $book->title }}</td>
-                                  <td>{{ $book->language }}</td>
-                                  @php
-                                      $count_form_builder=count($form_builder);
-                                      $book_content_count=count($book->content);
-                                      $result=$count_form_builder-$book_content_count;
-                                  @endphp
-                                  @foreach ($form_builder as $form_bui)
-                                              @foreach ($book->content as $bc=>$bookContent)
-
-                                                  @if($form_bui->id==$bc)
-                                                      @if($bookContent['type']=='1')
-                                                          @php
-                                                              $status=App\Models\Status::whereId($bookContent['text'])->first();
-                                                          @endphp
-                                                      <td style="background:{{ $status?$status->color:'' }}">{{ $status?$status->status:'N/A' }}</td>
-                                                      @elseif($bookContent['text']==0)
-                                                      <td>{{ $bookContent['text'] }}</td>
-                                                      @else
-                                                      <td>N/A</td>
-                                                      @endif
-                                                  @else
-                                                  @endif
-
-                                              @endforeach
-
-                                  @endforeach
-                                      @for ($i = 0; $i < $result; $i++)
-                                      <td>N/A</td>
-                                      @endfor
-                                          </tr>
-                                  @endforeach
-                      @endforeach
+                        @endforeach
 
 
 
-                  </tbody>
-                </table>
+                    </tbody>
+                  </table>
               </div>
             </div>
           </div>

@@ -16,6 +16,15 @@ use PDF;
 
 class FormController extends Controller
 {
+
+    public function __construct()
+    {
+        $this->middleware(['permission:Submit Form'])->only(['create', 'store']);
+        $this->middleware(['permission:Download Report'])->only(['downloadPdf']);
+        $this->middleware(['permission:Edit Book List'])->only(['edit']);
+        $this->middleware(['permission:Show Book List'])->only(['index']);
+        $this->middleware(['permission:Delete Book List'])->only(['destroy']);
+    }
     /**
      * Display a listing of the resource.
      *

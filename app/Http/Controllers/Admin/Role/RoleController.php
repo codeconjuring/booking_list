@@ -10,6 +10,11 @@ use Spatie\Permission\Models\Role;
 
 class RoleController extends Controller
 {
+
+    public function __construct()
+    {
+        $this->middleware(['permission:Show Administration'])->only(['index']);
+    }
     /**
      * Display a listing of the resource.
      *

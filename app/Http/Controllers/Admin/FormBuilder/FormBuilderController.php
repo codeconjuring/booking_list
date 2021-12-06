@@ -9,6 +9,14 @@ use Illuminate\Http\Request;
 
 class FormBuilderController extends Controller
 {
+
+    public function __construct()
+    {
+        $this->middleware(['permission:Edit Build Form'])->only(['edit', 'update']);
+        $this->middleware(['permission:Show Build Form'])->only(['index']);
+        $this->middleware(['permission:Delete Build Form'])->only(['destroy']);
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -16,6 +24,7 @@ class FormBuilderController extends Controller
      */
     public function index(FormBuilderDataTable $dataTable)
     {
+
         $page_title = "Form Builder";
         return $dataTable->render('admin.form-builder.index', ['page_title' => $page_title]);
     }
@@ -27,6 +36,7 @@ class FormBuilderController extends Controller
      */
     public function create()
     {
+
         $page_title = "Form Builder Create";
         return view('admin.form-builder.create', compact('page_title'));
     }

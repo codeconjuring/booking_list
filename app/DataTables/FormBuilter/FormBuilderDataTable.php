@@ -32,13 +32,13 @@ class FormBuilderDataTable extends DataTable
             ->addColumn('action', function ($formBuilder) {
                 $authUser = Auth::user();
                 $buttons  = '';
-                if ($authUser->can('Edit Series')) {
+                if ($authUser->can('Edit Build Form')) {
                     $buttons .= '<a class="dropdown-item text-success" href="' . route('admin.form-builder.edit',
                         $formBuilder->id) . '" title="Edit Category">
                         <i class="fas fa-edit"></i>&nbsp;Edit
                     </a>';
                 }
-                if ($authUser->can('Delete Series')) {
+                if ($authUser->can('Delete Build Form')) {
                     $buttons .= '<form action="' . route('admin.form-builder.destroy', $formBuilder->id) . '"  id="deleteForm' . $formBuilder->id . '" method="post" style="display: none">
                 <input type="hidden" name="_token" value="' . csrf_token() . '">
                 <input type="hidden" name="_method" value="DELETE">
@@ -82,12 +82,21 @@ class FormBuilderDataTable extends DataTable
             ->minifiedAjax()
             ->addAction(['width' => '100px', 'printable' => false, 'title' => 'Action'])
             ->parameters($this->getBuilderParameters());
-        if (!(Auth::user()->can('Edit Series') || Auth::user()->can('Delete Series')
-        )) {
+        if (!(Auth::user()->can('Edit Build Form') || Auth::user()->can('Delete Build Form'))) {
             $data = $this->builder()
                 ->columns($this->getColumns())
                 ->minifiedAjax()
-                ->parameters($this->getBuilderParameters());
+                ->parameters([
+                    'dom'     => 'Bfrtip',
+                    'order'   => [[0, 'desc']],
+                    'buttons' => [
+                        'create',
+                        'export',
+                        'print',
+                        'reset',
+                        'reload',
+                    ],
+                ]);
         }
         return $data;
 

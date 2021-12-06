@@ -8,6 +8,10 @@ use Illuminate\Http\Request;
 
 class EmailConfigSettingController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware(['permission:Email Settings'])->only(['index', 'store']);
+    }
     /**
      * Display a listing of the resource.
      *
@@ -39,7 +43,7 @@ class EmailConfigSettingController extends Controller
      */
     public function store(Request $request)
     {
-        $request->all();
+        // $request->all();
         $email_setting = Widget::where('name', 'email_setting')->first();
         if (!$email_setting) {
             $email_setting       = new Widget();

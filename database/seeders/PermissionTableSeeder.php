@@ -16,16 +16,53 @@ class PermissionTableSeeder extends Seeder
     public function run()
     {
         $parentPermissions = [
+            'Build Form',
             'Series',
+            'Status',
+            'Form Submit',
+            'Book List',
+            'Administration',
+            'Setings',
         ];
 
         $childPermissions =
             [
-            'Series' => array(
+            'Build Form'     => array(
+                0 => 'Add Build Form',
+                1 => 'Edit Build Form',
+                2 => 'Show Build Form',
+                3 => 'Delete Build Form',
+            ),
+            'Series'         => array(
                 0 => 'Add Series',
                 1 => 'Edit Series',
                 2 => 'Show Series',
                 3 => 'Delete Series',
+            ),
+            'Status'         => array(
+                0 => 'Add Status',
+                1 => 'Edit Status',
+                2 => 'Show Status',
+                3 => 'Delete Status',
+            ),
+            'Form Submit'    => array(
+                0 => 'Submit Form',
+            ),
+            'Book List'      => array(
+                0 => 'Download Report',
+                1 => 'Edit Book List',
+                2 => 'Show Book List',
+                3 => 'Delete Book List',
+            ),
+            'Administration' => array(
+                0 => 'Add Administration',
+                1 => 'Edit Administration',
+                2 => 'Show Administration',
+                3 => 'Delete Administration',
+            ),
+            'Setings'        => array(
+                0 => 'System Settings',
+                1 => 'Email Settings',
             ),
         ];
 

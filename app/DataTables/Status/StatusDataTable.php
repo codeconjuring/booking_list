@@ -3,6 +3,7 @@
 namespace App\DataTables\Status;
 
 use App\Models\Status;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 use PDF;
 use Spatie\Permission\Models\Role;
@@ -19,22 +20,28 @@ class StatusDataTable extends DataTable
     public function dataTable($query)
     {
         return datatables()
+
             ->eloquent($query)
             ->editColumn('color', function ($status) {
                 return '<span class="dot" style="background-color:' . $status->color . '"></span>';
             })
             ->addColumn('action', function ($status) {
-                $buttons = '';
-                $buttons .= '<a class="dropdown-item text-success" href="' . route('admin.status.edit',
-                    $status->id) . '" title="Edit Category">
+                $authUser = Auth::user();
+                $buttons  = '';
+                if ($authUser->can('Edit Status')) {
+                    $buttons .= '<a class="dropdown-item text-success" href="' . route('admin.status.edit',
+                        $status->id) . '" title="Edit Category">
                         <i class="fas fa-edit"></i>&nbsp;Edit
                     </a>';
-                $buttons .= '<form action="' . route('admin.status.destroy', $status->id) . '"  id="deleteForm' . $status->id . '" method="post" style="display: none">
+                }
+
+                if ($authUser->can('Delete Status')) {
+                    $buttons .= '<form action="' . route('admin.status.destroy', $status->id) . '"  id="deleteForm' . $status->id . '" method="post" style="display: none">
                 <input type="hidden" name="_token" value="' . csrf_token() . '">
                 <input type="hidden" name="_method" value="DELETE">
                 </form>
                 <a href="javascript:void(0)" class="dropdown-item text-danger" onclick="makeDeleteRequest(event, ' . $status->id . ')" title="Delete status"><i class="fas fa-trash"></i>&nbsp;Delete</a>';
-
+                }
                 return '<div class="dropdown">
                     <button class="btn btn-info btn-sm" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         <i class="mdi mdi-dots-vertical"></i>
@@ -68,11 +75,28 @@ class StatusDataTable extends DataTable
      */
     public function html()
     {
-        return $this->builder()
+        $data = $this->builder()
             ->columns($this->getColumns())
             ->minifiedAjax()
             ->addAction(['width' => '100px', 'printable' => false, 'title' => 'Action'])
             ->parameters($this->getBuilderParameters());
+        if (!(Auth::user()->can('Add Series'))) {
+            $data = $this->builder()
+                ->columns($this->getColumns())
+                ->minifiedAjax()
+                ->parameters([
+                    'dom'     => 'Bfrtip',
+                    'order'   => [[0, 'desc']],
+                    'buttons' => [
+                        'export',
+                        'print',
+                        'reset',
+                        'reload',
+                    ],
+                ]);
+        }
+        return $data;
+
     }
 
     /**

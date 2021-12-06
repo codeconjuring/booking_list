@@ -9,7 +9,7 @@
       </li>
 
 
-
+      @canany(['Add Build Form','Edit Build Form','Show Build Form','Delete Build Form','Add Series','Edit Series','Show Series','Delete Series','Add Status','Edit Status','Show Status','Delete Status'])
       <li class="nav-item">
         <a class="nav-link" data-toggle="collapse" href="#ui-form" aria-expanded="false" aria-controls="ui-form">
           <span class="menu-title">Table Column Builder</span>
@@ -18,13 +18,21 @@
         </a>
         <div class="collapse" id="ui-form">
           <ul class="nav flex-column sub-menu">
+              @can('Show Build Form')
             <li class="nav-item"> <a class="nav-link" href="{{ route('admin.form-builder.index') }}">Build Form</a></li>
+            @endcan
+            @can('Show Series')
             <li class="nav-item"> <a class="nav-link" href="{{ route('admin.series.index') }}">Series</a></li>
+            @endcan
+            @can('Show Status')
             <li class="nav-item"> <a class="nav-link" href="{{ route('admin.status.index') }}">Status</a></li>
+            @endcan
           </ul>
         </div>
       </li>
+      @endcanany
 
+    @canany(['Submit Form','Download Report','Edit Book List','Show Book List','Delete Book List'])
       <li class="nav-item">
         <a class="nav-link" data-toggle="collapse" href="#ui-form1" aria-expanded="false" aria-controls="ui-form1">
           <span class="menu-title">Form</span>
@@ -33,13 +41,18 @@
         </a>
         <div class="collapse" id="ui-form1">
           <ul class="nav flex-column sub-menu">
+              @can('Submit Form')
             <li class="nav-item"> <a class="nav-link" href="{{ route('admin.form.create') }}">Form Submit</a></li>
+            @endcan
+            @can('Show Book List')
             <li class="nav-item"> <a class="nav-link" href="{{ route('admin.form.index') }}">Book List</a></li>
+            @endcan
           </ul>
         </div>
       </li>
+    @endcanany
 
-
+      @canany(['Add Administration','Edit Administration','Show Administration','Delete Administration'])
       <li class="nav-item">
         <a class="nav-link" data-toggle="collapse" href="#ui-role" aria-expanded="false" aria-controls="ui-role">
           <span class="menu-title">Administration</span>
@@ -48,12 +61,18 @@
         </a>
         <div class="collapse" id="ui-role">
           <ul class="nav flex-column sub-menu">
+              @can('Add Administration')
             <li class="nav-item"> <a class="nav-link" href="{{ route('admin.role.create') }}">Create Role</a></li>
+            @endcan
+            @can('Show Administration')
             <li class="nav-item"> <a class="nav-link" href="{{ route('admin.role.index') }}">Role List</a></li>
+            @endcan
           </ul>
         </div>
       </li>
+      @endcanany
 
+      @canany(['System Settings','Email Settings'])
       <li class="nav-item">
         <a class="nav-link" data-toggle="collapse" href="#ui-basic" aria-expanded="false" aria-controls="ui-basic">
           <span class="menu-title">Settings</span>
@@ -62,10 +81,15 @@
         </a>
         <div class="collapse" id="ui-basic">
           <ul class="nav flex-column sub-menu">
+              @can('System Settings')
             <li class="nav-item"> <a class="nav-link" href="{{ route('admin.setting.index') }}">System Setting</a></li>
+            @endcan
+            @can('Email Settings')
             <li class="nav-item"> <a class="nav-link" href="{{ route('admin.email.index') }}">Email Setting</a></li>
+            @endcan
           </ul>
         </div>
       </li>
+      @endcanany
     </ul>
   </nav>

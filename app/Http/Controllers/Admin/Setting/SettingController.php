@@ -10,6 +10,11 @@ use Robiussani152\Settings\Facades\Settings;
 
 class SettingController extends Controller
 {
+
+    public function __construct()
+    {
+        $this->middleware(['permission:System Settings'])->only(['index', 'store']);
+    }
     /**
      * Display a listing of the resource.
      *

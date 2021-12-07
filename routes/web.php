@@ -29,3 +29,9 @@ Route::get('/', function () {
 Route::get('/login', 'HomeController@login')->name('login');
 Route::post('/login', 'HomeController@attempt')->name('login');
 Route::get('/logout', 'HomeController@logout')->name('logout');
+
+// Reset Password
+Route::get('reset/password/show', 'ForgotPassword@viewReset')->name('reset.password');
+Route::post('reset/password/send', 'ForgotPassword@resetPassword')->name('send.reset.password');
+Route::get('set/new/password/{uuid}', 'ForgotPassword@setNewPassword')->name('set.new.password');
+Route::post('set/password/{uuid}', 'ForgotPassword@createNewPassword')->name('set.password');

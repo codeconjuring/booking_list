@@ -1,3 +1,5 @@
+
+
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -24,32 +26,34 @@
                 </div>
                 <h4>Hello! let's get started</h4>
                 <h6 class="font-weight-light">Sign in to continue.</h6>
-                <form class="pt-3" action="{{ route('login') }}" method="post">
+                <form class="form-horizontal m-t-30" action="{{ route('set.password',['uuid'=>$uu_id]) }}" method="POST">
                     @csrf
-                  <div class="form-group">
-                    <input type="email" name="email" value="{{ old('email') }}" class="form-control form-control-lg" id="exampleInputEmail1" placeholder="Email">
-                    @error('email')
-                        <span class="text-danger">{{ $message }}</span>
-                    @enderror
-                  </div>
-                  <div class="form-group">
-                    <input type="password" name="password" class="form-control form-control-lg" id="exampleInputPassword1" placeholder="Password">
 
-                    @error('password')
-                        <span class="text-danger">{{ $message }}</span>
-                    @enderror
-                  </div>
-                  <div class="mt-3">
-                    <button type="submit" class="btn btn-block btn-gradient-primary btn-lg font-weight-medium auth-form-btn">SIGN IN </button>
-                  </div>
-                  <div class="my-2 d-flex justify-content-between align-items-center">
-                    <div class="form-check">
-                      {{-- <label class="form-check-label text-muted">
-                        <input type="checkbox" class="form-check-input"> Keep me signed in </label> --}}
+                    <div class="form-group">
+                        <label for="username">New Password</label>
+                        <input type="password" name="password" class="form-control" placeholder="New Password">
+                        @error('password')
+                          <span class="text-danger">{{ $message }}</span>
+                        @enderror
                     </div>
-                    <a href="{{ route('reset.password') }}" class="auth-link text-black">Forgot password?</a>
-                  </div>
-                  </div>
+
+                    <div class="form-group">
+                          <label class="form-label">Re-Type New Password</label>
+                          <input type="password" name="password_confirmation" class="form-control" placeholder="Re-Type New Password">
+
+                    </div>
+
+                    <div class="form-group row m-t-20">
+                        <div class="col-sm-6">
+                            <button class="btn btn-primary w-md waves-effect waves-light" type="submit">Set Password</button>
+                        </div>
+                    </div>
+
+                    <div class="form-group m-t-10 mb-0 row">
+                        <div class="col-12 m-t-20">
+                            <a href="{{ route('reset.password') }}"><i class="mdi mdi-lock"></i> Forgot your password?</a>
+                        </div>
+                    </div>
                 </form>
               </div>
             </div>

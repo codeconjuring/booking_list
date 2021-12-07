@@ -22,34 +22,41 @@
                 <div class="brand-logo">
                   {{-- <img src="{{ asset('dashboard/assets/images/logo.svg') }}"> --}}
                 </div>
-                <h4>Hello! let's get started</h4>
-                <h6 class="font-weight-light">Sign in to continue.</h6>
-                <form class="pt-3" action="{{ route('login') }}" method="post">
+                <h4>Forgot Password</h4>
+                {{-- <h6 class="font-weight-light">Forgot Password.</h6> --}}
+                <form class="form-horizontal m-t-30" action="{{ route('send.reset.password') }}" method="POST">
                     @csrf
-                  <div class="form-group">
-                    <input type="email" name="email" value="{{ old('email') }}" class="form-control form-control-lg" id="exampleInputEmail1" placeholder="Email">
-                    @error('email')
-                        <span class="text-danger">{{ $message }}</span>
-                    @enderror
-                  </div>
-                  <div class="form-group">
-                    <input type="password" name="password" class="form-control form-control-lg" id="exampleInputPassword1" placeholder="Password">
 
-                    @error('password')
-                        <span class="text-danger">{{ $message }}</span>
-                    @enderror
-                  </div>
-                  <div class="mt-3">
-                    <button type="submit" class="btn btn-block btn-gradient-primary btn-lg font-weight-medium auth-form-btn">SIGN IN </button>
-                  </div>
-                  <div class="my-2 d-flex justify-content-between align-items-center">
-                    <div class="form-check">
-                      {{-- <label class="form-check-label text-muted">
-                        <input type="checkbox" class="form-check-input"> Keep me signed in </label> --}}
+                    <div class="form-group">
+                        <label for="username">Email</label>
+                        <input type="text" name="email" class="form-control @error('email') is-invalid @enderror" id="username" value="{{ old('email') }}" placeholder="Enter Email" required autocomplete="email" autofocus>
+
+                        @error('email')
+                            <span class="invalid-feedback" role="alert">
+                                <strong>{{ $message }}</strong>
+                            </span>
+                        @enderror
+
+
                     </div>
-                    <a href="{{ route('reset.password') }}" class="auth-link text-black">Forgot password?</a>
-                  </div>
-                  </div>
+
+                    <div class="form-group row m-t-20">
+                        {{-- <div class="col-sm-6">
+                            <div class="custom-control custom-checkbox">
+                                <input type="checkbox" class="custom-control-input" id="customControlInline">
+                                <label class="custom-control-label" for="customControlInline">Remember me</label>
+                            </div>
+                        </div> --}}
+                        <div class="col-sm-6">
+                            <button class="btn btn-primary w-md waves-effect waves-light" type="submit">Forgot Password</button>
+                        </div>
+                    </div>
+
+                    <div class="form-group m-t-10 mb-0 row">
+                        <div class="col-12 m-t-20">
+                            <a href="{{ route('login') }}"><i class="mdi mdi-lock"></i>Login</a>
+                        </div>
+                    </div>
                 </form>
               </div>
             </div>
@@ -77,3 +84,5 @@
 
   </body>
 </html>
+
+

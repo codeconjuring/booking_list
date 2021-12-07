@@ -127,7 +127,15 @@ class FormController extends Controller
      */
     public function edit($id)
     {
+        $book_list = BookList::findOrFail($id);
 
+        $series       = Category::orderBy('name')->get();
+        $page_title   = "Edit Book";
+        $languages    = Language::all();
+        $form_builder = FormBuilder::all();
+        $statues      = Status::all();
+
+        return view('admin.form.edit', compact('book_list', 'series', 'page_title', 'languages', 'form_builder', 'statues'));
     }
 
     /**
@@ -139,7 +147,22 @@ class FormController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $request->validate([
+            'series_id' => 'required',
+            'language'  => 'required',
+        ]);
+        $find_book_list = BookList::findOrFail($id);
+
+        $bookList = BookList::whereId($id)->update([
+            'category_id' => $request->series_id,
+            'book_id'     => $find_book_list->book_id,
+            'title'       => $request->title,
+            'language'    => $request->language,
+            'content'     => $request->content,
+        ]);
+
+        sendFlash("Book list Update Successfully");
+        return redirect()->route('admin.form.index');
     }
 
     /**

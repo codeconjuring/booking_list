@@ -23,6 +23,7 @@ class PermissionTableSeeder extends Seeder
             'Book List',
             'Administration',
             'Setings',
+            'User',
         ];
 
         $childPermissions =
@@ -63,6 +64,12 @@ class PermissionTableSeeder extends Seeder
             'Setings'        => array(
                 0 => 'System Settings',
                 1 => 'Email Settings',
+            ),
+            'User'           => array(
+                0 => 'Add User',
+                1 => 'Edit User',
+                2 => 'Show User',
+                3 => 'Delete User',
             ),
         ];
 

@@ -1,15 +1,16 @@
 <?php
 
-namespace App\DataTables\Status;
+namespace App\DataTables\User;
 
-use App\Models\Status;
+use App\Models\User;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use PDF;
 use Spatie\Permission\Models\Role;
 use Yajra\DataTables\Services\DataTable;
 
-class StatusDataTable extends DataTable
+class UserTable extends DataTable
 {
     /**
      * Build DataTable class.
@@ -22,25 +23,31 @@ class StatusDataTable extends DataTable
         return datatables()
 
             ->eloquent($query)
-            ->editColumn('color', function ($status) {
-                return '<span class="dot" style="background-color:' . $status->color . '"></span>';
+            ->editColumn('full_name', function ($user) {
+                return $user->first_name . ' ' . $user->last_name;
             })
-            ->addColumn('action', function ($status) {
+            ->editColumn('role', function ($user) {
+                return '<span class="badge badge-pill badge-primary">' . $user->roles ? $user->roles[0]->name : '-' . '</span>';
+            })
+            ->editColumn('profile_image', function ($user) {
+                return '<img src="' . Storage::url($user->profile_image) . '" alt="">';
+            })
+            ->addColumn('action', function ($user) {
                 $authUser = Auth::user();
                 $buttons  = '';
-                if ($authUser->can('Edit Status')) {
-                    $buttons .= '<a class="dropdown-item text-success" href="' . route('admin.status.edit',
-                        $status->id) . '" title="Edit Category">
+                if ($authUser->can('Edit User')) {
+                    $buttons .= '<a class="dropdown-item text-success" href="' . route('admin.user.edit',
+                        $user->id) . '" title="Edit Category">
                         <i class="fas fa-edit"></i>&nbsp;Edit
                     </a>';
                 }
 
-                if ($authUser->can('Delete Status')) {
-                    $buttons .= '<form action="' . route('admin.status.destroy', $status->id) . '"  id="deleteForm' . $status->id . '" method="post" style="display: none">
+                if ($authUser->can('Delete User')) {
+                    $buttons .= '<form action="' . route('admin.user.destroy', $user->id) . '"  id="deleteForm' . $user->id . '" method="post" style="display: none">
                 <input type="hidden" name="_token" value="' . csrf_token() . '">
                 <input type="hidden" name="_method" value="DELETE">
                 </form>
-                <a href="javascript:void(0)" class="dropdown-item text-danger" onclick="makeDeleteRequest(event, ' . $status->id . ')" title="Delete status"><i class="fas fa-trash"></i>&nbsp;Delete</a>';
+                <a href="javascript:void(0)" class="dropdown-item text-danger" onclick="makeDeleteRequest(event, ' . $user->id . ')" title="Delete status"><i class="fas fa-trash"></i>&nbsp;Delete</a>';
                 }
                 return '<div class="dropdown">
                     <button class="btn btn-info btn-sm" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -52,7 +59,9 @@ class StatusDataTable extends DataTable
                     </div>';
             })->rawColumns([
             'action',
-            'color',
+            'role',
+            'full_name',
+            'profile_image',
         ])->addIndexColumn();
 
     }
@@ -63,9 +72,9 @@ class StatusDataTable extends DataTable
      * @param Role $model
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    public function query(Status $model)
+    public function query(User $model)
     {
-        return $model->newQuery()->orderBy('id', 'desc');
+        return $model->newQuery()->where('id', '!=', auth::user()->id)->orderBy('id', 'desc');
     }
 
     /**
@@ -80,7 +89,7 @@ class StatusDataTable extends DataTable
             ->minifiedAjax()
             ->addAction(['width' => '100px', 'printable' => false, 'title' => 'Action'])
             ->parameters($this->getBuilderParameters());
-        if (!(Auth::user()->can('Edit Status') || Auth::user()->can('Delete Status'))) {
+        if (!(Auth::user()->can('Edit User') || Auth::user()->can('Delete User'))) {
             $data = $this->builder()
                 ->columns($this->getColumns())
                 ->minifiedAjax()
@@ -122,14 +131,24 @@ class StatusDataTable extends DataTable
                 'width'          => '100px',
             ],
             [
-                'title' => 'Status',
-                'name'  => 'status',
-                'data'  => 'status',
+                'title' => 'Full Name',
+                'name'  => 'full_name',
+                'data'  => 'full_name',
             ],
             [
-                'title' => 'Color',
-                'name'  => 'color',
-                'data'  => 'color',
+                'title' => 'Email',
+                'name'  => 'email',
+                'data'  => 'email',
+            ],
+            [
+                'title' => 'Profile',
+                'name'  => 'profile_image',
+                'data'  => 'profile_image',
+            ],
+            [
+                'title' => 'Role',
+                'name'  => 'role',
+                'data'  => 'role',
             ],
         ];
     }

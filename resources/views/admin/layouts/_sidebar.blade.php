@@ -8,6 +8,22 @@
         </a>
       </li>
 
+      @canany(['Add User','Edit User','Show User','Delete User'])
+      <li class="nav-item">
+        <a class="nav-link" data-toggle="collapse" href="#ui-form-user" aria-expanded="false" aria-controls="ui-form-user">
+          <span class="menu-title">User</span>
+          <i class="menu-arrow"></i>
+          <i class="mdi mdi-format-line-style menu-icon"></i>
+        </a>
+        <div class="collapse" id="ui-form-user">
+          <ul class="nav flex-column sub-menu">
+            @can('Show User')
+                <li class="nav-item"> <a class="nav-link" href="{{ route('admin.user.index') }}">User List</a></li>
+            @endcan
+          </ul>
+        </div>
+      </li>
+      @endcanany
 
       @canany(['Add Build Form','Edit Build Form','Show Build Form','Delete Build Form','Add Series','Edit Series','Show Series','Delete Series','Add Status','Edit Status','Show Status','Delete Status'])
       <li class="nav-item">

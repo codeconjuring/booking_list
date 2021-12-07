@@ -14,6 +14,10 @@ class RoleController extends Controller
     public function __construct()
     {
         $this->middleware(['permission:Show Administration'])->only(['index']);
+        $this->middleware(['permission:Add Administration'])->only(['create', 'store']);
+        $this->middleware(['permission:Edit Administration'])->only(['edit', 'update']);
+        $this->middleware(['permission:Edit Administration'])->only(['edit', 'update']);
+        $this->middleware(['permission:Delete Administration'])->only(['destroy']);
     }
     /**
      * Display a listing of the resource.
@@ -125,6 +129,10 @@ class RoleController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $role = Role::findOrFail($id);
+        $role->delete();
+        sendFlash('Role Delete Successfully');
+        return back();
+
     }
 }

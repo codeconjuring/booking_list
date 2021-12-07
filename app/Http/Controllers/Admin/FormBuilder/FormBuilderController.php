@@ -12,6 +12,7 @@ class FormBuilderController extends Controller
 
     public function __construct()
     {
+        $this->middleware(['permission:Add Build Form'])->only(['create']);
         $this->middleware(['permission:Edit Build Form'])->only(['edit', 'update']);
         $this->middleware(['permission:Show Build Form'])->only(['index']);
         $this->middleware(['permission:Delete Build Form'])->only(['destroy']);

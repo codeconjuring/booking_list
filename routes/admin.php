@@ -24,5 +24,6 @@ Route::middleware(['auth'])->group(function () {
         'form'         => Form\FormController::class,
         'role'         => Role\RoleController::class,
         'status'       => Status\StatusController::class,
+        'user'         => User\UserController::class,
     ]);
 });

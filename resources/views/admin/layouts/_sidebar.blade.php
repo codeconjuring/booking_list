@@ -81,7 +81,7 @@
             <li class="nav-item"> <a class="nav-link" href="{{ route('admin.role.create') }}">Create Role</a></li>
             @endcan
             @can('Show Administration')
-            <li class="nav-item"> <a class="nav-link" href="{{ route('admin.role.index') }}">List Role</a></li>
+            <li class="nav-item"> <a class="nav-link" href="{{ route('admin.role.index') }}">List Roles</a></li>
             @endcan
           </ul>
         </div>

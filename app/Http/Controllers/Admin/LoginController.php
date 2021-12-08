@@ -61,18 +61,16 @@ class LoginController extends Controller
                     $col_status_array[$get_statu->id] = 0;
                     $colum_status_map[$get_statu->id] = $get_statu->status;
                 }
-
                 foreach ($form_builders as $key => $form_builder) {
                     $col_array[$form_builder->id] = $col_status_array;
                     $col_map[$form_builder->id]   = $form_builder->label;
                 }
-
                 $book_list_contents = BookList::whereLanguage($request->language)->get('content');
                 foreach ($book_list_contents as $key => $book_list_content) {
 
                     foreach ($book_list_content->content as $s => $single_content) {
 
-                        if ($single_content['type'] == 1) {
+                        if ($single_content['type'] == "1") {
                             $col_array[$s][$single_content['text']] += 1;
                         }
                     }
@@ -82,7 +80,6 @@ class LoginController extends Controller
                         }
                         $col_final_array[$col_map[$c]] = $col_status_map_name_array;
                     }
-
                 }
                 $table = "<table class='table table-striped table-bordered mt-2'><thead><tr><th>#</th>";foreach ($colum_status_map as $m => $colum_status_ma) {$table .= "<th>" . $colum_status_ma . "</th>";}
                 $table .= "</tr></thead>

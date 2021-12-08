@@ -290,6 +290,7 @@ function selectStatusLanguage(val){
             method:"get",
             data:{'language':val},
             success:function(response){
+                console.log(response);
                 if(response.table){
                     $('#languageTable').html(response.table);
                 }

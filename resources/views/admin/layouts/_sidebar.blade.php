@@ -28,20 +28,20 @@
       @canany(['Add Build Form','Edit Build Form','Show Build Form','Delete Build Form','Add Series','Edit Series','Show Series','Delete Series','Add Status','Edit Status','Show Status','Delete Status'])
       <li class="nav-item">
         <a class="nav-link" data-toggle="collapse" href="#ui-form" aria-expanded="false" aria-controls="ui-form">
-          <span class="menu-title">Table Column Builder</span>
+          <span class="menu-title">Book Attributes</span>
           <i class="menu-arrow"></i>
           <i class="mdi mdi-format-line-style menu-icon"></i>
         </a>
         <div class="collapse" id="ui-form">
           <ul class="nav flex-column sub-menu">
               @can('Show Build Form')
-            <li class="nav-item"> <a class="nav-link" href="{{ route('admin.form-builder.index') }}">Build Form</a></li>
+            <li class="nav-item"> <a class="nav-link" href="{{ route('admin.form-builder.index') }}">Book Format</a></li>
             @endcan
             @can('Show Series')
-            <li class="nav-item"> <a class="nav-link" href="{{ route('admin.series.index') }}">Series</a></li>
+            <li class="nav-item"> <a class="nav-link" href="{{ route('admin.series.index') }}">Book Series</a></li>
             @endcan
             @can('Show Status')
-            <li class="nav-item"> <a class="nav-link" href="{{ route('admin.status.index') }}">Status</a></li>
+            <li class="nav-item"> <a class="nav-link" href="{{ route('admin.status.index') }}">Book Status</a></li>
             @endcan
           </ul>
         </div>
@@ -51,17 +51,17 @@
     @canany(['Submit Form','Download Report','Edit Book List','Show Book List','Delete Book List'])
       <li class="nav-item">
         <a class="nav-link" data-toggle="collapse" href="#ui-form1" aria-expanded="false" aria-controls="ui-form1">
-          <span class="menu-title">Form</span>
+          <span class="menu-title">Book Management</span>
           <i class="menu-arrow"></i>
           <i class="mdi mdi-format-line-style menu-icon"></i>
         </a>
         <div class="collapse" id="ui-form1">
           <ul class="nav flex-column sub-menu">
               @can('Submit Form')
-            <li class="nav-item"> <a class="nav-link" href="{{ route('admin.form.create') }}">Form Submit</a></li>
+            <li class="nav-item"> <a class="nav-link" href="{{ route('admin.form.create') }}">Book Creation</a></li>
             @endcan
             @can('Show Book List')
-            <li class="nav-item"> <a class="nav-link" href="{{ route('admin.form.index') }}">Book List</a></li>
+            <li class="nav-item"> <a class="nav-link" href="{{ route('admin.form.index') }}">Book Listing</a></li>
             @endcan
           </ul>
         </div>
@@ -81,7 +81,7 @@
             <li class="nav-item"> <a class="nav-link" href="{{ route('admin.role.create') }}">Create Role</a></li>
             @endcan
             @can('Show Administration')
-            <li class="nav-item"> <a class="nav-link" href="{{ route('admin.role.index') }}">Role List</a></li>
+            <li class="nav-item"> <a class="nav-link" href="{{ route('admin.role.index') }}">List Role</a></li>
             @endcan
           </ul>
         </div>

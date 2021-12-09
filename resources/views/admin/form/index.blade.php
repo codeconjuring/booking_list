@@ -1,7 +1,9 @@
 @extends('admin.layouts._master')
+
 @section('css')
 <link rel="stylesheet" href="//cdn.datatables.net/1.11.3/css/jquery.dataTables.min.css">
 <link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.1.0/css/buttons.dataTables.min.css">
+<link rel="stylesheet" href="https://cdn.datatables.net/colreorder/1.5.5/css/colReorder.dataTables.min.css">
 
 @endsection
 
@@ -113,7 +115,19 @@
                                         $result=$count_form_builder-$book_content_count;
                                     @endphp
                                     @foreach ($form_builder as $form_bui)
-                                                @foreach ($book->content as $bc=>$bookContent)
+                                        @if (array_key_exists($form_bui->id,$book->content))
+                                            @if ($book->content[$form_bui->id]['type']=="1")
+
+                                                <td style="background:{{ $status_array[$status_array[$book->content[$form_bui->id]['text']]] }}">{{ $status_array[$book->content[$form_bui->id]['text']] }}</td>
+                                            @else
+                                            <td>{{ $book->content[$form_bui->id]['text']  }} </td>
+                                            @endif
+
+
+                                        @else
+                                            <td>-</td>
+                                        @endif
+                                                {{-- @foreach ($book->content as $bc=>$bookContent)
 
                                                     @if($form_bui->id==$bc)
                                                         @if($bookContent['type']=='1')
@@ -129,12 +143,12 @@
                                                     @else
                                                     @endif
 
-                                                @endforeach
+                                                @endforeach --}}
 
                                     @endforeach
-                                        @for ($i = 0; $i < $result; $i++)
+                                        {{-- @for ($i = 0; $i < $result; $i++)
                                         <td>N/A</td>
-                                        @endfor
+                                        @endfor --}}
                                             </tr>
                                     @endforeach
                                 @endforeach
@@ -166,6 +180,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
 <script src="https://cdn.datatables.net/buttons/2.1.0/js/buttons.html5.min.js"></script>
 <script src="https://cdn.datatables.net/buttons/2.1.0/js/buttons.print.min.js"></script>
+<script src="https://cdn.datatables.net/colreorder/1.5.5/js/dataTables.colReorder.min.js"></script>
 
 <script>
     $(document).ready( function () {
@@ -174,6 +189,7 @@
         buttons: [
             'copy', 'csv', 'excel', 'pdf', 'print'
         ],
+        // colReorder: true
     });
 } );
 </script>

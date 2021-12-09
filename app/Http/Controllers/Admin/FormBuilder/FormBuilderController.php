@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\Admin\FormBuilder;
 
-use App\DataTables\FormBuilter\FormBuilderDataTable;
 use App\Http\Controllers\Controller;
 use App\Models\BookList;
 use App\Models\FormBuilder;
@@ -24,11 +23,13 @@ class FormBuilderController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(FormBuilderDataTable $dataTable)
+    public function index()
     {
 
-        $page_title = "Form Builder";
-        return $dataTable->render('admin.form-builder.index', ['page_title' => $page_title]);
+        $page_title    = "Form Builder";
+        $form_builders = FormBuilder::orderBy('order_table', 'asc')->get();
+        return view('admin.form-builder.index', compact('page_title', 'form_builders'));
+        // return $dataTable->render('admin.form-builder.index', ['page_title' => $page_title]);
     }
 
     /**
@@ -143,5 +144,20 @@ class FormBuilderController extends Controller
             return back();
         }
 
+    }
+
+    public function tableSort(Request $request)
+    {
+
+        $posts = FormBuilder::all();
+        foreach ($posts as $post) {
+            foreach ($request->order as $order) {
+                if ($order['id'] == $post->id) {
+                    $post->update(['order_table' => $order['position']]);
+                }
+            }
+        }
+
+        return response('Update Successfully.', 200);
     }
 }

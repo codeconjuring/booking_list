@@ -34,7 +34,7 @@ class FormController extends Controller
     {
 
         $page_title      = "Book lists";
-        $form_builder    = FormBuilder::all();
+        $form_builder    = FormBuilder::orderBy('order_table', 'asc')->get();
         $series_group_by = BookList::select('category_id')->groupBy('category_id')->orderBy('id', 'DESC')->get();
         $series_count    = BookList::select('category_id', DB::raw('count(*) as total'))->groupBy('category_id')->orderBy('id', 'DESC')->get();
 
@@ -57,9 +57,15 @@ class FormController extends Controller
             array_push($series_ids, $series->category_id);
         }
 
-        $series = Category::whereIn('id', $series_ids)->get();
+        $series       = Category::whereIn('id', $series_ids)->get();
+        $status_array = [];
+        $status       = Status::all();
+        foreach ($status as $st) {
+            $status_array[$st->id]     = $st->status;
+            $status_array[$st->status] = $st->color;
+        }
 
-        return view('admin.form.index', compact('page_title', 'form_builder', 'series', 'getSeriyes'));
+        return view('admin.form.index', compact('page_title', 'form_builder', 'series', 'getSeriyes', 'status', 'status_array'));
 
     }
 

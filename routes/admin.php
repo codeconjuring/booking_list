@@ -15,6 +15,8 @@ Route::middleware(['auth'])->group(function () {
     Route::get('form/download', 'Form\FormController@downloadPdf')->name('form.download');
     // API Request
     Route::get('form/api-request', 'Form\FormController@selectLanguageSeries')->name('form.api_request');
+    Route::post('form-builder/table-sort', 'FormBuilder\FormBuilderController@tableSort')->name('table.sort');
+
     Route::resources([
         'setting'      => Setting\SettingController::class,
         'profile'      => Profile\ProfileController::class,

@@ -2,6 +2,7 @@
 
 @section('css')
 <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/dt/dt-1.10.12/datatables.min.css"/>
+<link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.1.0/css/buttons.dataTables.min.css">
 @endsection
 
 @section('content')
@@ -77,12 +78,36 @@
 
 @section('js')
 
-<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js"></script>
     <script type="text/javascript" src="https://cdn.datatables.net/v/dt/dt-1.10.12/datatables.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.1.0/js/dataTables.buttons.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
+<script src="https://cdn.datatables.net/buttons/2.1.0/js/buttons.html5.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/2.1.0/js/buttons.print.min.js"></script>
+
+
     <script type="text/javascript">
       $(function () {
-        $("#myTable").DataTable();
+        $("#myTable").DataTable({
+        dom: 'Bfrtip',
+        buttons: [
+            {
+                text: 'Crate',
+                action: function ( e, dt, node, config ) {
+                    window.location ="{{ route('admin.form-builder.create') }}"
+                }
+            },
+            'copy',
+            'csv',
+            'excel',
+            'pdf',
+            'print',
+
+        ],
+        // colReorder: true
+    });
 
         $( "#tablecontents" ).sortable({
           items: "tr",

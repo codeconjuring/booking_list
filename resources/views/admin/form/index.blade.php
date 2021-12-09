@@ -26,7 +26,7 @@
             </h4>
 
 
-              <table class="table table-bordered" id="myTable">
+              <table class="table table-bordered table-responsive" id="myTable">
                 <thead>
                   <tr>
                     @canany(['Edit Book List','Delete Book List'])

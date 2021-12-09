@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin\FormBuilder;
 
 use App\DataTables\FormBuilter\FormBuilderDataTable;
 use App\Http\Controllers\Controller;
+use App\Models\BookList;
 use App\Models\FormBuilder;
 use Illuminate\Http\Request;
 
@@ -120,8 +121,27 @@ class FormBuilderController extends Controller
      */
     public function destroy($id)
     {
-        FormBuilder::findOrFail($id)->delete();
-        sendFlash("Delete Successfully");
-        return back();
+        try {
+            $book_lists = BookList::all();
+            foreach ($book_lists as $key => $book_list) {
+                $contents = $book_list->content;
+                foreach ($contents as $c => $content) {
+                    if ($c == (int) $id) {
+                        unset($contents[$c]);
+                    }
+                }
+                $book_list->update([
+                    'content' => $contents,
+                ]);
+            }
+            FormBuilder::findOrFail($id)->delete();
+
+            sendFlash("Delete Successfully");
+            return back();
+        } catch (\Exception $e) {
+            sendFlash($e->getMessage(), 'error');
+            return back();
+        }
+
     }
 }

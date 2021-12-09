@@ -17,6 +17,7 @@ class CreateFormBuildersTable extends Migration
             $table->id();
             $table->string('label')->nullable();
             $table->string('type')->comment('0=text,1=dropdown');
+            $table->integer('order_table')->default(0);
             $table->timestamps();
         });
     }

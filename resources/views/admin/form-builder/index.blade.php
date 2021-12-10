@@ -94,7 +94,7 @@
         dom: 'Bfrtip',
         buttons: [
             {
-                text: 'Crate',
+                text: 'Create',
                 action: function ( e, dt, node, config ) {
                     window.location ="{{ route('admin.form-builder.create') }}"
                 }

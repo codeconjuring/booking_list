@@ -117,8 +117,11 @@
                                     @foreach ($form_builder as $form_bui)
                                         @if (array_key_exists($form_bui->id,$book->content))
                                             @if ($book->content[$form_bui->id]['type']=="1")
+                                            @php
+                                                $color=App\Models\Status::whereId($book->content[$form_bui->id]['text'])->first();
+                                            @endphp
 
-                                                <td style="background:{{ $status_array[$status_array[$book->content[$form_bui->id]['text']]] }}">{{ $status_array[$book->content[$form_bui->id]['text']] }}</td>
+                                            <td style="background:{{ $color?$color->color:"" }}">{{ $status_array[$book->content[$form_bui->id]['text']]??'-' }}</td>
                                             @else
                                             <td>{{ $book->content[$form_bui->id]['text']  }} </td>
                                             @endif

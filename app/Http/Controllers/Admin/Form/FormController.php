@@ -180,8 +180,13 @@ class FormController extends Controller
     public function destroy($id)
     {
 
-        $book = BookList::findOrFail($id);
-        $book->delete();
+        $book_list = BookList::findOrFail($id);
+
+        $book_list_count = BookList::whereBookId($book_list->book_id)->count();
+        if ($book_list_count == 1) {
+            Book::findOrFail($book_list->book_id)->delete();
+        }
+        $book_list->delete();
         sendFlash("Book Delete Successfully");
         return back();
     }

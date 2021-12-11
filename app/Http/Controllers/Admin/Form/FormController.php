@@ -319,6 +319,27 @@ class FormController extends Controller
         // return view('admin.form.report', ['page_title' => $page_title, 'form_builder' => $form_builder, 'series' => $series, 'getSeriyes' => $getSeriyes]);
         $pdf = PDF::loadView('admin.form.report', ['page_title' => $page_title, 'form_builder' => $form_builder, 'series' => $series, 'getSeriyes' => $getSeriyes])->setPaper('a4', 'landscape');
         // $pdf->save(storage_path() . '_report.pdf');
-        return $pdf->download('book_' . date("Y/m/d") . 'report.pdf');
+        return $pdf->download('book_' . date("Y/m/d") . '_report.pdf');
+    }
+
+    public function getAnotherLanguage(Request $request)
+    {
+        $remove_languages = BookList::whereCategoryId($request->series_id)->get(['language'])->toArray();
+        $remove_lan       = [];
+        foreach ($remove_languages as $key => $r_language) {
+            array_push($remove_lan, $r_language['language']);
+        }
+        $languages       = Language::all();
+        $update_language = [];
+        foreach ($languages as $key => $u_language) {
+
+            if (!in_array(strtoupper($u_language->short_hand), $remove_lan)) {
+
+                array_push($update_language, strtoupper($u_language->short_hand));
+
+            }
+        }
+
+        return response()->json(['languages' => $update_language]);
     }
 }

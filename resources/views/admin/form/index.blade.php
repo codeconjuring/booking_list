@@ -99,7 +99,7 @@
                                     <td></td>
                                     @endif
                                     @if ($entry_flag==0)
-                                        <td >Book  {{ $book_i++ }}</td>
+                                        <td >{{ $book_i++ }}</td>
                                         @php
                                             $entry_flag=1;
                                         @endphp

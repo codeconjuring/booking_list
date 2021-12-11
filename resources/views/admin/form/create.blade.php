@@ -17,6 +17,23 @@
 
 
                 <div class="form-group">
+                    <label for="exampleInputUsername1">Series Name</label><span class="text-danger">*</span>
+
+                      <select name="series_id" id="" onchange="selectSeries($(this).val(),'series')" class="form-control select2">
+                              <option value="">Select Series</option>
+                          @foreach($series as $key=>$ser)
+                              <option value="{{ $ser->id }}">{{ $ser->name }}</option>
+                          @endforeach
+                      </select>
+
+                    @error('series_id')
+                      <span class="text-danger">{{ $message }}</span>
+                    @enderror
+                  </div>
+
+
+
+                <div class="form-group">
                     <label for="exampleInputUsername1">Language</label><span class="text-danger">*</span>
                     <select name="language" id="" onchange="selectSeries($(this).val(),'language')" class="form-control select2">
                         <option value="">Select Language</option>
@@ -30,20 +47,19 @@
                     @enderror
                 </div>
 
-                <div class="form-group">
-                  <label for="exampleInputUsername1">Series Name</label><span class="text-danger">*</span>
 
-                    <select name="series_id" id="" onchange="selectSeries($(this).val(),'series')" class="form-control select2">
-                            <option value="">Select Series</option>
-                        @foreach($series as $key=>$ser)
-                            <option value="{{ $ser->id }}">{{ $ser->name }}</option>
-                        @endforeach
+                {{-- <div class="form-group">
+                    <label for="exampleInputUsername1">Language</label><span class="text-danger">*</span>
+                    <select name="language" id="selectLanguage" onchange="selectSeries($(this).val(),'language')" class="form-control select2">
+
                     </select>
 
-                  @error('series_id')
-                    <span class="text-danger">{{ $message }}</span>
-                  @enderror
-                </div>
+                    @error('language')
+                        <span class="text-danger">{{ $message }}</span>
+                    @enderror
+                </div> --}}
+
+
 
 
 
@@ -114,6 +130,7 @@
     // Select Series
     function selectSeries(val,type)
     {
+
         if(type=='series')
         {
             series=val;
@@ -157,6 +174,28 @@
             });
         }
 
+    }
+
+    // Get language
+    function getLanguage(series_id){
+        $.ajax({
+            url:"{{ route('admin.form.get-another-lanugage') }}",
+            method:"get",
+            data:{'series_id':series_id},
+            success:function(response){
+
+                $('#selectLanguage').find('option').remove();
+                $('#selectLanguage').append(`<option value="">Select Language</option>`);
+                for (let index = 0; index < response.languages.length; index++) {
+                    $('#selectLanguage').append(`<option value="${response.languages[index]}">${response.languages[index]}</option>`);
+                }
+
+                $('#selectLanguage').select2();
+            },
+            error:function(error){
+                toastr["error"](error);
+            }
+        });
     }
 
     function validation(s,l)

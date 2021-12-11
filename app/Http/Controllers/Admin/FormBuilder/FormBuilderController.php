@@ -12,10 +12,11 @@ class FormBuilderController extends Controller
 
     public function __construct()
     {
-        $this->middleware(['permission:Add Build Form'])->only(['create']);
-        $this->middleware(['permission:Edit Build Form'])->only(['edit', 'update']);
-        $this->middleware(['permission:Show Build Form'])->only(['index']);
-        $this->middleware(['permission:Delete Build Form'])->only(['destroy']);
+
+        $this->middleware(['permission:Add Book Attributes Format'])->only(['create']);
+        $this->middleware(['permission:Edit Book Attributes Format'])->only(['edit', 'update']);
+        $this->middleware(['permission:Show Book Attributes Format'])->only(['index']);
+        $this->middleware(['permission:Delete Book Attributes Format'])->only(['destroy']);
     }
 
     /**

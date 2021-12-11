@@ -19,11 +19,12 @@ class FormController extends Controller
 
     public function __construct()
     {
-        $this->middleware(['permission:Submit Form'])->only(['create', 'store']);
-        $this->middleware(['permission:Download Report'])->only(['downloadPdf']);
-        $this->middleware(['permission:Edit Book List'])->only(['edit']);
-        $this->middleware(['permission:Show Book List'])->only(['index']);
-        $this->middleware(['permission:Delete Book List'])->only(['destroy']);
+        $this->middleware(['permission:Add Book Management'])->only(['create', 'store']);
+        $this->middleware(['permission:Download Report Book Management'])->only(['downloadPdf']);
+        $this->middleware(['permission:Edit Book Management'])->only(['edit', 'update']);
+        $this->middleware(['permission:Show Book Management'])->only(['index']);
+        $this->middleware(['permission:Delete Book Management'])->only(['destroy']);
+        $this->middleware(['permission:Add Another Translation Book Management'])->only(['storeAnother', 'addMore']);
     }
     /**
      * Display a listing of the resource.
@@ -184,8 +185,17 @@ class FormController extends Controller
 
         $book_list_count = BookList::whereBookId($book_list->book_id)->count();
         if ($book_list_count == 1) {
-            Book::findOrFail($book_list->book_id)->delete();
+            // Book::findOrFail($book_list->book_id)->delete();
         }
+
+        // change the status
+        if ($book_list->add_another_book_translation == 0) {
+            $get_book_list = BookList::whereBookId($book_list->book_id)->where('id', '!=', $id)->orderBy('id', 'desc')->first();
+            $get_book_list->update([
+                'add_another_book_translation' => 0,
+            ]);
+        }
+
         $book_list->delete();
         sendFlash("Book Delete Successfully");
         return back();
@@ -233,12 +243,12 @@ class FormController extends Controller
         return back();
     }
 
-    public function addAnotherTitle($book_list_id)
+    public function addAnotherTitle($id)
     {
 
-        $book_list = BookList::findOrFail($book_list_id);
+        $book_list = BookList::findOrFail($id);
 
-        $get_language_book_lists = BookList::whereBookId($book_list_id)->get(['language'])->toArray();
+        $get_language_book_lists = BookList::whereBookId($book_list->book_id)->get(['language'])->toArray();
 
         $remove_language = [];
         foreach ($get_language_book_lists as $key => $get_language_book_list) {
@@ -277,11 +287,12 @@ class FormController extends Controller
         ]);
 
         $book_list = BookList::create([
-            'category_id' => $request->series_id,
-            'book_id'     => $request->book_id,
-            'title'       => $request->title,
-            'language'    => $request->language,
-            'content'     => $request->content,
+            'category_id'                  => $request->series_id,
+            'book_id'                      => $request->book_id,
+            'title'                        => $request->title,
+            'language'                     => $request->language,
+            'content'                      => $request->content,
+            'add_another_book_translation' => 01,
         ]);
         sendFlash("Another Book titile Add Successfully");
         return redirect()->route('admin.form.index');

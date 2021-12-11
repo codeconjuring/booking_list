@@ -12,10 +12,10 @@ class StatusController extends Controller
 
     public function __construct()
     {
-        $this->middleware(['permission:Add Series'])->only(['create']);
-        $this->middleware(['permission:Edit Status'])->only(['edit', 'update']);
-        $this->middleware(['permission:Show Status'])->only(['index']);
-        $this->middleware(['permission:Delete Status'])->only(['destroy']);
+        $this->middleware(['permission:Add Book Attributes Status'])->only(['create']);
+        $this->middleware(['permission:Edit Book Attributes Status'])->only(['edit', 'update']);
+        $this->middleware(['permission:Show Book Attributes Status'])->only(['index']);
+        $this->middleware(['permission:Delete Book Attributes Status'])->only(['destroy']);
     }
     /**
      * Display a listing of the resource.

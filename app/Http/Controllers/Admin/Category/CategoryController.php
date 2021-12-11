@@ -12,10 +12,10 @@ class CategoryController extends Controller
 
     public function __construct()
     {
-        $this->middleware(['permission:Add Series'])->only(['create']);
-        $this->middleware(['permission:Edit Series'])->only(['edit', 'update']);
-        $this->middleware(['permission:Show Series'])->only(['index']);
-        $this->middleware(['permission:Delete Series'])->only(['destroy']);
+        $this->middleware(['permission:Add Book Attributes Series'])->only(['create']);
+        $this->middleware(['permission:Edit Book Attributes Series'])->only(['edit', 'update']);
+        $this->middleware(['permission:Show Book Attributes Series'])->only(['index']);
+        $this->middleware(['permission:Delete Book Attributes Series'])->only(['destroy']);
     }
 
     /**

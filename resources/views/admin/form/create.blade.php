@@ -200,14 +200,11 @@
 
     function validation(s,l)
     {
-        if((s=='') ||  (l==''))
+        if((s==''))
         {
             if((s==''))
             {
                 toastr["error"]("Pleas Select Series");
-            }
-            if((l=='')){
-                toastr["error"]("Pleas Select Language");
             }
 
         }else{

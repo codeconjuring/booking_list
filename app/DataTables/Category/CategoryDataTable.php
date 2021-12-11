@@ -23,13 +23,13 @@ class CategoryDataTable extends DataTable
             ->addColumn('action', function ($category) {
                 $authUser = Auth::user();
                 $buttons  = '';
-                if ($authUser->can('Edit Series')) {
+                if ($authUser->can('Edit Book Attributes Series')) {
                     $buttons .= '<a class="dropdown-item text-success" href="' . route('admin.series.edit',
                         $category->id) . '" title="Edit Category">
                         <i class="fas fa-edit"></i>&nbsp;Edit
                     </a>';
                 }
-                if ($authUser->can('Delete Series')) {
+                if ($authUser->can('Delete Book Attributes Series')) {
                     $buttons .= '<form action="' . route('admin.series.destroy', $category->id) . '"  id="deleteForm' . $category->id . '" method="post" style="display: none">
                 <input type="hidden" name="_token" value="' . csrf_token() . '">
                 <input type="hidden" name="_method" value="DELETE">
@@ -70,7 +70,7 @@ class CategoryDataTable extends DataTable
             ->minifiedAjax()
             ->addAction(['width' => '100px', 'printable' => false, 'title' => 'Action'])
             ->parameters($this->getBuilderParameters());
-        if (!(Auth::user()->can('Edit Series') || Auth::user()->can('Delete Series'))) {
+        if (!(Auth::user()->can('Edit Book Attributes Series') || Auth::user()->can('Delete Book Attributes Series'))) {
             $data = $this->builder()
                 ->columns($this->getColumns())
                 ->minifiedAjax()

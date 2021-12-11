@@ -20,7 +20,7 @@
           <div class="card">
             <div class="card-body">
               <h4 class="card-title">{{ $page_title }}
-                @can('Download Report')
+                @can('Download Report Book Management')
                 <a href="{{ route('admin.form.download') }}" class="btn btn-info btn-sm float-right mb-1"><i class="fas fa-download"></i> &nbsp;Download Report</a>
                 @endcan
             </h4>
@@ -29,7 +29,7 @@
               <table class="table table-bordered table-responsive" id="myTable">
                 <thead>
                   <tr>
-                    @canany(['Edit Book List','Delete Book List'])
+                    @canany(['Edit Book Management','Delete Book Management','Add Another Translation Book Management'])
                     <th>Action</th>
                     @endcanany
                     <th> Series </th>
@@ -75,11 +75,14 @@
                                             </a>
 
                                             <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                                            <a class="dropdown-item text-dark" href="{{ route('admin.form.add-another-title',['id'=>$book->book_id]) }}"><i class="far fa-copy text-warning"></i> &nbsp; Add Another Translation</a>
-                                            @can('Edit Book List')
+                                            @can('Add Another Translation Book Management')
+                                                <a class="dropdown-item text-dark {{ $book->add_another_book_translation==1?'d-none':'' }}" href="{{ route('admin.form.add-another-title',['id'=>$book->id]) }}"><i class="far fa-copy text-warning"></i> &nbsp; Add Another Translation</a>
+                                            @endcan
+
+                                            @can('Edit Book Management')
                                             <a class="dropdown-item text-dark" href="{{ route('admin.form.edit',$book->id) }}"><i class="fas fa-edit text-info"></i> &nbsp; Edit</a>
                                             @endcan
-                                            @can('Delete Book List')
+                                            @can('Delete Book Management')
                                             <form action="{{ route('admin.form.destroy',$book->id) }}" id="deleteForm{{ $book->id }}"  method="post">
                                                     @csrf
                                                     @method('delete')

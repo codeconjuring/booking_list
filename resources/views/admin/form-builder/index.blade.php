@@ -23,7 +23,7 @@
                     <th>Sl</th>
                     <th> Lebel </th>
                     <th>Type </th>
-                    @canany(["Edit Build Form","Delete Build Form"])
+                    @canany(["Edit Book Attributes Format","Delete Book Attributes Format"])
                     <th>Action</th>
                     @endcanany
                   </tr>
@@ -37,19 +37,19 @@
                             <td>{{ $i++ }}</td>
                             <td>{{ $form_builder->label }}</td>
                             <td>{{ $form_builder->type==0?"Text":"Dropdown" }}</td>
-                            @canany(["Edit Build Form","Delete Build Form"])
+                            @canany(["Edit Book Attributes Format","Delete Book Attributes Format"])
                                 <td>
                                     <div class="dropdown">
                                     <button class="btn btn-info btn-sm" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                         <i class="mdi mdi-dots-vertical"></i>
                                     </button>
                                     <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                        @can('Edit Build Form')
+                                        @can('Edit Book Attributes Format')
                                         <a class="dropdown-item text-success" href="{{route('admin.form-builder.edit',$form_builder->id) }}" title="Edit Category">
                                         <i class="fas fa-edit"></i>&nbsp;Edit
                                         </a>
                                         @endcan
-                                        @can('Delete Build Form')
+                                        @can('Delete Book Attributes Format')
                                         <form action="{{ route('admin.form-builder.destroy', $form_builder->id) }}"  id="deleteForm{{ $form_builder->id }}" method="post" style="display: none">
                                             @csrf
                                             @method("DELETE")

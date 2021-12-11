@@ -25,7 +25,7 @@
       </li>
       @endcanany
 
-      @canany(['Add Build Form','Edit Build Form','Show Build Form','Delete Build Form','Add Series','Edit Series','Show Series','Delete Series','Add Status','Edit Status','Show Status','Delete Status'])
+      @canany(['Add Book Attributes Format','Edit Book Attributes Format','Show Book Attributes Format','Delete Book Attributes Format','Add Book Attributes Series','Edit Book Attributes Series','Show Book Attributes Series','Delete Book Attributes Series','Add Book Attributes Status','Edit Book Attributes Status','Show Book Attributes Status','Delete Book Attributes Status'])
       <li class="nav-item">
         <a class="nav-link" data-toggle="collapse" href="#ui-form" aria-expanded="false" aria-controls="ui-form">
           <span class="menu-title">Book Attributes</span>
@@ -34,21 +34,23 @@
         </a>
         <div class="collapse" id="ui-form">
           <ul class="nav flex-column sub-menu">
-              @can('Show Build Form')
-            <li class="nav-item"> <a class="nav-link" href="{{ route('admin.form-builder.index') }}">Book Format</a></li>
-            @endcan
-            @can('Show Series')
+
+            @canany(['Add Book Attributes Format','Edit Book Attributes Format','Show Book Attributes Format','Delete Book Attributes Format'])
+                <li class="nav-item"> <a class="nav-link" href="{{ route('admin.form-builder.index') }}">Book Format</a></li>
+            @endcanany
+
+            @canany(['Add Book Attributes Series','Edit Book Attributes Series','Show Book Attributes Series','Delete Book Attributes Series'])
             <li class="nav-item"> <a class="nav-link" href="{{ route('admin.series.index') }}">Book Series</a></li>
-            @endcan
-            @can('Show Status')
+            @endcanany
+            @canany(['Add Book Attributes Status','Edit Book Attributes Status','Show Book Attributes Status','Delete Book Attributes Status'])
             <li class="nav-item"> <a class="nav-link" href="{{ route('admin.status.index') }}">Book Status</a></li>
-            @endcan
+            @endcanany
           </ul>
         </div>
       </li>
       @endcanany
 
-    @canany(['Submit Form','Download Report','Edit Book List','Show Book List','Delete Book List'])
+    @canany(['Add Book Management','Edit Book Management','Show Book Management','Delete Book Management','Add Another Translation Book Management','Download Report Book Management'])
       <li class="nav-item">
         <a class="nav-link" data-toggle="collapse" href="#ui-form1" aria-expanded="false" aria-controls="ui-form1">
           <span class="menu-title">Book Management</span>
@@ -57,12 +59,12 @@
         </a>
         <div class="collapse" id="ui-form1">
           <ul class="nav flex-column sub-menu">
-              @can('Submit Form')
-            <li class="nav-item"> <a class="nav-link" href="{{ route('admin.form.create') }}">Book Creation</a></li>
+            @can('Add Book Management')
+                <li class="nav-item"> <a class="nav-link" href="{{ route('admin.form.create') }}">Book Creation</a></li>
             @endcan
-            @can('Show Book List')
-            <li class="nav-item"> <a class="nav-link" href="{{ route('admin.form.index') }}">Book Listing</a></li>
-            @endcan
+            @canany(['Edit Book Management','Show Book Management','Delete Book Management','Add Another Translation Book Management','Download Report Book Management'])
+                <li class="nav-item"> <a class="nav-link" href="{{ route('admin.form.index') }}">Book Listing</a></li>
+            @endcanany
           </ul>
         </div>
       </li>

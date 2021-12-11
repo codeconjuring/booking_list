@@ -28,14 +28,14 @@ class StatusDataTable extends DataTable
             ->addColumn('action', function ($status) {
                 $authUser = Auth::user();
                 $buttons  = '';
-                if ($authUser->can('Edit Status')) {
+                if ($authUser->can('Edit Book Attributes Status')) {
                     $buttons .= '<a class="dropdown-item text-success" href="' . route('admin.status.edit',
                         $status->id) . '" title="Edit Category">
                         <i class="fas fa-edit"></i>&nbsp;Edit
                     </a>';
                 }
 
-                if ($authUser->can('Delete Status')) {
+                if ($authUser->can('Delete Book Attributes Status')) {
                     $buttons .= '<form action="' . route('admin.status.destroy', $status->id) . '"  id="deleteForm' . $status->id . '" method="post" style="display: none">
                 <input type="hidden" name="_token" value="' . csrf_token() . '">
                 <input type="hidden" name="_method" value="DELETE">
@@ -80,7 +80,7 @@ class StatusDataTable extends DataTable
             ->minifiedAjax()
             ->addAction(['width' => '100px', 'printable' => false, 'title' => 'Action'])
             ->parameters($this->getBuilderParameters());
-        if (!(Auth::user()->can('Edit Status') || Auth::user()->can('Delete Status'))) {
+        if (!(Auth::user()->can('Edit Book Attributes Status') || Auth::user()->can('Delete Book Attributes Status'))) {
             $data = $this->builder()
                 ->columns($this->getColumns())
                 ->minifiedAjax()

@@ -185,15 +185,18 @@ class FormController extends Controller
 
         $book_list_count = BookList::whereBookId($book_list->book_id)->count();
         if ($book_list_count == 1) {
-            // Book::findOrFail($book_list->book_id)->delete();
+            Book::findOrFail($book_list->book_id)->delete();
         }
 
         // change the status
         if ($book_list->add_another_book_translation == 0) {
             $get_book_list = BookList::whereBookId($book_list->book_id)->where('id', '!=', $id)->orderBy('id', 'desc')->first();
-            $get_book_list->update([
-                'add_another_book_translation' => 0,
-            ]);
+            if ($get_book_list) {
+                $get_book_list->update([
+                    'add_another_book_translation' => 0,
+                ]);
+            }
+
         }
 
         $book_list->delete();

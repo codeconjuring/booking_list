@@ -12,5 +12,5 @@ class FormBuilder extends Model
 
     // public const TABLE_STATUS = ['Done', 'Progress', 'ToDo'];
 
-    protected $fillable = ['label', 'type'];
+    protected $fillable = ['label', 'type', 'order_table'];
 }

@@ -1,7 +1,9 @@
 @extends('admin.layouts._master')
+
 @section('css')
 <link rel="stylesheet" href="//cdn.datatables.net/1.11.3/css/jquery.dataTables.min.css">
 <link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.1.0/css/buttons.dataTables.min.css">
+<link rel="stylesheet" href="https://cdn.datatables.net/colreorder/1.5.5/css/colReorder.dataTables.min.css">
 
 @endsection
 
@@ -24,7 +26,7 @@
             </h4>
 
 
-              <table class="table table-bordered" id="myTable">
+              <table class="table table-bordered table-responsive" id="myTable">
                 <thead>
                   <tr>
                     @canany(['Edit Book List','Delete Book List'])
@@ -73,7 +75,7 @@
                                             </a>
 
                                             <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                                            <a class="dropdown-item text-dark" href="{{ route('admin.form.add-another-title',['id'=>$book->id]) }}"><i class="far fa-copy text-warning"></i> &nbsp; Add Another Translation</a>
+                                            <a class="dropdown-item text-dark" href="{{ route('admin.form.add-another-title',['id'=>$book->book_id]) }}"><i class="far fa-copy text-warning"></i> &nbsp; Add Another Translation</a>
                                             @can('Edit Book List')
                                             <a class="dropdown-item text-dark" href="{{ route('admin.form.edit',$book->id) }}"><i class="fas fa-edit text-info"></i> &nbsp; Edit</a>
                                             @endcan
@@ -113,7 +115,22 @@
                                         $result=$count_form_builder-$book_content_count;
                                     @endphp
                                     @foreach ($form_builder as $form_bui)
-                                                @foreach ($book->content as $bc=>$bookContent)
+                                        @if (array_key_exists($form_bui->id,$book->content))
+                                            @if ($book->content[$form_bui->id]['type']=="1")
+                                            @php
+                                                $color=App\Models\Status::whereId($book->content[$form_bui->id]['text'])->first();
+                                            @endphp
+
+                                            <td style="background:{{ $color?$color->color:"" }}">{{ $status_array[$book->content[$form_bui->id]['text']]??'-' }}</td>
+                                            @else
+                                            <td>{{ $book->content[$form_bui->id]['text']  }} </td>
+                                            @endif
+
+
+                                        @else
+                                            <td>-</td>
+                                        @endif
+                                                {{-- @foreach ($book->content as $bc=>$bookContent)
 
                                                     @if($form_bui->id==$bc)
                                                         @if($bookContent['type']=='1')
@@ -129,12 +146,12 @@
                                                     @else
                                                     @endif
 
-                                                @endforeach
+                                                @endforeach --}}
 
                                     @endforeach
-                                        @for ($i = 0; $i < $result; $i++)
+                                        {{-- @for ($i = 0; $i < $result; $i++)
                                         <td>N/A</td>
-                                        @endfor
+                                        @endfor --}}
                                             </tr>
                                     @endforeach
                                 @endforeach
@@ -166,6 +183,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
 <script src="https://cdn.datatables.net/buttons/2.1.0/js/buttons.html5.min.js"></script>
 <script src="https://cdn.datatables.net/buttons/2.1.0/js/buttons.print.min.js"></script>
+<script src="https://cdn.datatables.net/colreorder/1.5.5/js/dataTables.colReorder.min.js"></script>
 
 <script>
     $(document).ready( function () {
@@ -174,6 +192,7 @@
         buttons: [
             'copy', 'csv', 'excel', 'pdf', 'print'
         ],
+        // colReorder: true
     });
 } );
 </script>

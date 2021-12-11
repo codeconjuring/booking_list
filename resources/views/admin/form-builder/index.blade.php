@@ -1,10 +1,8 @@
 @extends('admin.layouts._master')
 
 @section('css')
-    <link rel="stylesheet" href="//cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css">
-    <link rel="stylesheet" type="text/css" href="//cdn.datatables.net/1.10.21/css/dataTables.bootstrap4.min.css"/>
-    <link rel="stylesheet" type="text/css" href="//cdn.datatables.net/buttons/1.6.3/css/buttons.bootstrap4.min.css"/>
-    <link rel="stylesheet" type="text/css" href="//cdn.datatables.net/responsive/2.2.5/css/responsive.bootstrap4.min.css"/>
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/dt/dt-1.10.12/datatables.min.css"/>
+<link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.1.0/css/buttons.dataTables.min.css">
 @endsection
 
 @section('content')
@@ -12,12 +10,60 @@
 
     @include('admin.layouts._page_header',['title'=>$page_title,'type'=>'List'])
 
-      <div class="row">
+    <div class="row">
         <div class="col-md-12 grid-margin stretch-card">
           <div class="card">
             <div class="card-body">
               <h4 class="card-title">{{ $page_title }}</h4>
-              {!! $dataTable->table(['class'=>'table table-striped table-bordered dt-responsive nowrap no-footer dtr-inline text-center','id'=>'table-1'], false) !!}
+
+
+              <table class="table table-bordered" id="myTable">
+                <thead>
+                  <tr>
+                    <th>Sl</th>
+                    <th> Lebel </th>
+                    <th>Type </th>
+                    @canany(["Edit Build Form","Delete Build Form"])
+                    <th>Action</th>
+                    @endcanany
+                  </tr>
+                </thead>
+                <tbody id="tablecontents">
+                    @php
+                        $i=1;
+                    @endphp
+                    @foreach ($form_builders as $form_builder)
+                        <tr class="row1" data-id="{{ $form_builder->id }}">
+                            <td>{{ $i++ }}</td>
+                            <td>{{ $form_builder->label }}</td>
+                            <td>{{ $form_builder->type==0?"Text":"Dropdown" }}</td>
+                            @canany(["Edit Build Form","Delete Build Form"])
+                                <td>
+                                    <div class="dropdown">
+                                    <button class="btn btn-info btn-sm" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        <i class="mdi mdi-dots-vertical"></i>
+                                    </button>
+                                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                        @can('Edit Build Form')
+                                        <a class="dropdown-item text-success" href="{{route('admin.form-builder.edit',$form_builder->id) }}" title="Edit Category">
+                                        <i class="fas fa-edit"></i>&nbsp;Edit
+                                        </a>
+                                        @endcan
+                                        @can('Delete Build Form')
+                                        <form action="{{ route('admin.form-builder.destroy', $form_builder->id) }}"  id="deleteForm{{ $form_builder->id }}" method="post" style="display: none">
+                                            @csrf
+                                            @method("DELETE")
+                                        </form>
+                                        <a href="javascript:void(0)" class="dropdown-item text-danger" onclick="makeDeleteRequest(event,{{ $form_builder->id}})" title="Delete Role"><i class="fas fa-trash"></i>&nbsp;Delete</a>
+                                        @endcan
+                                    </div>
+                                    </div>
+                                </td>
+                            @endcanany
+                        </tr>
+                    @endforeach
+                </tbody>
+              </table>
             </div>
           </div>
         </div>
@@ -32,27 +78,73 @@
 
 @section('js')
 
-<script src="//cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/v/dt/dt-1.10.12/datatables.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.1.0/js/dataTables.buttons.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
+<script src="https://cdn.datatables.net/buttons/2.1.0/js/buttons.html5.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/2.1.0/js/buttons.print.min.js"></script>
 
-<script type="text/javascript" src="//cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js"></script>
-    <script type="text/javascript" src="//cdn.datatables.net/1.10.21/js/dataTables.bootstrap4.min.js"></script>
-    <script type="text/javascript" src="//cdn.datatables.net/buttons/1.6.3/js/dataTables.buttons.min.js"></script>
-    <script type="text/javascript" src="//cdn.datatables.net/buttons/1.6.3/js/buttons.bootstrap4.min.js"></script>
-    <script type="text/javascript" src="//cdn.datatables.net/responsive/2.2.5/js/dataTables.responsive.min.js"></script>
-    <script type="text/javascript" src="//cdn.datatables.net/responsive/2.2.5/js/responsive.bootstrap4.min.js"></script>
-    <script src="{{ asset('vendor/datatables/buttons.server-side.js') }}"></script>
-    
-    {!! $dataTable->scripts() !!}
+
     <script type="text/javascript">
-$(document).ready(function() {
-    // Initialise the table
-    $("#table-1 tbody:first").attr('id','tbody1');
-    $('#tbody1').sortable({
-        start: function( event, ui ){
-          console.log('initial_pos: '+ui.item.index());
-          initial_pos = ui.item.index();
-        }});
-});
-</script>
+      $(function () {
+        $("#myTable").DataTable({
+        dom: 'Bfrtip',
+        buttons: [
+            {
+                text: 'Create',
+                action: function ( e, dt, node, config ) {
+                    window.location ="{{ route('admin.form-builder.create') }}"
+                }
+            },
+            'copy',
+            'csv',
+            'excel',
+            'pdf',
+            'print',
+
+        ],
+        // colReorder: true
+    });
+
+        $( "#tablecontents" ).sortable({
+          items: "tr",
+          cursor: 'move',
+          opacity: 0.6,
+          update: function() {
+              sendOrderToServer();
+          }
+        });
+
+        function sendOrderToServer() {
+          var order = [];
+          var token = $('meta[name="csrf-token"]').attr('content');
+          $('tr.row1').each(function(index,element) {
+            order.push({
+              id: $(this).attr('data-id'),
+              position: index+1
+            });
+          });
+          $.ajax({
+            type: "POST",
+            dataType: "json",
+            url: "{{ route('admin.table.sort') }}",
+                data: {
+              order: order,
+              _token: token
+            },
+            success: function(response) {
+                if (response.status == "success") {
+                  console.log(response);
+                } else {
+                  console.log(response);
+                }
+            }
+          });
+        }
+      });
+    </script>
 @endsection
 

@@ -34,7 +34,7 @@ class FormController extends Controller
     {
 
         $page_title      = "Book lists";
-        $form_builder    = FormBuilder::all();
+        $form_builder    = FormBuilder::orderBy('order_table', 'asc')->get();
         $series_group_by = BookList::select('category_id')->groupBy('category_id')->orderBy('id', 'DESC')->get();
         $series_count    = BookList::select('category_id', DB::raw('count(*) as total'))->groupBy('category_id')->orderBy('id', 'DESC')->get();
 
@@ -57,9 +57,15 @@ class FormController extends Controller
             array_push($series_ids, $series->category_id);
         }
 
-        $series = Category::whereIn('id', $series_ids)->get();
+        $series       = Category::whereIn('id', $series_ids)->get();
+        $status_array = [];
+        $status       = Status::all();
+        foreach ($status as $st) {
+            $status_array[$st->id]     = $st->status;
+            $status_array[$st->status] = $st->color;
+        }
 
-        return view('admin.form.index', compact('page_title', 'form_builder', 'series', 'getSeriyes'));
+        return view('admin.form.index', compact('page_title', 'form_builder', 'series', 'getSeriyes', 'status', 'status_array'));
 
     }
 
@@ -174,8 +180,13 @@ class FormController extends Controller
     public function destroy($id)
     {
 
-        $book = BookList::findOrFail($id);
-        $book->delete();
+        $book_list = BookList::findOrFail($id);
+
+        $book_list_count = BookList::whereBookId($book_list->book_id)->count();
+        if ($book_list_count == 1) {
+            Book::findOrFail($book_list->book_id)->delete();
+        }
+        $book_list->delete();
         sendFlash("Book Delete Successfully");
         return back();
     }
@@ -224,9 +235,12 @@ class FormController extends Controller
 
     public function addAnotherTitle($book_list_id)
     {
-        $book_list               = BookList::findOrFail($book_list_id);
+
+        $book_list = BookList::findOrFail($book_list_id);
+
         $get_language_book_lists = BookList::whereBookId($book_list_id)->get(['language'])->toArray();
-        $remove_language         = [];
+
+        $remove_language = [];
         foreach ($get_language_book_lists as $key => $get_language_book_list) {
             array_push($remove_language, $get_language_book_list['language']);
         }
@@ -237,9 +251,13 @@ class FormController extends Controller
         $new_languages = [];
 
         $languages = Language::all();
+
         foreach ($languages as $key => $language) {
+
             if (!in_array(strtoupper($language->short_hand), $remove_language)) {
+
                 array_push($new_languages, strtoupper($language->short_hand));
+
             }
 
         }
@@ -308,6 +326,27 @@ class FormController extends Controller
         // return view('admin.form.report', ['page_title' => $page_title, 'form_builder' => $form_builder, 'series' => $series, 'getSeriyes' => $getSeriyes]);
         $pdf = PDF::loadView('admin.form.report', ['page_title' => $page_title, 'form_builder' => $form_builder, 'series' => $series, 'getSeriyes' => $getSeriyes])->setPaper('a4', 'landscape');
         // $pdf->save(storage_path() . '_report.pdf');
-        return $pdf->download('book_' . date("Y/m/d") . 'report.pdf');
+        return $pdf->download('book_' . date("Y/m/d") . '_report.pdf');
+    }
+
+    public function getAnotherLanguage(Request $request)
+    {
+        $remove_languages = BookList::whereCategoryId($request->series_id)->get(['language'])->toArray();
+        $remove_lan       = [];
+        foreach ($remove_languages as $key => $r_language) {
+            array_push($remove_lan, $r_language['language']);
+        }
+        $languages       = Language::all();
+        $update_language = [];
+        foreach ($languages as $key => $u_language) {
+
+            if (!in_array(strtoupper($u_language->short_hand), $remove_lan)) {
+
+                array_push($update_language, strtoupper($u_language->short_hand));
+
+            }
+        }
+
+        return response()->json(['languages' => $update_language]);
     }
 }

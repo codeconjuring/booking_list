@@ -122,7 +122,16 @@
             </div>
           </div>
 
-
+          <div class="col-lg-12 grid-margin stretch-card">
+            <div class="card">
+              <div class="card-body">
+                <h4 class="card-title">Language wise status metrices of cols</h4>
+                <div id="tableLanguage">
+                    Loading. . .
+                </div>
+              </div>
+            </div>
+          </div>
 
     {{-- <div class="col-lg-12 grid-margin stretch-card">
         <div class="card">
@@ -132,6 +141,18 @@
           </div>
         </div>
       </div> --}}
+
+      @foreach ($coughnut_charts as $key=>$col)
+        <div class="col-lg-6 grid-margin stretch-card">
+            <div class="card">
+            <div class="card-body">
+                <h4 class="card-title">{{ $key }}</h4>
+                <canvas id="doughnutChart{{ str_replace(" ","_",$key) }}" style="height:250px"></canvas>
+            </div>
+            </div>
+        </div>
+      @endforeach
+
 
 
 </div>
@@ -301,6 +322,84 @@ function selectStatusLanguage(val){
         });
     }
 }
+
+// After page loading
+setTimeout(() => {
+    $.ajax({
+        url:"{{ route('admin.dashboard') }}",
+        method:"GET",
+        data:{'table_load':'table_load'},
+        success:function(response){
+            console.log(response);
+            $('#tableLanguage').html(" ");
+            $('#tableLanguage').html(response.table);
+        },
+        error:function(error){
+            toastr["error"](error);
+        }
+    });
+}, 5000);
+
+// Doughnut Chart
+@php
+    $color_name=['chartreuse','darkolivegreen','darkmagenta','deeppink','greenyellow','purple','maroon','green','yellow','navy','maroon','teal'];
+@endphp
+
+@foreach ($coughnut_charts as $key=>$col)
+
+@php
+    $column_number=count($col);
+@endphp
+
+var doughnutPieData{{ str_replace(" ","_",$key) }} = {
+    datasets: [{
+      data: [
+          @foreach($col as $c=>$co)
+            {{ $co }},
+          @endforeach
+        ],
+      backgroundColor: [
+          @for ($x = 0; $x <= $column_number; $x++)
+            "{{ $color_name[$x] }}",
+          @endfor
+
+      ],
+      borderColor: [
+        @for ($x = 0; $x <= 10; $x++)
+        "{{ $color_name[$x] }}",
+        @endfor
+      ],
+    }],
+
+    // These labels appear in the legend and in the tooltips when hovering different arcs
+    labels: [
+        @foreach($col as $c=>$co)
+            "{{ $c }}",
+        @endforeach
+    ]
+  };
+
+  var doughnutPieOptions{{ str_replace(" ","_",$key) }} = {
+    responsive: true,
+    animation: {
+      animateScale: true,
+      animateRotate: true
+    }
+  };
+
+if ($("#doughnutChart{{ str_replace(" ","_",$key) }}").length) {
+    var doughnutChartCanvas{{ str_replace(" ","_",$key) }} = $("#doughnutChart{{ str_replace(" ","_",$key) }}").get(0).getContext("2d");
+    var doughnutChart = new Chart(doughnutChartCanvas{{ str_replace(" ","_",$key) }}, {
+      type: 'doughnut',
+      data: doughnutPieData{{ str_replace(" ","_",$key) }},
+      options: doughnutPieOptions{{ str_replace(" ","_",$key) }}
+    });
+  }
+
+
+@endforeach
+
+
 
 </script>
 

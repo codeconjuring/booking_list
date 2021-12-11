@@ -75,7 +75,7 @@
                                             </a>
 
                                             <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                                            <a class="dropdown-item text-dark" href="{{ route('admin.form.add-another-title',['id'=>$book->id]) }}"><i class="far fa-copy text-warning"></i> &nbsp; Add Another Translation</a>
+                                            <a class="dropdown-item text-dark" href="{{ route('admin.form.add-another-title',['id'=>$book->book_id]) }}"><i class="far fa-copy text-warning"></i> &nbsp; Add Another Translation</a>
                                             @can('Edit Book List')
                                             <a class="dropdown-item text-dark" href="{{ route('admin.form.edit',$book->id) }}"><i class="fas fa-edit text-info"></i> &nbsp; Edit</a>
                                             @endcan

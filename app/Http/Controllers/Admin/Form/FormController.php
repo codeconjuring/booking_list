@@ -235,9 +235,12 @@ class FormController extends Controller
 
     public function addAnotherTitle($book_list_id)
     {
-        $book_list               = BookList::findOrFail($book_list_id);
+
+        $book_list = BookList::findOrFail($book_list_id);
+
         $get_language_book_lists = BookList::whereBookId($book_list_id)->get(['language'])->toArray();
-        $remove_language         = [];
+
+        $remove_language = [];
         foreach ($get_language_book_lists as $key => $get_language_book_list) {
             array_push($remove_language, $get_language_book_list['language']);
         }
@@ -248,9 +251,13 @@ class FormController extends Controller
         $new_languages = [];
 
         $languages = Language::all();
+
         foreach ($languages as $key => $language) {
+
             if (!in_array(strtoupper($language->short_hand), $remove_language)) {
+
                 array_push($new_languages, strtoupper($language->short_hand));
+
             }
 
         }

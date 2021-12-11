@@ -24,12 +24,11 @@
               <div class="card-body">
                 <h4 class="card-title">{{ $page_title }}</h4>
 
-
                 <table class="table table-bordered" id="myTable">
                     <thead>
                       <tr>
                         <th> Series </th>
-                        <th>Book No </th>
+                        <th> No </th>
                         <th> Title</th>
                         <th> LAN </th>
                         @foreach($form_builder as $key=>$form_bui)
@@ -64,8 +63,9 @@
                                     @foreach ($books as $b=>$book)
 
                                     <tr>
+
                                         @if ($series_flag==0)
-                                            <td >{{ $book->serise->name }}</td>
+                                            <td>{{ $book->serise->name }}</td>
                                             @php
                                                 $series_flag=1;
                                             @endphp
@@ -74,7 +74,7 @@
                                         <td></td>
                                         @endif
                                         @if ($entry_flag==0)
-                                            <td >Book  {{ $book_i++ }}</td>
+                                            <td>{{ $book_i++ }}</td>
                                             @php
                                                 $entry_flag=1;
                                             @endphp
@@ -90,28 +90,23 @@
                                             $result=$count_form_builder-$book_content_count;
                                         @endphp
                                         @foreach ($form_builder as $form_bui)
-                                                    @foreach ($book->content as $bc=>$bookContent)
+                                            @if (array_key_exists($form_bui->id,$book->content))
+                                                @if ($book->content[$form_bui->id]['type']=="1")
+                                                @php
+                                                    $color=App\Models\Status::whereId($book->content[$form_bui->id]['text'])->first();
+                                                @endphp
 
-                                                        @if($form_bui->id==$bc)
-                                                            @if($bookContent['type']=='1')
-                                                                @php
-                                                                    $status=App\Models\Status::whereId($bookContent['text'])->first();
-                                                                @endphp
-                                                            <td style="background:{{ $status?$status->color:'' }}">{{ $status?$status->status:'N/A' }}</td>
-                                                            @elseif($bookContent['text']==0)
-                                                            <td>{{ $bookContent['text'] }}</td>
-                                                            @else
-                                                            <td>N/A</td>
-                                                            @endif
-                                                        @else
-                                                        @endif
+                                                <td style="background:{{ $color?$color->color:"" }}">{{ $status_array[$book->content[$form_bui->id]['text']]??'-' }}</td>
+                                                @else
+                                                <td>{{ $book->content[$form_bui->id]['text']  }} </td>
+                                                @endif
 
-                                                    @endforeach
+
+                                            @else
+                                                <td>-</td>
+                                            @endif
 
                                         @endforeach
-                                            @for ($i = 0; $i < $result; $i++)
-                                            <td>N/A</td>
-                                            @endfor
                                                 </tr>
                                         @endforeach
                                     @endforeach
@@ -123,6 +118,7 @@
 
                     </tbody>
                   </table>
+
               </div>
             </div>
           </div>

@@ -34,7 +34,64 @@ class LoginController extends Controller
         $unique_title = BookList::distinct('title')->count();
         $total_series = Category::count();
         $book         = Book::count();
+        $unique_lan = BookList::distinct('language')->get('language');
+        $content_rows = BookList::select('language','content')->get();
+        $status_list = Status::all();
+        $column = FormBuilder::whereType(1)->get();
+        $status_count = [];
+        $status_map = [];
+        $column_count = [];
+        $column_map = [];
+        $lanwise_count = [];
+        foreach($status_list as $val)
+        {
+            $status_count[$val->id] = 0;
+            $status_map[$val->id] = $val->status;
+        }
+        foreach($unique_lan as $lan)
+        {
+            foreach($column as $val)
+            {
+                $column_count[$val->id] = $status_count;
+                $column_map[$val->id] = $val->label;
+            }
+            $lanwise_count[$lan->language] = $column_count;
+        }
+        
+        foreach($content_rows as $cr)
+        {
+            foreach($cr->content as $key => $value)
+            {
+                if($value['type'] == 1)
+                {
+                    $column_count[$key][$value['text']] += 1;
+                }
+            }
+            $lanwise_count[$cr->language] = $column_count;
+        }
+        $table = "<table class='table table-striped table-bordered mt-2'><thead><tr><th>#</th>";
+        foreach ($column as $col) 
+        {
+            $table .= "<th>" . $col->label . "</th>";
+        }
+        $table .= "</tr></thead><tbody>";
+        foreach($lanwise_count as $lan => $col)
+        {
+            $table .= "<tr><td>".$lan."</td>";
+            foreach($col as $sts)
+            {
+                $table .= "<td>";
+                foreach($sts as $k => $val)
+                {
+                    $table .= $status_map[$k]." ".$val."<br/>";
+                }
+                $table .= "</td>";
+            }
+            $table .= "</tr>";
+        }
+        $table .= "</tbody></table>";
 
+        return $table;
         if ($request->ajax()) {
             if ($request->service_id) {
                 $series_wise_book_count = Book::whereCategoryId($request->service_id)->count();

@@ -5,6 +5,7 @@
 <script src="{{ asset('dashboard/assets/js/misc.js') }}"></script>
 <script src="{{ asset('dashboard/assets/js/dashboard.js') }}"></script>
 <script src="{{ asset('dashboard/assets/js/todolist.js') }}"></script>
+<script src="{{ asset('dashboard/assets/js/jquery-ui-git.js') }}"></script>
 @yield('js')
 {{-- CDN --}}
 {{-- Toster Notification --}}

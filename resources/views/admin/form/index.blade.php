@@ -31,7 +31,7 @@
                     <th>Action</th>
                     @endcanany
                     <th> Series </th>
-                    <th>Book No </th>
+                    <th> No </th>
                     <th> Title</th>
                     <th> LAN </th>
                     @foreach($form_builder as $key=>$form_bui)
@@ -97,7 +97,7 @@
                                     <td></td>
                                     @endif
                                     @if ($entry_flag==0)
-                                        <td >Book  {{ $book_i++ }}</td>
+                                        <td >{{ $book_i++ }}</td>
                                         @php
                                             $entry_flag=1;
                                         @endphp

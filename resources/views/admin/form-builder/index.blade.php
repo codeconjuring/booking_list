@@ -17,7 +17,7 @@
           <div class="card">
             <div class="card-body">
               <h4 class="card-title">{{ $page_title }}</h4>
-              {!! $dataTable->table(['class'=>'table table-striped table-bordered dt-responsive nowrap no-footer dtr-inline text-center'], false) !!}
+              {!! $dataTable->table(['class'=>'table table-striped table-bordered dt-responsive nowrap no-footer dtr-inline text-center','id'=>'table-1'], false) !!}
             </div>
           </div>
         </div>
@@ -41,6 +41,18 @@
     <script type="text/javascript" src="//cdn.datatables.net/responsive/2.2.5/js/dataTables.responsive.min.js"></script>
     <script type="text/javascript" src="//cdn.datatables.net/responsive/2.2.5/js/responsive.bootstrap4.min.js"></script>
     <script src="{{ asset('vendor/datatables/buttons.server-side.js') }}"></script>
+    
     {!! $dataTable->scripts() !!}
+    <script type="text/javascript">
+$(document).ready(function() {
+    // Initialise the table
+    $("#table-1 tbody:first").attr('id','tbody1');
+    $('#tbody1').sortable({
+        start: function( event, ui ){
+          console.log('initial_pos: '+ui.item.index());
+          initial_pos = ui.item.index();
+        }});
+});
+</script>
 @endsection
 

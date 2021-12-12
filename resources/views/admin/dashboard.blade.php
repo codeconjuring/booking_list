@@ -54,10 +54,10 @@
         </div>
 
 
-        <div class="col-lg-12 grid-margin stretch-card">
+        <div class="col-lg-6 grid-margin stretch-card">
             <div class="card">
               <div class="card-body">
-                <h3 class="card-title text-center" style="font-size: 2.125rem">Number of books in a given language</h3>
+                <h3 class="card-title text-center" style="font-size: 2.125rem">Books per language</h3>
                 <hr>
                 <div class="row">
                     <div class="col-md-6 text-center">
@@ -76,10 +76,10 @@
             </div>
           </div>
 
-          <div class="col-lg-12 grid-margin stretch-card">
+          <div class="col-lg-6 grid-margin stretch-card">
             <div class="card">
               <div class="card-body">
-                <h3 class="card-title text-center" style="font-size: 2.125rem">Number of books in a given series</h3>
+                <h3 class="card-title text-center" style="font-size: 2.125rem">Books per series</h3>
                 <hr>
                 <div class="row">
                     <div class="col-md-6 text-center">
@@ -122,16 +122,7 @@
             </div>
           </div>
 
-          <div class="col-lg-12 grid-margin stretch-card">
-            <div class="card">
-              <div class="card-body">
-                <h4 class="card-title">Language wise status metrices of cols</h4>
-                <div id="tableLanguage">
-                    Loading. . .
-                </div>
-              </div>
-            </div>
-          </div>
+
 
     {{-- <div class="col-lg-12 grid-margin stretch-card">
         <div class="card">
@@ -143,7 +134,7 @@
       </div> --}}
 
       @foreach ($coughnut_charts as $key=>$col)
-        <div class="col-lg-6 grid-margin stretch-card">
+        <div class="col-lg-4 grid-margin stretch-card">
             <div class="card">
             <div class="card-body">
                 <h4 class="card-title">{{ $key }}</h4>
@@ -153,7 +144,16 @@
         </div>
       @endforeach
 
-
+        <div class="col-lg-12 grid-margin stretch-card">
+            <div class="card">
+              <div class="card-body">
+                <h4 class="card-title">Language wise status metrices of cols</h4>
+                <div id="tableLanguage">
+                    Loading. . .
+                </div>
+              </div>
+            </div>
+          </div>
 
 </div>
 </div>
@@ -342,32 +342,48 @@ setTimeout(() => {
 
 // Doughnut Chart
 @php
-    $color_name=['chartreuse','darkolivegreen','darkmagenta','deeppink','greenyellow','purple','maroon','green','yellow','navy','maroon','teal'];
+    $status=App\Models\Status::pluck('color','status')->toArray();
 @endphp
 
 @foreach ($coughnut_charts as $key=>$col)
 
 @php
     $column_number=count($col);
+    $total=0;
+    $percentages=0;
 @endphp
 
 var doughnutPieData{{ str_replace(" ","_",$key) }} = {
     datasets: [{
       data: [
           @foreach($col as $c=>$co)
-            {{ $co }},
+
+            @php
+                $total+=$co;
+
+            @endphp
           @endforeach
+
+          @foreach($col as $c=>$co)
+
+            @php
+                $percentages=($co/$total)*100;
+            @endphp
+
+            {{ number_format($percentages,2) }},
+          @endforeach
+
         ],
       backgroundColor: [
-          @for ($x = 0; $x <= $column_number; $x++)
-            "{{ $color_name[$x] }}",
-          @endfor
+        @foreach($col as $c=>$co)
+            "{{ $status[$c] }}",
+        @endforeach
 
       ],
       borderColor: [
-        @for ($x = 0; $x <= 10; $x++)
-        "{{ $color_name[$x] }}",
-        @endfor
+        @foreach($col as $c=>$co)
+            "{{ $status[$c] }}",
+        @endforeach
       ],
     }],
 

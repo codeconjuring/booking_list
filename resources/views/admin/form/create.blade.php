@@ -16,6 +16,8 @@
                 @csrf
 
 
+
+
                 <div class="form-group">
                     <label for="exampleInputUsername1">Series Name</label><span class="text-danger">*</span>
 
@@ -115,6 +117,10 @@
 </div>
 
 
+
+
+
+
 @endsection
 
 @section('js')
@@ -154,14 +160,19 @@
 
                         console.log(response.titles);
 
-                        $('#selectOption').append(`<label for="exampleInputUsername1" class="">Title</label><span class="text-danger">*</span><select name="title" class="form-control" id="selectTitle"></select>`);
+                        // $('#selectOption').append(`<label for="exampleInputUsername1" class="">Title</label><span class="text-danger">*</span>
+                        // <select name="title" class="form-control" id="selectTitle"></select>`);
+
+                        $('#selectOption').append(`<label for="exampleInputUsername1" class="">Title</label><span class="text-danger">*</span>
+                        <input type="text" list="selectTitle" name="title" class="form-control"/><datalist id="selectTitle"></datalist>`);
+
 
                         $('#selectTitle').find('option').remove();
 
                         for (let index = 0; index < response.titles.length; index++) {
                             $('#selectTitle').append(`<option value="${response.titles[index].title}">${response.titles[index].title}</option>`);
                         }
-                        $('#selectTitle').select2();
+                        // $('#selectTitle').select2();
                     }else{
                         console.log('input text');
                         $('#selectOption').append(`<label for="exampleInputUsername1" class="">Title</label><span class="text-danger">*</span><input type="text" name="title" class="form-control" placeholder="Title">`);

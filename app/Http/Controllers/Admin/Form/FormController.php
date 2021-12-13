@@ -347,7 +347,7 @@ class FormController extends Controller
         // return view('admin.form.report', ['page_title' => $page_title, 'form_builder' => $form_builder, 'series' => $series, 'getSeriyes' => $getSeriyes]);
         $pdf = PDF::loadView('admin.form.report', ['page_title' => $page_title, 'form_builder' => $form_builder, 'series' => $series, 'getSeriyes' => $getSeriyes, 'status' => $status, 'status_array' => $status_array])->setPaper('a4', 'landscape');
         // $pdf->save(storage_path() . '_report.pdf');
-        return $pdf->download('book_' . date("Y/m/d") . '_report.pdf');
+        return $pdf->download(date("Ymd") . '_' . time() . '.pdf');
     }
 
     public function getAnotherLanguage(Request $request)

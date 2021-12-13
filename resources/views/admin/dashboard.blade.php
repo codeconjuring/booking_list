@@ -22,7 +22,7 @@
 
 <div class="row">
 
-    <div class="col-md-4 stretch-card grid-margin">
+    <div class="col-md-3 stretch-card grid-margin">
     <div class="card bg-gradient-info card-img-holder text-white">
         <div class="card-body">
         <img src="{{ asset('dashboard/assets/images/dashboard/circle.svg') }}" class="card-img-absolute" alt="circle-image" />
@@ -32,7 +32,7 @@
         </div>
     </div>
     </div>
-    <div class="col-md-4 stretch-card grid-margin">
+    <div class="col-md-3 stretch-card grid-margin">
     <div class="card bg-gradient-success card-img-holder text-white">
         <div class="card-body">
         <img src="{{ asset('dashboard/assets/images/dashboard/circle.svg') }}" class="card-img-absolute" alt="circle-image" />
@@ -42,50 +42,60 @@
         </div>
     </div>
     </div>
-    <div class="col-md-4 stretch-card grid-margin">
+    <div class="col-md-3 stretch-card grid-margin">
         <div class="card bg-gradient-danger card-img-holder text-white">
             <div class="card-body">
             <img src="{{ asset('dashboard/assets/images/dashboard/circle.svg') }}" class="card-img-absolute" alt="circle-image" />
-            <h3 class="font-weight-normal mb-3">Number Of Unique Titles <i class="mdi mdi-chart-line mdi-24px float-right"></i>
+            <h3 class="font-weight-normal mb-3">Total Titles <i class="mdi mdi-chart-line mdi-24px float-right"></i>
             </h3>
             <h1 class="mb-5">{{ $unique_title }}</h1>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3 stretch-card grid-margin">
+        <div class="card bg-gradient-success card-img-holder text-white">
+            <div class="card-body">
+            <img src="{{ asset('dashboard/assets/images/dashboard/circle.svg') }}" class="card-img-absolute" alt="circle-image" />
+            <h3 class="font-weight-normal mb-3">Total Language <i class="mdi mdi-diamond mdi-24px float-right"></i>
+            </h3>
+            <h1 class="mb-5">{{ $language_count }}</h1>
             </div>
         </div>
         </div>
 
 
-        <div class="col-lg-6 grid-margin stretch-card">
+
+        <div class="col-lg-4 grid-margin stretch-card">
             <div class="card">
               <div class="card-body">
                 <h3 class="card-title text-center" style="font-size: 2.125rem">Books per language</h3>
                 <hr>
                 <div class="row">
-                    <div class="col-md-6 text-center">
-                        <h1 style="font-size: 100px;" id="NumberOfBook">0</h1>
-                    </div>
-                    <div class="col-md-6">
+                    <div class="col-md-12">
                         <select name="" id="" onchange="selectLanguage($(this).val())" class="form-control mt-5 select2">
                             <option value="">Select Language</option>
                             @foreach ($languages as $key=>$language)
-                            <option value="{{ $language->id }}">{{ strtoupper($language->short_hand) }}</option>
+                            <option value="{{ $language->language }}">{{ strtoupper($language->language) }}</option>
                             @endforeach
                         </select>
                     </div>
+
+                    <div class="col-md-12 text-center">
+                        <h1 style="font-size: 100px;" id="NumberOfBook">0</h1>
+                    </div>
+
                 </div>
               </div>
             </div>
           </div>
 
-          <div class="col-lg-6 grid-margin stretch-card">
+          <div class="col-lg-4 grid-margin stretch-card">
             <div class="card">
               <div class="card-body">
                 <h3 class="card-title text-center" style="font-size: 2.125rem">Books per series</h3>
                 <hr>
                 <div class="row">
-                    <div class="col-md-6 text-center">
-                        <h1 style="font-size: 100px;" id="SeriesCount">0</h1>
-                    </div>
-                    <div class="col-md-6">
+                    <div class="col-md-12">
                         <select name="" id="" onchange="selectSeries($(this).val())" class="form-control mt-5 select2">
                             <option value="">Select Series</option>
                             @foreach ($series as $key=>$serie)
@@ -93,17 +103,21 @@
                             @endforeach
                         </select>
                     </div>
+                    <div class="col-md-12 text-center">
+                        <h1 style="font-size: 100px;" id="SeriesCount">0</h1>
+                    </div>
+
                 </div>
               </div>
             </div>
           </div>
 
-          <div class="col-lg-12 grid-margin stretch-card">
+          <div class="col-lg-4 grid-margin stretch-card">
             <div class="card">
               <div class="card-body">
-                <h3 class="card-title text-center" style="font-size: 2.125rem">Language Wise Status Count</h3>
+                <h6 class="card-title text-center" style="font-size: 1.85rem;">Books Per Format</h6>
                 <hr>
-                <div class="col-md-4 offset-4">
+                <div class="col-md-12">
                     <select name="" id="" onchange="selectStatusLanguage($(this).val())" class="form-control mt-5 select2">
                         <option value="">Select Language</option>
                         @foreach ($languages as $key=>$lan)
@@ -121,6 +135,7 @@
               </div>
             </div>
           </div>
+
 
 
 
@@ -143,6 +158,16 @@
             </div>
         </div>
       @endforeach
+
+      <div class="col-lg-4 grid-margin stretch-card">
+        <div class="card">
+          <div class="card-body">
+            <h3 class="card-title text-center" style="font-size: 2.125rem">Languae Speedo Meter</h3>
+            <hr>
+            <input type="hidden" id="languageCount" value="{{ $language_count }}" />
+          </div>
+        </div>
+      </div>
 
         <div class="col-lg-12 grid-margin stretch-card">
             <div class="card">
@@ -256,7 +281,7 @@ function selectLanguage(val)
         $.ajax({
             url:'{{ route("admin.dashboard") }}',
             method:"GET",
-            data:{'language_id':val},
+            data:{'language':val},
             success:function(response){
                 if(response.language_count){
                     $('#NumberOfBook').html(response.language_count);
@@ -341,6 +366,59 @@ setTimeout(() => {
 }, 5000);
 
 // Doughnut Chart
+
+
+
+
+// Show tooltips always even the stats are zero
+
+Chart.pluginService.register({
+  beforeRender: function(chart) {
+    if (chart.config.options.showAllTooltips) {
+      // create an array of tooltips
+      // we can't use the chart tooltip because there is only one tooltip per chart
+      chart.pluginTooltips = [];
+      chart.config.data.datasets.forEach(function(dataset, i) {
+        chart.getDatasetMeta(i).data.forEach(function(sector, j) {
+          chart.pluginTooltips.push(new Chart.Tooltip({
+            _chart: chart.chart,
+            _chartInstance: chart,
+            _data: chart.data,
+            _options: chart.options.tooltips,
+            _active: [sector]
+          }, chart));
+        });
+      });
+
+      // turn off normal tooltips
+      chart.options.tooltips.enabled = false;
+    }
+  },
+  afterDraw: function(chart, easing) {
+    if (chart.config.options.showAllTooltips) {
+      // we don't want the permanent tooltips to animate, so don't do anything till the animation runs atleast once
+      if (!chart.allTooltipsOnce) {
+        if (easing !== 1)
+          return;
+        chart.allTooltipsOnce = true;
+      }
+
+      // turn on tooltips
+      chart.options.tooltips.enabled = true;
+      Chart.helpers.each(chart.pluginTooltips, function(tooltip) {
+        tooltip.initialize();
+        tooltip.update();
+        // we don't actually need this since we are not animating tooltips
+        tooltip.pivot();
+        tooltip.transition(easing).draw();
+      });
+      chart.options.tooltips.enabled = false;
+    }
+  }
+});
+
+
+
 @php
     $status=App\Models\Status::pluck('color','status')->toArray();
 @endphp
@@ -392,7 +470,8 @@ var doughnutPieData{{ str_replace(" ","_",$key) }} = {
         @foreach($col as $c=>$co)
             "{{ $c }}",
         @endforeach
-    ]
+    ],
+
   };
 
   var doughnutPieOptions{{ str_replace(" ","_",$key) }} = {
@@ -408,12 +487,23 @@ if ($("#doughnutChart{{ str_replace(" ","_",$key) }}").length) {
     var doughnutChart = new Chart(doughnutChartCanvas{{ str_replace(" ","_",$key) }}, {
       type: 'doughnut',
       data: doughnutPieData{{ str_replace(" ","_",$key) }},
-      options: doughnutPieOptions{{ str_replace(" ","_",$key) }}
+      options: {
+          showAllTooltips: true,
+        }
+
     });
   }
 
-
 @endforeach
+
+
+
+
+
+//   Lanugae Seppdo Meter
+$("#languageCount").speedometer({divFact:10,eventListenerType:'click'});
+$("#languageCount").click();
+
 
 
 

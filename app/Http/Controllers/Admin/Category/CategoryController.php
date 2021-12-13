@@ -25,7 +25,7 @@ class CategoryController extends Controller
      */
     public function index(CategoryDataTable $dataTable)
     {
-        $page_title = "Series List";
+        $page_title = "Book series list";
         return $dataTable->render('admin.series.index', ['page_title' => $page_title]);
         // return view('admin.category.index', compact('page_title'));
     }
@@ -37,7 +37,7 @@ class CategoryController extends Controller
      */
     public function create()
     {
-        $page_title = "Create Series";
+        $page_title = "Create Book Series";
         return view('admin.series.create', compact('page_title'));
     }
 

@@ -31,9 +31,11 @@ class LoginController extends Controller
         $page_title              = "Dashboard";
         $number_of_unique_titles = BookList::whereMonth('created_at', Carbon::now()->month)->select('title', DB::raw('count(*) as total'))->groupBy('title')->get();
         // unique title
-        $unique_title = BookList::distinct('title')->count();
-        $total_series = Category::count();
-        $book         = Book::count();
+        $unique_title      = BookList::distinct('title')->count();
+        $total_series      = Category::count();
+        $book              = Book::count();
+        $language_count    = BookList::distinct('language')->count();
+        $db_language_count = Language::count();
 
         if ($request->ajax()) {
             if ($request->service_id) {
@@ -41,10 +43,9 @@ class LoginController extends Controller
                 return response()->json(['series_count' => $series_wise_book_count]);
             }
 
-            if ($request->language_id) {
-                $get_language = Language::findOrFail($request->language_id);
+            if ($request->language) {
 
-                $book_language = BookList::whereLanguage(strtoupper($get_language->short_hand))->distinct('title')->count();
+                $book_language = BookList::whereLanguage($request->language)->distinct('title')->count();
                 return response()->json(['language_count' => $book_language]);
             }
 
@@ -159,10 +160,10 @@ class LoginController extends Controller
         $coughnut_charts         = $this->getDoughnut();
         $series_wise_title_count = BookList::whereCategoryId(1)->distinct('title')->count();
 
-        $languages = Language::all();
+        $languages = BookList::distinct('language')->get(['language']);
         $series    = Category::all();
 
-        return view('admin.dashboard', compact('page_title', 'number_of_unique_titles', 'unique_title', 'total_series', 'book', 'languages', 'series', 'coughnut_charts'));
+        return view('admin.dashboard', compact('page_title', 'number_of_unique_titles', 'unique_title', 'total_series', 'book', 'languages', 'series', 'coughnut_charts', 'language_count', 'db_language_count'));
 
     }
 

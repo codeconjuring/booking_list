@@ -36,6 +36,7 @@ class LoginController extends Controller
         $book              = Book::count();
         $language_count    = BookList::distinct('language')->count();
         $db_language_count = Language::count();
+        $get_languages     = Language::all();
 
         if ($request->ajax()) {
             if ($request->service_id) {
@@ -49,7 +50,7 @@ class LoginController extends Controller
                 return response()->json(['language_count' => $book_language]);
             }
 
-            if ($request->language) {
+            if ($request->language_table) {
                 $form_builders             = FormBuilder::get();
                 $col_array                 = [];
                 $col_status_array          = [];
@@ -66,7 +67,7 @@ class LoginController extends Controller
                     $col_array[$form_builder->id] = $col_status_array;
                     $col_map[$form_builder->id]   = $form_builder->label;
                 }
-                $book_list_contents = BookList::whereLanguage($request->language)->get('content');
+                $book_list_contents = BookList::whereLanguage($request->language_table)->get('content');
                 foreach ($book_list_contents as $key => $book_list_content) {
 
                     foreach ($book_list_content->content as $s => $single_content) {
@@ -163,7 +164,7 @@ class LoginController extends Controller
         $languages = BookList::distinct('language')->get(['language']);
         $series    = Category::all();
 
-        return view('admin.dashboard', compact('page_title', 'number_of_unique_titles', 'unique_title', 'total_series', 'book', 'languages', 'series', 'coughnut_charts', 'language_count', 'db_language_count'));
+        return view('admin.dashboard', compact('page_title', 'number_of_unique_titles', 'unique_title', 'total_series', 'book', 'languages', 'series', 'coughnut_charts', 'language_count', 'db_language_count', 'get_languages'));
 
     }
 

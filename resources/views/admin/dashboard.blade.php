@@ -120,7 +120,7 @@
                 <div class="col-md-12">
                     <select name="" id="" onchange="selectStatusLanguage($(this).val())" class="form-control mt-5 select2">
                         <option value="">Select Language</option>
-                        @foreach ($languages as $key=>$lan)
+                        @foreach ($get_languages as $key=>$lan)
                         <option value="{{ strtoupper($lan->short_hand) }}">{{ strtoupper($lan->short_hand) }}</option>
                         @endforeach
                     </select>
@@ -162,7 +162,7 @@
       <div class="col-lg-4 grid-margin stretch-card">
         <div class="card">
           <div class="card-body">
-            <h3 class="card-title text-center" style="font-size: 2.125rem">Languae Speedo Meter</h3>
+            <h3 class="card-title text-center" style="font-size: 2.125rem">Language Speedo Meter</h3>
             <hr>
             <input type="hidden" id="languageCount" value="{{ $language_count }}" />
           </div>
@@ -334,9 +334,9 @@ function selectStatusLanguage(val){
         $.ajax({
             url:"{{ route('admin.dashboard')  }}",
             method:"get",
-            data:{'language':val},
+            data:{'language_table':val},
             success:function(response){
-                console.log(response);
+                console.log(response.table);
                 if(response.table){
                     $('#languageTable').html(response.table);
                 }

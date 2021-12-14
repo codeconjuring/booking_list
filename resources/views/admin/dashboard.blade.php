@@ -22,7 +22,7 @@
 
 <div class="row">
 
-    <div class="col-md-3 stretch-card grid-margin">
+    <div class="col-md-4 stretch-card grid-margin">
     <div class="card bg-gradient-info card-img-holder text-white">
         <div class="card-body">
         <img src="{{ asset('dashboard/assets/images/dashboard/circle.svg') }}" class="card-img-absolute" alt="circle-image" />
@@ -32,27 +32,27 @@
         </div>
     </div>
     </div>
-    <div class="col-md-3 stretch-card grid-margin">
+    <div class="col-md-4 stretch-card grid-margin">
     <div class="card bg-gradient-success card-img-holder text-white">
         <div class="card-body">
         <img src="{{ asset('dashboard/assets/images/dashboard/circle.svg') }}" class="card-img-absolute" alt="circle-image" />
-        <h3 class="font-weight-normal mb-3">Total Books <i class="mdi mdi-diamond mdi-24px float-right"></i>
+        <h3 class="font-weight-normal mb-3">Total Titles <i class="mdi mdi-diamond mdi-24px float-right"></i>
         </h3>
-        <h1 class="mb-5">{{ $book }}</h1>
+        <h1 class="mb-5">{{ $total_titles }}</h1>
         </div>
     </div>
     </div>
-    <div class="col-md-3 stretch-card grid-margin">
+    <div class="col-md-4 stretch-card grid-margin">
         <div class="card bg-gradient-danger card-img-holder text-white">
             <div class="card-body">
             <img src="{{ asset('dashboard/assets/images/dashboard/circle.svg') }}" class="card-img-absolute" alt="circle-image" />
-            <h3 class="font-weight-normal mb-3">Total Titles <i class="mdi mdi-chart-line mdi-24px float-right"></i>
+            <h3 class="font-weight-normal mb-3">Total Books <i class="mdi mdi-chart-line mdi-24px float-right"></i>
             </h3>
-            <h1 class="mb-5">{{ $unique_title }}</h1>
+            <h1 class="mb-5">{{ $total_books }}</h1>
             </div>
         </div>
     </div>
-    <div class="col-md-3 stretch-card grid-margin">
+    <div class="col-md-4 stretch-card grid-margin">
         <div class="card bg-gradient-success card-img-holder text-white">
             <div class="card-body">
             <img src="{{ asset('dashboard/assets/images/dashboard/circle.svg') }}" class="card-img-absolute" alt="circle-image" />
@@ -62,6 +62,28 @@
             </div>
         </div>
         </div>
+
+
+    @php
+        $bootstrap_colors=['dark','success','info','warning','primary','danger'];
+    @endphp
+
+        @foreach ($form_builder_name_with_counts as $key=>$form_builder_count)
+        <div class="col-md-4 stretch-card grid-margin">
+            <div class="card bg-gradient-{{ $bootstrap_colors[$loop->iteration] }} card-img-holder text-white">
+                <div class="card-body">
+                <img src="{{ asset('dashboard/assets/images/dashboard/circle.svg') }}" class="card-img-absolute" alt="circle-image" />
+                <h3 class="font-weight-normal mb-3">Total {{ $key }}<i class="mdi mdi-diamond mdi-24px float-right"></i>
+                </h3>
+                <h1 class="mb-5">{{ $form_builder_count }}</h1>
+                </div>
+            </div>
+        </div>
+
+    @endforeach
+
+
+
 
 
 
@@ -92,7 +114,7 @@
           <div class="col-lg-4 grid-margin stretch-card">
             <div class="card">
               <div class="card-body">
-                <h3 class="card-title text-center" style="font-size: 2.125rem">Books per series</h3>
+                <h3 class="card-title text-center" style="font-size: 2.125rem">Titles per series</h3>
                 <hr>
                 <div class="row">
                     <div class="col-md-12">
@@ -112,6 +134,9 @@
             </div>
           </div>
 
+
+
+
           <div class="col-lg-4 grid-margin stretch-card">
             <div class="card">
               <div class="card-body">
@@ -120,8 +145,8 @@
                 <div class="col-md-12">
                     <select name="" id="" onchange="selectStatusLanguage($(this).val())" class="form-control mt-5 select2">
                         <option value="">Select Language</option>
-                        @foreach ($get_languages as $key=>$lan)
-                        <option value="{{ strtoupper($lan->short_hand) }}">{{ strtoupper($lan->short_hand) }}</option>
+                        @foreach ($languages as $key=>$language)
+                            <option value="{{ $language->language }}">{{ strtoupper($language->language) }}</option>
                         @endforeach
                     </select>
 
@@ -139,14 +164,14 @@
 
 
 
-    {{-- <div class="col-lg-12 grid-margin stretch-card">
+    <div class="col-lg-12 grid-margin stretch-card">
         <div class="card">
           <div class="card-body">
             <h4 class="card-title">This Number Of Unique Title</h4>
             <canvas id="barChart" style="height:230px"></canvas>
           </div>
         </div>
-      </div> --}}
+      </div>
 
       @foreach ($coughnut_charts as $key=>$col)
         <div class="col-lg-4 grid-margin stretch-card">
@@ -159,15 +184,15 @@
         </div>
       @endforeach
 
-      <div class="col-lg-4 grid-margin stretch-card">
-        <div class="card">
-          <div class="card-body">
-            <h3 class="card-title text-center" style="font-size: 2.125rem">Language Speedo Meter</h3>
-            <hr>
-            <input type="hidden" id="languageCount" value="{{ $language_count }}" />
-          </div>
-        </div>
-      </div>
+      <!--<div class="col-lg-4 grid-margin stretch-card">-->
+      <!--  <div class="card">-->
+      <!--    <div class="card-body">-->
+      <!--      <h3 class="card-title text-center" style="font-size: 2.125rem">Language Speedo Meter</h3>-->
+      <!--      <hr>-->
+      <!--      <input type="hidden" id="languageCount" value="{{ $language_count }}" />-->
+      <!--    </div>-->
+      <!--  </div>-->
+      <!--</div>-->
 
         <div class="col-lg-12 grid-margin stretch-card">
             <div class="card">
@@ -205,15 +230,15 @@ $(function () {
 
   var data = {
     labels: [
-        @foreach($number_of_unique_titles as $key=>$number_of_unique_title)
-        "{{ $number_of_unique_title->title }}",
+        @foreach($totale_title_language_counts as $key=>$totale_title_language_count)
+        "{{ $totale_title_language_count->language }}",
         @endforeach
     ],
     datasets: [{
       label: '# of Votes',
       data: [
-        @foreach($number_of_unique_titles as $key=>$number_of_unique_title)
-                "{{ $number_of_unique_title->total }}",
+        @foreach($totale_title_language_counts as $key=>$totale_title_language_count)
+                "{{ $totale_title_language_count->total }}",
         @endforeach
     ],
       backgroundColor: [
@@ -433,6 +458,7 @@ Chart.pluginService.register({
 
 var doughnutPieData{{ str_replace(" ","_",$key) }} = {
     datasets: [{
+      label: "",
       data: [
           @foreach($col as $c=>$co)
 
@@ -483,12 +509,24 @@ var doughnutPieData{{ str_replace(" ","_",$key) }} = {
   };
 
 if ($("#doughnutChart{{ str_replace(" ","_",$key) }}").length) {
+
     var doughnutChartCanvas{{ str_replace(" ","_",$key) }} = $("#doughnutChart{{ str_replace(" ","_",$key) }}").get(0).getContext("2d");
+
     var doughnutChart = new Chart(doughnutChartCanvas{{ str_replace(" ","_",$key) }}, {
-      type: 'doughnut',
+      type: 'line',
       data: doughnutPieData{{ str_replace(" ","_",$key) }},
       options: {
           showAllTooltips: true,
+          legend: {
+                display: false
+            },
+            tooltips: {
+                callbacks: {
+                label: function(tooltipItem) {
+                        return tooltipItem.yLabel;
+                }
+                }
+            }
         }
 
     });

@@ -36,8 +36,8 @@ class FormController extends Controller
 
         $page_title      = "Book lists";
         $form_builder    = FormBuilder::orderBy('order_table', 'asc')->get();
-        $series_group_by = BookList::select('category_id')->groupBy('category_id')->orderBy('id', 'DESC')->get();
-        $series_count    = BookList::select('category_id', DB::raw('count(*) as total'))->groupBy('category_id')->orderBy('id', 'DESC')->get();
+        $series_group_by = BookList::select('category_id')->groupBy('category_id')->get();
+        $series_count    = BookList::select('category_id', DB::raw('count(*) as total'))->groupBy('category_id')->get();
 
         $data = [];
         foreach ($series_group_by as $single_group) {
@@ -80,7 +80,7 @@ class FormController extends Controller
 
         $series       = Category::orderBy('name')->get();
         $page_title   = "Create New Book List";
-        $languages    = Language::all();
+        $languages    = BookList::distinct('language')->get('language');
         $form_builder = FormBuilder::all();
         $statues      = Status::all();
         return view('admin.form.create', compact('page_title', 'series', 'languages', 'form_builder', 'statues'));

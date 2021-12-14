@@ -167,14 +167,14 @@
     <div class="col-lg-12 grid-margin stretch-card">
         <div class="card">
           <div class="card-body">
-            <h4 class="card-title">This Number Of Unique Title</h4>
+            <h4 class="card-title">Titles per language</h4>
             <canvas id="barChart" style="height:230px"></canvas>
           </div>
         </div>
       </div>
 
       @foreach ($coughnut_charts as $key=>$col)
-        <div class="col-lg-4 grid-margin stretch-card">
+        <div class="col-12 col-lg-6 col-sm-6 col-md-6 col-xl-6 grid-margin stretch-card">
             <div class="card">
             <div class="card-body">
                 <h4 class="card-title">{{ $key }}</h4>
@@ -235,28 +235,13 @@ $(function () {
         @endforeach
     ],
     datasets: [{
-      label: '# of Votes',
+      label: '',
       data: [
         @foreach($totale_title_language_counts as $key=>$totale_title_language_count)
                 "{{ $totale_title_language_count->total }}",
         @endforeach
     ],
-      backgroundColor: [
-        'rgba(255, 99, 132, 0.2)',
-        'rgba(54, 162, 235, 0.2)',
-        'rgba(255, 206, 86, 0.2)',
-        'rgba(75, 192, 192, 0.2)',
-        'rgba(153, 102, 255, 0.2)',
-        'rgba(255, 159, 64, 0.2)'
-      ],
-      borderColor: [
-        'rgba(255,99,132,1)',
-        'rgba(54, 162, 235, 1)',
-        'rgba(255, 206, 86, 1)',
-        'rgba(75, 192, 192, 1)',
-        'rgba(153, 102, 255, 1)',
-        'rgba(255, 159, 64, 1)'
-      ],
+
       borderWidth: 1,
       fill: false
     }]

@@ -171,7 +171,7 @@
             <canvas id="barChart" style="height:230px"></canvas>
           </div>
         </div>
-      </div>
+    </div>
 
       @foreach ($coughnut_charts as $key=>$col)
         <div class="col-12 col-lg-6 col-sm-6 col-md-6 col-xl-6 grid-margin stretch-card">

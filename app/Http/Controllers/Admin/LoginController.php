@@ -168,7 +168,7 @@ class LoginController extends Controller
 
         $totale_title_language_counts = BookList::select('language', DB::raw('count(*) as total'))->groupBy('language')->get();
 
-        return view('admin.dashboard', compact('page_title', 'number_of_unique_titles', 'total_series', 'total_books', 'languages', 'series', 'total_titles', 'total_books', 'coughnut_charts', 'language_count', 'db_language_count', 'get_languages', 'form_builder_name_with_counts','totale_title_language_counts'));
+        return view('admin.dashboard', compact('page_title', 'number_of_unique_titles', 'total_series', 'total_books', 'languages', 'series', 'total_titles', 'total_books', 'coughnut_charts', 'language_count', 'db_language_count', 'get_languages', 'form_builder_name_with_counts', 'totale_title_language_counts'));
 
     }
 
@@ -180,7 +180,7 @@ class LoginController extends Controller
             $form_builder_name = [];
             $done_status_id    = Status::whereStatus('Done')->first(['id']);
 
-            foreach (FormBuilder::all() as $key => $val) {
+            foreach (FormBuilder::whereType(1)->get() as $key => $val) {
                 $form_builder_name[$val->label] = 0;
             }
 

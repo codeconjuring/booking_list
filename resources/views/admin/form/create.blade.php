@@ -85,7 +85,7 @@
 
 
                     @if($form_build->type=="1")
-                        <select name="content[{{ $form_build->id }}][text]" id="" class="form-control">
+                        <select name="content[{{ $form_build->id }}][text]" id="" required class="form-control">
                             <option value="">Select Status</option>
                             @foreach($statues as $k=>$status)
                                 <option value="{{ $status->id }}">{{ $status->status }}</option>
@@ -95,7 +95,7 @@
                         <input type="hidden" name="content[{{ $form_build->id }}][type]" value="1">
 
                     @elseif($form_build->type=="0")
-                        <input type="text" class="form-control" name="content[{{ $form_build->id }}][text]" placeholder="{{ $form_build->label }}">
+                        <input type="text" class="form-control" name="content[{{ $form_build->id }}][text]" required placeholder="{{ $form_build->label }}">
 
                         <input type="hidden" name="content[{{ $form_build->id }}][type]" value="0">
 
@@ -164,7 +164,7 @@
                         // <select name="title" class="form-control" id="selectTitle"></select>`);
 
                         $('#selectOption').append(`<label for="exampleInputUsername1" class="">Title</label><span class="text-danger">*</span>
-                        <input type="text" list="selectTitle" name="title" class="form-control"/><datalist id="selectTitle"></datalist>`);
+                        <input type="text" list="selectTitle" name="title" required class="form-control"/><datalist id="selectTitle"></datalist>`);
 
 
                         $('#selectTitle').find('option').remove();
@@ -175,7 +175,7 @@
                         // $('#selectTitle').select2();
                     }else{
                         console.log('input text');
-                        $('#selectOption').append(`<label for="exampleInputUsername1" class="">Title</label><span class="text-danger">*</span><input type="text" name="title" class="form-control" placeholder="Title">`);
+                        $('#selectOption').append(`<label for="exampleInputUsername1" class="">Title</label><span class="text-danger">*</span><input type="text" name="title" class="form-control" required placeholder="Title">`);
                     }
 
                 },

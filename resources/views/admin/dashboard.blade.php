@@ -70,7 +70,7 @@
 
         @foreach ($form_builder_name_with_counts as $key=>$form_builder_count)
         <div class="col-md-4 stretch-card grid-margin">
-            <div class="card bg-gradient-{{ $bootstrap_colors[$loop->iteration] }} card-img-holder text-white">
+            <div class="card bg-gradient-{{ $bootstrap_colors[$loop->iteration]??'primary' }} card-img-holder text-white">
                 <div class="card-body">
                 <img src="{{ asset('dashboard/assets/images/dashboard/circle.svg') }}" class="card-img-absolute" alt="circle-image" />
                 <h3 class="font-weight-normal mb-3">Total {{ $key }}<i class="mdi mdi-diamond mdi-24px float-right"></i>

@@ -163,7 +163,6 @@ return [
         Illuminate\Translation\TranslationServiceProvider::class,
         Illuminate\Validation\ValidationServiceProvider::class,
         Illuminate\View\ViewServiceProvider::class,
-        Barryvdh\DomPDF\ServiceProvider::class,
         /*
          * Package Service Providers...
          */
@@ -176,6 +175,7 @@ return [
         Yajra\DataTables\ButtonsServiceProvider::class,
         Yajra\DataTables\FractalServiceProvider::class,
         Spatie\Permission\PermissionServiceProvider::class,
+        Meneses\LaravelMpdf\LaravelMpdfServiceProvider::class,
         /*
          * Application Service Providers...
          */
@@ -242,7 +242,7 @@ return [
         'Settings'     => Robiussani152\Settings\Facades\Settings::class,
         'Image'        => Intervention\Image\Facades\Image::class,
         'Datatables'   => Yajra\Datatables\Facades\Datatables::class,
-        'PDF'          => Barryvdh\DomPDF\Facade::class,
+        'PDF'          => Meneses\LaravelMpdf\Facades\LaravelMpdf::class,
 
     ],
 

@@ -16,6 +16,8 @@
                 @csrf
 
 
+
+
                 <div class="form-group">
                     <label for="exampleInputUsername1">Series Name</label><span class="text-danger">*</span>
 
@@ -37,8 +39,8 @@
                     <label for="exampleInputUsername1">Language</label><span class="text-danger">*</span>
                     <select name="language" id="" onchange="selectSeries($(this).val(),'language')" class="form-control select2">
                         <option value="">Select Language</option>
-                            @foreach($languages as $key=>$language)
-                                <option value="{{ $language->upper_case }}">{{ $language->upper_case }}</option>
+                            @foreach($languages as $lan)
+                                <option value="{{ $lan->language }}">{{ $lan->language }}</option>
                             @endforeach
                         </select>
 
@@ -47,27 +49,37 @@
                     @enderror
                 </div>
 
-
-                {{-- <div class="form-group">
-                    <label for="exampleInputUsername1">Language</label><span class="text-danger">*</span>
-                    <select name="language" id="selectLanguage" onchange="selectSeries($(this).val(),'language')" class="form-control select2">
-
+                <div class="form-group">
+                    <label for="exampleInputUsername1">Tags</label><span class="text-danger">*</span>
+                    <select name="categorys[]" id="" required class="form-control select2" multiple>
+                            @foreach($categories as $categorie)
+                                <option value="{{ $categorie->id }}">{{ $categorie->name }}</option>
+                            @endforeach
                     </select>
 
-                    @error('language')
+                    @error('categorys')
                         <span class="text-danger">{{ $message }}</span>
                     @enderror
-                </div> --}}
+                </div>
 
+                <div class="form-group">
+                    <label for="exampleInputUsername1">Author</label><span class="text-danger">*</span>
 
+                    <select name="author" id="" required class="form-control select2">
+                        <option value="">Select Author</option>
+                        @foreach($authors as $author)
+                            <option value="{{ $author->name }}">{{ $author->name }}</option>
+                        @endforeach
+                    </select>
 
-
+                    @error('author')
+                      <span class="text-danger">{{ $message }}</span>
+                    @enderror
+                </div>
 
 
 
                 <div class="form-group">
-
-
 
                     <div id="selectOption"></div>
 
@@ -83,7 +95,7 @@
 
 
                     @if($form_build->type=="1")
-                        <select name="content[{{ $form_build->id }}][text]" id="" class="form-control">
+                        <select name="content[{{ $form_build->id }}][text]" id="" required class="form-control">
                             <option value="">Select Status</option>
                             @foreach($statues as $k=>$status)
                                 <option value="{{ $status->id }}">{{ $status->status }}</option>
@@ -93,7 +105,7 @@
                         <input type="hidden" name="content[{{ $form_build->id }}][type]" value="1">
 
                     @elseif($form_build->type=="0")
-                        <input type="text" class="form-control" name="content[{{ $form_build->id }}][text]" placeholder="{{ $form_build->label }}">
+                        <input type="text" class="form-control" name="content[{{ $form_build->id }}][text]" required placeholder="{{ $form_build->label }}">
 
                         <input type="hidden" name="content[{{ $form_build->id }}][type]" value="0">
 
@@ -101,18 +113,29 @@
                 </div>
                 @endforeach
 
+                <div class="form-group">
+                    <label for="">ZTF?</label>
+                    <p><input type="radio" checked name="available" value="0"> No&nbsp;<input type="radio" name="available" value="1"> Yes&nbsp;<input type="radio" name="available" value="2"> Not available</p>
+
+                    @error('available')
+                      <span class="text-danger">{{ $message }}</span>
+                    @enderror
+                </div>
+
                 <button type="submit" class="btn btn-gradient-primary mr-2">Create New</button>
                 <a href="{{ url()->previous() }}" class="btn btn-light">Back</a>
               </form>
             </div>
           </div>
         </div>
-
-
       </div>
 
 
 </div>
+
+
+
+
 
 
 @endsection
@@ -154,17 +177,22 @@
 
                         console.log(response.titles);
 
-                        $('#selectOption').append(`<label for="exampleInputUsername1" class="">Title</label><span class="text-danger">*</span><select name="title" class="form-control" id="selectTitle"></select>`);
+                        // $('#selectOption').append(`<label for="exampleInputUsername1" class="">Title</label><span class="text-danger">*</span>
+                        // <select name="title" class="form-control" id="selectTitle"></select>`);
+
+                        $('#selectOption').append(`<label for="exampleInputUsername1" class="">Title</label><span class="text-danger">*</span>
+                        <input type="text" list="selectTitle" name="title" required class="form-control"/><datalist id="selectTitle"></datalist>`);
+
 
                         $('#selectTitle').find('option').remove();
 
                         for (let index = 0; index < response.titles.length; index++) {
                             $('#selectTitle').append(`<option value="${response.titles[index].title}">${response.titles[index].title}</option>`);
                         }
-                        $('#selectTitle').select2();
+                        // $('#selectTitle').select2();
                     }else{
                         console.log('input text');
-                        $('#selectOption').append(`<label for="exampleInputUsername1" class="">Title</label><span class="text-danger">*</span><input type="text" name="title" class="form-control" placeholder="Title">`);
+                        $('#selectOption').append(`<label for="exampleInputUsername1" class="">Title</label><span class="text-danger">*</span><input type="text" name="title" class="form-control" required placeholder="Title">`);
                     }
 
                 },

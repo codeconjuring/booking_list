@@ -5,6 +5,7 @@
 <link rel="stylesheet" href="{{ asset('dashboard/assets/vendors/css/vendor.bundle.base.css') }}">
 <link rel="stylesheet" href="{{ asset('dashboard/assets/css/style.css') }}">
 <link rel="stylesheet" href="{{ asset('dashboard/assets/css/custome.css') }}">
+<link rel="stylesheet" href="{{ asset('dashboard/assets/css/speedometer.css') }}">
 <meta name="csrf-token" content="{{ csrf_token() }}">
 @if(Settings::get('favicon'))
     <link rel="shortcut icon" href="{{ asset(Storage::url(Settings::get('favicon'))) }}" />

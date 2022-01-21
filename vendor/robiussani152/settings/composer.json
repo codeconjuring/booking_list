@@ -1,0 +1,29 @@
+{
+    "name": "robiussani152/settings",
+    "type": "library",
+    "description": "This package is for managing most basic settings in your laravel application like site title, site logo etc. You can add your custom settings using this package.",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Robius Sani",
+            "email": "rsani152@gmail.com"
+        }
+    ],
+    "minimum-stability": "dev",
+    "require": {},
+    "autoload": {
+        "psr-4": {
+            "Robiussani152\\Settings\\": "src/"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Robiussani152\\Settings\\SettingServiceProvider"
+            ],
+            "aliases": {
+                "Settings": "Robiussani152\\Settings\\Facades\\Settings"
+            }
+        }
+    }
+}

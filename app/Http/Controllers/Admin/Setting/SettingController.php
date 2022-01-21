@@ -59,6 +59,13 @@ class SettingController extends Controller
             if ($request->default_profile) {
                 Settings::set('default_profile', $request->default_profile);
             }
+            if ($request->report_font_size) {
+                Settings::set('report_font_size', $request->report_font_size);
+            }
+
+            if ($request->email_notification) {
+                Settings::set('email_notification', $request->email_notification);
+            }
             sendFlash('Settings Update Successfully');
             return back();
 

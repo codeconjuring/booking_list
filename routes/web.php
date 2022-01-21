@@ -23,7 +23,8 @@ Route::get('/clear', function () {
 });
 
 Route::get('/', function () {
-    return view('welcome');
+    return redirect()->route('login');
+    // return view('welcome');
 });
 
 Route::get('/login', 'HomeController@login')->name('login');

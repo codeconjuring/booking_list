@@ -3,16 +3,23 @@
 namespace App\Http\Controllers\Admin\Form;
 
 use App\Http\Controllers\Controller;
+use App\Mail\StatusChangeNotification;
+use App\Models\Author;
 use App\Models\Book;
 use App\Models\BookList;
-use App\Models\BookListTitle;
+use App\Models\BookListCategory;
+use App\Models\Cat;
 use App\Models\Category;
 use App\Models\FormBuilder;
 use App\Models\Language;
 use App\Models\Status;
+use Carbon\Carbon;
 use DB;
 use Illuminate\Http\Request;
-use PDF;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Storage;
+use Robiussani152\Settings\Facades\Settings;
+use \Mpdf\Mpdf as PDF;
 
 class FormController extends Controller
 {
@@ -26,18 +33,60 @@ class FormController extends Controller
         $this->middleware(['permission:Delete Book Management'])->only(['destroy']);
         $this->middleware(['permission:Add Another Translation Book Management'])->only(['storeAnother', 'addMore']);
     }
+
+    // public function searchText(Request $request)
+    // {
+    //     $my_array = ['mashud', "mashud name", 'mashud pramaning', 'The Christian Way'];
+    //     return response()->json($my_array);
+    // }
+
+    public function showMoreTitle(Request $request)
+    {
+        $e_id   = $request->e_id;
+        $book_i = $request->book_i;
+        if ($e_id != null && $book_i != null) {
+            $getBookLists = BookList::whereBookId($e_id)->whereAddAnotherBookTranslation('1')->get();
+            $form_builder = FormBuilder::all();
+            $status_array = [];
+            $status       = Status::all();
+            foreach ($status as $st) {
+                $status_array[$st->id]     = $st->status;
+                $status_array[$st->status] = $st->color;
+            }
+            $view = view('admin.form.more_title', ['getBookLists' => $getBookLists, 'form_builder' => $form_builder, 'status_array' => $status_array])->render();
+            return response()->json(['view' => $view]);
+        }
+    }
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
+
+        // Tempory Variable
+        // $series_name = "";
+
+        $select_status  = isset($request->status_ids) ? $request->status_ids : [];
+        $entry_id       = 0;
+        $paginate_range = 0;
+        $top_scroll     = 0;
+        if ($request->e_id && $request->book_i && $request->scroll) {
+            $entry_id       = $request->e_id;
+            $paginate_range = $request->book_i;
+            $top_scroll     = $request->scroll;
+        }
+
+        $row_show = 0;
+        if ($request->book_list_show) {
+            $row_show = $request->book_list_show;
+        }
 
         $page_title      = "Book lists";
         $form_builder    = FormBuilder::orderBy('order_table', 'asc')->get();
-        $series_group_by = BookList::select('category_id')->groupBy('category_id')->orderBy('id', 'DESC')->get();
-        $series_count    = BookList::select('category_id', DB::raw('count(*) as total'))->groupBy('category_id')->orderBy('id', 'DESC')->get();
+        $series_group_by = BookList::select('category_id')->groupBy('category_id')->get();
+        $series_count    = BookList::select('category_id', DB::raw('count(*) as total'))->groupBy('category_id')->get();
 
         $data = [];
         foreach ($series_group_by as $single_group) {
@@ -52,21 +101,74 @@ class FormController extends Controller
 
         }
 
-        $getSeriyes = BookList::select('category_id')->groupBy('category_id')->get();
+        $select_language = [];
+        if ($request->language) {
+            $select_language = $request->language;
+        }
+        $filter_data = 0;
+        if (($request->language) || ($request->series_ids) || ($request->status_ids)) {
+            $filter_data = 1;
+        }
+        $select_series = [];
+        if ($request->series_ids) {
+            $getSeriyes    = BookList::whereIn('category_id', $request->series_ids)->select('category_id')->groupBy('category_id')->get();
+            $select_series = $request->series_ids;
+        } else {
+            $getSeriyes = BookList::select('category_id')->groupBy('category_id')->get();
+        }
+
+        // if ($series_name) {
+        //     $query = BookList::query();
+
+        //     $try_find_series = Category::where('name', 'LIKE', "%$series_name%")->pluck('id')->toArray();
+
+        //     $try_to_find_author = BookList::where('author', 'LIKE', "%$series_name%")->pluck('id')->toArray();
+
+        //     if (count($try_find_series) > 0) {
+
+        //         $query->whereIn('category_id', $try_find_series);
+        //     }
+
+        //     if (count($try_to_find_author) > 0) {
+
+        //         $query->whereIn('id', $try_to_find_author);
+        //     }
+        //     $filter_data = 1;
+        //     $getSeriyes  = $query->select('category_id')->groupBy('category_id')->get();
+
+        // }
+
         $series_ids = [];
         foreach ($getSeriyes as $key => $series) {
             array_push($series_ids, $series->category_id);
         }
 
-        $series       = Category::whereIn('id', $series_ids)->get();
-        $status_array = [];
-        $status       = Status::all();
-        foreach ($status as $st) {
-            $status_array[$st->id]     = $st->status;
-            $status_array[$st->status] = $st->color;
+        $series         = Category::whereIn('id', $series_ids)->get();
+        $languages      = BookList::select('language')->distinct('language')->get();
+        $status_array   = [];
+        $get_all_series = Category::all();
+        $status         = Status::all();
+        if (count($select_status) > 0) {
+            foreach ($status as $st) {
+
+                if (in_array((string) $st->id, $select_status)) {
+                    $status_array[$st->id]     = $st->status;
+                    $status_array[$st->status] = $st->color;
+                }
+
+            }
+        } else {
+            foreach ($status as $st) {
+
+                $status_array[$st->id]     = $st->status;
+                $status_array[$st->status] = $st->color;
+
+            }
         }
 
-        return view('admin.form.index', compact('page_title', 'form_builder', 'series', 'getSeriyes', 'status', 'status_array'));
+        $tags = Cat::orderBy('name')->get();
+
+        return view('admin.form.index', compact('page_title', 'form_builder', 'series', 'getSeriyes', 'status', 'status_array', 'row_show', 'languages', 'entry_id', 'paginate_range', 'top_scroll', 'tags', 'select_language', 'filter_data', 'select_series', 'select_status', 'get_all_series'));
 
     }
 
@@ -78,12 +180,14 @@ class FormController extends Controller
     public function create()
     {
 
-        $series       = Category::orderBy('name')->get();
         $page_title   = "Create New Book List";
-        $languages    = Language::all();
+        $categories   = Cat::orderBy('name')->get();
+        $series       = Category::orderBy('name')->get();
+        $languages    = BookList::distinct('language')->get('language');
+        $authors      = Author::orderBy('name')->get();
         $form_builder = FormBuilder::all();
         $statues      = Status::all();
-        return view('admin.form.create', compact('page_title', 'series', 'languages', 'form_builder', 'statues'));
+        return view('admin.form.create', compact('page_title', 'series', 'languages', 'form_builder', 'statues', 'categories', 'authors'));
     }
 
     /**
@@ -94,11 +198,14 @@ class FormController extends Controller
      */
     public function store(Request $request)
     {
-        // return $request->all();
+
         $request->validate([
             'series_id' => 'required',
             'language'  => 'required',
+            'available' => 'required',
+            'author'    => 'required',
         ]);
+
         $book = Book::create([
             'category_id' => $request->series_id,
         ]);
@@ -109,7 +216,16 @@ class FormController extends Controller
             'title'       => $request->title,
             'language'    => $request->language,
             'content'     => $request->content,
+            'author'      => $request->author,
+            'available'   => $request->available,
         ]);
+
+        foreach ($request->categorys as $key => $category) {
+            BookListCategory::create([
+                'book_list_id' => $bookList->id,
+                'cat_id'       => $category,
+            ]);
+        }
 
         sendFlash("Book list Create Successfully");
         return back();
@@ -134,15 +250,21 @@ class FormController extends Controller
      */
     public function edit($id)
     {
-        $book_list = BookList::findOrFail($id);
 
-        $series       = Category::orderBy('name')->get();
-        $page_title   = "Edit Book";
-        $languages    = Language::all();
-        $form_builder = FormBuilder::all();
-        $statues      = Status::all();
+        $book_list          = BookList::findOrFail($id);
+        $authors            = Author::orderBy('name')->get();
+        $categories         = Cat::orderBy('name')->get();
+        $series             = Category::orderBy('name')->get();
+        $page_title         = "Edit Book";
+        $languages          = Language::all();
+        $form_builder       = FormBuilder::all();
+        $statues            = Status::all();
+        $selected_categorys = [];
 
-        return view('admin.form.edit', compact('book_list', 'series', 'page_title', 'languages', 'form_builder', 'statues'));
+        foreach ($book_list->categories as $key => $cat) {
+            array_push($selected_categorys, $cat->cat_id);
+        }
+        return view('admin.form.edit', compact('book_list', 'series', 'page_title', 'languages', 'form_builder', 'statues', 'categories', 'selected_categorys', 'authors'));
     }
 
     /**
@@ -154,22 +276,79 @@ class FormController extends Controller
      */
     public function update(Request $request, $id)
     {
+
         $request->validate([
             'series_id' => 'required',
             'language'  => 'required',
-        ]);
-        $find_book_list = BookList::findOrFail($id);
-
-        $bookList = BookList::whereId($id)->update([
-            'category_id' => $request->series_id,
-            'book_id'     => $find_book_list->book_id,
-            'title'       => $request->title,
-            'language'    => $request->language,
-            'content'     => $request->content,
+            'available' => 'required',
+            'author'    => 'required',
         ]);
 
-        sendFlash("Book list Update Successfully");
+        DB::beginTransaction();
+
+        try {
+            $find_book_list = BookList::findOrFail($id);
+            $db_content     = [];
+            $request_cotent = [];
+            $email_flag     = 0;
+            $db_old_info    = '';
+            foreach ($find_book_list->content as $key => $content) {
+                $db_content[(string) $key] = $content['text'];
+            }
+            foreach ($request->content as $key => $req_content) {
+                $request_cotent[(string) $key] = $req_content['text'];
+            }
+
+            foreach ($db_content as $key => $db_cont) {
+                if (array_key_exists($key, $request_cotent)) {
+                    if ($request_cotent[$key] != $db_cont) {
+                        $email_flag  = 1;
+                        $db_old_info = $find_book_list;
+                    }
+                }
+            }
+            $change_value = [];
+            foreach ($db_content as $key => $d_contetn) {
+                if ($request_cotent[$key] != $d_contetn) {
+                    $change_value[$key] = $d_contetn;
+                }
+            }
+
+            $bookList = BookList::whereId($id)->update([
+                'category_id' => $request->series_id,
+                'book_id'     => $find_book_list->book_id,
+                'title'       => $request->title,
+                'language'    => $request->language,
+                'content'     => $request->content,
+                'author'      => $request->author,
+                'available'   => $request->available,
+            ]);
+
+            BookListCategory::whereBookListId($id)->delete();
+
+            foreach ($request->categorys as $key => $category) {
+                BookListCategory::create([
+                    'book_list_id' => $id,
+                    'cat_id'       => $category,
+                ]);
+            }
+
+
+            DB::commit();
+            if ($email_flag == 1) {
+                Mail::to(Settings::get('email_notification'))->send(new StatusChangeNotification($id, $change_value));
+            }
+
+            sendFlash("Book list Update Successfully");
+
+
+        } catch (\Exception $e) {
+            DB::rollback();
+            sendFlash($e->getMessage(), 'error');
+        }
+
         return redirect()->route('admin.form.index');
+
     }
 
     /**
@@ -204,48 +383,6 @@ class FormController extends Controller
         return back();
     }
 
-    public function addMore(Request $request)
-    {
-
-        $request->validate([
-            'series_id' => 'required',
-        ]);
-
-        $page_title    = "Create Another Book List";
-        $series        = Category::orderBy('name')->get();
-        $languages     = Language::all();
-        $form_builder  = FormBuilder::all();
-        $statues       = Status::all();
-        $select_series = Category::findOrFail($request->series_id);
-        $book          = BookList::whereCategoryId($request->series_id)->whereParent(1)->first();
-        return view('admin.form.create_another', compact('page_title', 'series', 'languages', 'form_builder', 'statues', 'select_series', 'book'));
-    }
-
-    public function storeAnother(Request $request, $book)
-    {
-
-        $request->validate([
-            'series_id' => 'required',
-            'language'  => 'required',
-        ]);
-
-        $bookList = BookList::create([
-            'category_id' => $request->series_id,
-            'title'       => $request->title,
-            'language'    => $request->language,
-            'content'     => $request->content,
-        ]);
-
-        BookListTitle::create([
-            'book_list_id' => $bookList->id,
-            'parent'       => 0,
-            'parent_id'    => $book,
-        ]);
-
-        sendFlash("Book list Create Successfully");
-        return back();
-    }
-
     public function addAnotherTitle($id)
     {
 
@@ -276,7 +413,16 @@ class FormController extends Controller
         }
         $form_builder = FormBuilder::all();
         $statues      = Status::all();
-        return view('admin.form.create_another', compact('series', 'page_title', 'new_languages', 'form_builder', 'statues', 'book'));
+        $authors      = BookList::where('author', '!=', null)->distinct('author')->get('author');
+        $categories   = Cat::orderBy('name')->get();
+
+        $selected_categorys = [];
+
+        foreach ($book_list->categories as $key => $cat) {
+            array_push($selected_categorys, $cat->cat_id);
+        }
+
+        return view('admin.form.create_another', compact('series', 'page_title', 'new_languages', 'form_builder', 'statues', 'book', 'authors', 'categories', 'book_list', 'selected_categorys'));
     }
 
     public function storeAnotherTitle(Request $request)
@@ -295,8 +441,18 @@ class FormController extends Controller
             'title'                        => $request->title,
             'language'                     => $request->language,
             'content'                      => $request->content,
-            'add_another_book_translation' => 01,
+            'author'                       => $request->author,
+            'add_another_book_translation' => 1,
+            // 'available'                    => $request->available,
         ]);
+
+        // foreach ($request->categorys as $key => $category) {
+        //     BookListCategory::create([
+        //         'book_list_id' => $book_list->id,
+        //         'cat_id'       => $category,
+        //     ]);
+        // }
+
         sendFlash("Another Book titile Add Successfully");
         return redirect()->route('admin.form.index');
 
@@ -309,13 +465,28 @@ class FormController extends Controller
         return response()->json(['titles' => $titles]);
     }
 
-    public function downloadPdf()
+    public function downloadPdf(Request $request)
     {
 
-        $page_title      = "Book lists";
+        $page_title = "Book lists";
+        $today_date = Carbon::parse(date('Y-m-d'))->format('d F Y');
+
+        $select_series    = isset($request->series) ? $request->series : [];
+        $select_tags      = isset($request->tag_ids) ? $request->tag_ids : [];
+        $select_status    = isset($request->status_ids) ? $request->status_ids : [];
+        $select_languages = isset($request->languages) ? $request->languages : [];
+
         $form_builder    = FormBuilder::orderBy('order_table', 'asc')->get();
         $series_group_by = BookList::select('category_id')->groupBy('category_id')->orderBy('id', 'DESC')->get();
         $series_count    = BookList::select('category_id', DB::raw('count(*) as total'))->groupBy('category_id')->orderBy('id', 'DESC')->get();
+        $show_book_list  = $request->show_book_list ?? 0;
+        $pdf_font_size   = Settings::get('report_font_size') != null ? Settings::get('report_font_size') : 16;
+
+        $get_form_builder_ids = [];
+        foreach ($form_builder as $key => $formbuilder) {
+            array_push($get_form_builder_ids, (string) $formbuilder->id);
+        }
+        $selected_row = isset($request->select_row) ? $request->select_row : $get_form_builder_ids;
 
         $data = [];
         foreach ($series_group_by as $single_group) {
@@ -330,24 +501,79 @@ class FormController extends Controller
 
         }
 
-        $getSeriyes = BookList::select('category_id')->groupBy('category_id')->get();
+        if (count($select_series) > 0) {
+            $getSeriyes = BookList::whereIn('category_id', $select_series)->select('category_id')->groupBy('category_id')->get();
+        } else {
+            $getSeriyes = BookList::select('category_id')->groupBy('category_id')->get();
+        }
+
         $series_ids = [];
         foreach ($getSeriyes as $key => $series) {
             array_push($series_ids, $series->category_id);
         }
-
-        $series       = Category::whereIn('id', $series_ids)->get();
-        $status_array = [];
-        $status       = Status::all();
-        foreach ($status as $st) {
-            $status_array[$st->id]     = $st->status;
-            $status_array[$st->status] = $st->color;
+        if (count($series_ids) > 0) {
+            $series = Category::whereIn('id', $series_ids)->get();
+        } else {
+            $series = Category::get();
         }
 
-        // return view('admin.form.report', ['page_title' => $page_title, 'form_builder' => $form_builder, 'series' => $series, 'getSeriyes' => $getSeriyes]);
-        $pdf = PDF::loadView('admin.form.report', ['page_title' => $page_title, 'form_builder' => $form_builder, 'series' => $series, 'getSeriyes' => $getSeriyes, 'status' => $status, 'status_array' => $status_array])->setPaper('a4', 'landscape');
-        // $pdf->save(storage_path() . '_report.pdf');
-        return $pdf->download('book_' . date("Y/m/d") . '_report.pdf');
+        $status_array = [];
+
+        $status = Status::all();
+        if (count($select_status) > 0) {
+            foreach ($status as $st) {
+
+                if (in_array((string) $st->id, $select_status)) {
+                    $status_array[$st->id]     = $st->status;
+                    $status_array[$st->status] = $st->color;
+                }
+
+            }
+        } else {
+            foreach ($status as $st) {
+
+                $status_array[$st->id]     = $st->status;
+                $status_array[$st->status] = $st->color;
+
+            }
+        }
+
+        $filter_select_tag_name='Tags:';
+        $count_slect_tag=count($select_tags);
+       if($count_slect_tag>0){
+           foreach($select_tags as $key=>$filter_select_tag){
+              $find_cat=Cat::findOrFail($filter_select_tag);
+
+              if($count_slect_tag==($key+1)){
+                $filter_select_tag_name.=' '.$find_cat->name;
+              }else{
+                $filter_select_tag_name.=' '.$find_cat->name.', ';
+              }
+
+            }
+        }
+        ini_set("pcre.backtrack_limit", "10000000");
+        $documentFileName = date("Ymd") . '_' . time() . ".pdf";
+        // Create the mPDF document
+        $document = new PDF(config('pdf'));
+
+        // Set some header informations for output
+        $header = [
+            'Content-Type'        => 'application/pdf',
+            'Content-Disposition' => 'inline; filename="' . $documentFileName . '"',
+        ];
+        $document->autoScriptToLang = true;
+        $document->autoLangToFont   = true;
+        $document->WriteHTML(view('admin.form.report', ['page_title' => $page_title, 'form_builder' => $form_builder, 'series' => $series, 'getSeriyes' => $getSeriyes, 'status' => $status, 'status_array' => $status_array, 'selected_row' => $selected_row, 'show_book_list' => $show_book_list, 'pdf_font_size' => $pdf_font_size, 'select_series' => $select_series, 'select_languages' => $select_languages, 'select_tags' => $select_tags, 'select_status' => $select_status, 'today_date' => $today_date,'filter_select_tag_name'=>$filter_select_tag_name]));
+        // Save PDF on your public storage
+        Storage::disk('public')->put($documentFileName, $document->Output($documentFileName, "S"));
+        // Get file back from storage with the give header informations
+        return Storage::disk('public')->download($documentFileName, 'Request', $header);
+
+        // return view('admin.form.report', ['page_title' => $page_title, 'form_builder' => $form_builder, 'series' => $series, 'getSeriyes' => $getSeriyes, 'status' => $status, 'status_array' => $status_array, 'selected_row' => $selected_row, 'show_book_list' => $show_book_list, 'pdf_font_size' => $pdf_font_size, 'select_series' => $select_series, 'select_languages' => $select_languages, 'select_tags' => $select_tags, 'select_status' => $select_status]);
+        // $pdf = PDF::loadView('admin.form.report', ['page_title' => $page_title, 'form_builder' => $form_builder, 'series' => $series, 'getSeriyes' => $getSeriyes, 'status' => $status, 'status_array' => $status_array, 'selected_row' => $selected_row, 'show_book_list' => $show_book_list, 'pdf_font_size' => $pdf_font_size, 'select_series' => $select_series, 'select_languages' => $select_languages, 'today_date' => $today_date, 'select_tags' => $select_tags, 'select_status' => $select_status]);
+
+        // return $pdf->download(date("Ymd") . '_' . time() . '.pdf');
     }
 
     public function getAnotherLanguage(Request $request)

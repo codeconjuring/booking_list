@@ -17,7 +17,7 @@
 
                 <div class="form-group">
                   <label for="exampleInputUsername1">Label</label><span class="text-danger">*</span>
-                  <input type="text" name="label" value="{{ old('label') }}" class="form-control" id="exampleInputUsername1" placeholder="Label">
+                  <input type="text" name="label" value="{{ old('label') }}" class="form-control" id="exampleInputUsername1" placeholder="Label" >
 
                   @error('label')
                     <span class="text-danger">{{ $message }}</span>

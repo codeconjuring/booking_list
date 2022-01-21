@@ -18,6 +18,8 @@ class CreateBookListsTable extends Migration
             $table->unsignedBigInteger('category_id');
             $table->unsignedBigInteger('book_id');
             $table->string('title')->nullable();
+            $table->string('author')->nullable();
+            $table->integer('available')->default(0)->comment('0 not , 1 yes, 2 Not available');
             $table->string('language')->nullable();
             $table->string('content')->nullable();
             $table->foreign('category_id')->references('id')->on('categories')->onDelete('cascade');

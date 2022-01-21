@@ -13,7 +13,7 @@
         <a class="nav-link" data-toggle="collapse" href="#ui-form-user" aria-expanded="false" aria-controls="ui-form-user">
           <span class="menu-title">User</span>
           <i class="menu-arrow"></i>
-          <i class="mdi mdi-format-line-style menu-icon"></i>
+          <i class="mdi mdi-account menu-icon"></i>
         </a>
         <div class="collapse" id="ui-form-user">
           <ul class="nav flex-column sub-menu">
@@ -30,7 +30,7 @@
         <a class="nav-link" data-toggle="collapse" href="#ui-form" aria-expanded="false" aria-controls="ui-form">
           <span class="menu-title">Book Attributes</span>
           <i class="menu-arrow"></i>
-          <i class="mdi mdi-format-line-style menu-icon"></i>
+          <i class="mdi mdi-book-open-variant menu-icon"></i>
         </a>
         <div class="collapse" id="ui-form">
           <ul class="nav flex-column sub-menu">
@@ -45,6 +45,12 @@
             @canany(['Add Book Attributes Status','Edit Book Attributes Status','Show Book Attributes Status','Delete Book Attributes Status'])
             <li class="nav-item"> <a class="nav-link" href="{{ route('admin.status.index') }}">Book Status</a></li>
             @endcanany
+
+            {{-- @canany(['Add Book Attributes Status','Edit Book Attributes Status','Show Book Attributes Status','Delete Book Attributes Status']) --}}
+            <li class="nav-item"> <a class="nav-link" href="{{ route('admin.category.index') }}">Book Tags</a></li>
+            {{-- @endcanany --}}
+            <li class="nav-item"> <a class="nav-link" href="{{ route('admin.author.index') }}">Book Authors</a></li>
+
           </ul>
         </div>
       </li>
@@ -55,7 +61,7 @@
         <a class="nav-link" data-toggle="collapse" href="#ui-form1" aria-expanded="false" aria-controls="ui-form1">
           <span class="menu-title">Book Management</span>
           <i class="menu-arrow"></i>
-          <i class="mdi mdi-format-line-style menu-icon"></i>
+          <i class="mdi mdi-book-open-page-variant menu-icon"></i>
         </a>
         <div class="collapse" id="ui-form1">
           <ul class="nav flex-column sub-menu">

@@ -27,7 +27,7 @@ class FormBuilderController extends Controller
     public function index()
     {
 
-        $page_title    = "Form Builder";
+        $page_title    = "Book Format Builder";
         $form_builders = FormBuilder::orderBy('order_table', 'asc')->get();
         return view('admin.form-builder.index', compact('page_title', 'form_builders'));
         // return $dataTable->render('admin.form-builder.index', ['page_title' => $page_title]);
@@ -41,7 +41,7 @@ class FormBuilderController extends Controller
     public function create()
     {
 
-        $page_title = "Form Builder Create";
+        $page_title = "Book Format Creator";
         return view('admin.form-builder.create', compact('page_title'));
     }
 
@@ -55,7 +55,7 @@ class FormBuilderController extends Controller
     {
 
         $request->validate([
-            'label' => 'required|unique:form_builders,label',
+            'label' => 'required|unique:form_builders,label|regex:(^([a-zA-z _-]+)(\d+)?$)',
             'type'  => 'required',
         ]);
 
@@ -87,7 +87,7 @@ class FormBuilderController extends Controller
     public function edit($id)
     {
         $formBuilder = FormBuilder::findOrFail($id);
-        $page_title  = "Form Builder Edit";
+        $page_title  = "Book Format Edit";
         return view('admin.form-builder.edit', compact('page_title', 'formBuilder'));
     }
 
@@ -102,7 +102,7 @@ class FormBuilderController extends Controller
     {
 
         $request->validate([
-            'label' => 'required|unique:form_builders,label,' . $id,
+            'label' => 'required|regex:(^([a-zA-z _-]+)(\d+)?$)|unique:form_builders,label,' . $id,
             'type'  => 'required',
         ]);
 

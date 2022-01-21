@@ -24,6 +24,22 @@
                 </div>
 
                 <div class="form-group">
+                    <label for="exampleInputUsername1">Email Notification Email</label>
+                    <input type="email" name="email_notification" value="{{ Settings::get('email_notification') }}" class="form-control" id="exampleInputUsername1" placeholder="Email Notification Email">
+                    @error('email_notification')
+                      <span class="text-danger">{{ $message }}</span>
+                    @enderror
+                  </div>
+
+                <div class="form-group">
+                    <label for="exampleInputUsername1">Report Font Size</label>
+                    <input type="number" name="report_font_size" value="{{ Settings::get('report_font_size') }}" class="form-control" id="exampleInputUsername1" placeholder="Report Font Size">
+                    @error('report_font_size')
+                      <span class="text-danger">{{ $message }}</span>
+                    @enderror
+                  </div>
+
+                <div class="form-group">
                     <label for="exampleInputUsername1">Site Logo</label> &nbsp;<span class="text-danger">(140X28) px</span>
                     <div class="input-group">
                         <span class="input-group-btn">

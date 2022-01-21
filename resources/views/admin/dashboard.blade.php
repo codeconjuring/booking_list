@@ -36,9 +36,9 @@
     <div class="card bg-gradient-success card-img-holder text-white">
         <div class="card-body">
         <img src="{{ asset('dashboard/assets/images/dashboard/circle.svg') }}" class="card-img-absolute" alt="circle-image" />
-        <h3 class="font-weight-normal mb-3">Total Books <i class="mdi mdi-diamond mdi-24px float-right"></i>
+        <h3 class="font-weight-normal mb-3">Total Titles <i class="mdi mdi-diamond mdi-24px float-right"></i>
         </h3>
-        <h1 class="mb-5">{{ $book }}</h1>
+        <h1 class="mb-5">{{ $total_titles }}</h1>
         </div>
     </div>
     </div>
@@ -46,46 +46,78 @@
         <div class="card bg-gradient-danger card-img-holder text-white">
             <div class="card-body">
             <img src="{{ asset('dashboard/assets/images/dashboard/circle.svg') }}" class="card-img-absolute" alt="circle-image" />
-            <h3 class="font-weight-normal mb-3">Number Of Unique Titles <i class="mdi mdi-chart-line mdi-24px float-right"></i>
+            <h3 class="font-weight-normal mb-3">Total Books <i class="mdi mdi-chart-line mdi-24px float-right"></i>
             </h3>
-            <h1 class="mb-5">{{ $unique_title }}</h1>
+            <h1 class="mb-5">{{ $total_books }}</h1>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4 stretch-card grid-margin">
+        <div class="card bg-gradient-success card-img-holder text-white">
+            <div class="card-body">
+            <img src="{{ asset('dashboard/assets/images/dashboard/circle.svg') }}" class="card-img-absolute" alt="circle-image" />
+            <h3 class="font-weight-normal mb-3">Total Language <i class="mdi mdi-diamond mdi-24px float-right"></i>
+            </h3>
+            <h1 class="mb-5">{{ $language_count }}</h1>
             </div>
         </div>
         </div>
 
 
-        <div class="col-lg-12 grid-margin stretch-card">
+    @php
+        $bootstrap_colors=['dark','success','info','warning','primary','danger'];
+    @endphp
+
+        @foreach ($form_builder_name_with_counts as $key=>$form_builder_count)
+        <div class="col-md-4 stretch-card grid-margin">
+            <div class="card bg-gradient-{{ $bootstrap_colors[$loop->iteration]??'primary' }} card-img-holder text-white">
+                <div class="card-body">
+                <img src="{{ asset('dashboard/assets/images/dashboard/circle.svg') }}" class="card-img-absolute" alt="circle-image" />
+                <h3 class="font-weight-normal mb-3">Total {{ $key }}<i class="mdi mdi-diamond mdi-24px float-right"></i>
+                </h3>
+                <h1 class="mb-5">{{ $form_builder_count }}</h1>
+                </div>
+            </div>
+        </div>
+
+    @endforeach
+
+
+
+
+
+
+        <div class="col-lg-4 grid-margin stretch-card">
             <div class="card">
               <div class="card-body">
-                <h3 class="card-title text-center" style="font-size: 2.125rem">Number of books in a given language</h3>
+                <h3 class="card-title text-center" style="font-size: 2.125rem">Books per language</h3>
                 <hr>
                 <div class="row">
-                    <div class="col-md-6 text-center">
-                        <h1 style="font-size: 100px;" id="NumberOfBook">0</h1>
-                    </div>
-                    <div class="col-md-6">
+                    <div class="col-md-12">
                         <select name="" id="" onchange="selectLanguage($(this).val())" class="form-control mt-5 select2">
                             <option value="">Select Language</option>
                             @foreach ($languages as $key=>$language)
-                            <option value="{{ $language->id }}">{{ strtoupper($language->short_hand) }}</option>
+                            <option value="{{ $language->language }}">{{ strtoupper($language->language) }}</option>
                             @endforeach
                         </select>
                     </div>
+
+                    <div class="col-md-12 text-center">
+                        <h1 style="font-size: 100px;" id="NumberOfBook">0</h1>
+                    </div>
+
                 </div>
               </div>
             </div>
           </div>
 
-          <div class="col-lg-12 grid-margin stretch-card">
+          <div class="col-lg-4 grid-margin stretch-card">
             <div class="card">
               <div class="card-body">
-                <h3 class="card-title text-center" style="font-size: 2.125rem">Number of books in a given series</h3>
+                <h3 class="card-title text-center" style="font-size: 2.125rem">Titles per series</h3>
                 <hr>
                 <div class="row">
-                    <div class="col-md-6 text-center">
-                        <h1 style="font-size: 100px;" id="SeriesCount">0</h1>
-                    </div>
-                    <div class="col-md-6">
+                    <div class="col-md-12">
                         <select name="" id="" onchange="selectSeries($(this).val())" class="form-control mt-5 select2">
                             <option value="">Select Series</option>
                             @foreach ($series as $key=>$serie)
@@ -93,21 +125,28 @@
                             @endforeach
                         </select>
                     </div>
+                    <div class="col-md-12 text-center">
+                        <h1 style="font-size: 100px;" id="SeriesCount">0</h1>
+                    </div>
+
                 </div>
               </div>
             </div>
           </div>
 
-          <div class="col-lg-12 grid-margin stretch-card">
+
+
+
+          <div class="col-lg-4 grid-margin stretch-card">
             <div class="card">
               <div class="card-body">
-                <h3 class="card-title text-center" style="font-size: 2.125rem">Language Wise Status Count</h3>
+                <h6 class="card-title text-center" style="font-size: 1.85rem;">Books Per Format</h6>
                 <hr>
-                <div class="col-md-4 offset-4">
+                <div class="col-md-12">
                     <select name="" id="" onchange="selectStatusLanguage($(this).val())" class="form-control mt-5 select2">
                         <option value="">Select Language</option>
-                        @foreach ($languages as $key=>$lan)
-                        <option value="{{ strtoupper($lan->short_hand) }}">{{ strtoupper($lan->short_hand) }}</option>
+                        @foreach ($languages as $key=>$language)
+                            <option value="{{ $language->language }}">{{ strtoupper($language->language) }}</option>
                         @endforeach
                     </select>
 
@@ -122,7 +161,40 @@
             </div>
           </div>
 
-          <div class="col-lg-12 grid-margin stretch-card">
+
+
+
+    <div class="col-lg-12 grid-margin stretch-card">
+        <div class="card">
+          <div class="card-body">
+            <h4 class="card-title">Titles per language</h4>
+            <canvas id="barChart" style="height:230px"></canvas>
+          </div>
+        </div>
+    </div>
+
+      @foreach ($coughnut_charts as $key=>$col)
+        <div class="col-12 col-lg-6 col-sm-6 col-md-6 col-xl-6 grid-margin stretch-card">
+            <div class="card">
+            <div class="card-body">
+                <h4 class="card-title">{{ $key }}</h4>
+                <canvas id="doughnutChart{{ str_replace("-","_",str_replace(" ","_",$key)) }}" style="height:250px"></canvas>
+            </div>
+            </div>
+        </div>
+      @endforeach
+
+      <!--<div class="col-lg-4 grid-margin stretch-card">-->
+      <!--  <div class="card">-->
+      <!--    <div class="card-body">-->
+      <!--      <h3 class="card-title text-center" style="font-size: 2.125rem">Language Speedo Meter</h3>-->
+      <!--      <hr>-->
+      <!--      <input type="hidden" id="languageCount" value="{{ $language_count }}" />-->
+      <!--    </div>-->
+      <!--  </div>-->
+      <!--</div>-->
+
+        <div class="col-lg-12 grid-margin stretch-card">
             <div class="card">
               <div class="card-body">
                 <h4 class="card-title">Language wise status metrices of cols</h4>
@@ -132,28 +204,6 @@
               </div>
             </div>
           </div>
-
-    {{-- <div class="col-lg-12 grid-margin stretch-card">
-        <div class="card">
-          <div class="card-body">
-            <h4 class="card-title">This Number Of Unique Title</h4>
-            <canvas id="barChart" style="height:230px"></canvas>
-          </div>
-        </div>
-      </div> --}}
-
-      @foreach ($coughnut_charts as $key=>$col)
-        <div class="col-lg-6 grid-margin stretch-card">
-            <div class="card">
-            <div class="card-body">
-                <h4 class="card-title">{{ $key }}</h4>
-                <canvas id="doughnutChart{{ str_replace(" ","_",$key) }}" style="height:250px"></canvas>
-            </div>
-            </div>
-        </div>
-      @endforeach
-
-
 
 </div>
 </div>
@@ -180,33 +230,18 @@ $(function () {
 
   var data = {
     labels: [
-        @foreach($number_of_unique_titles as $key=>$number_of_unique_title)
-        "{{ $number_of_unique_title->title }}",
+        @foreach($totale_title_language_counts as $key=>$totale_title_language_count)
+        "{{ $totale_title_language_count->language }}",
         @endforeach
     ],
     datasets: [{
-      label: '# of Votes',
+      label: '',
       data: [
-        @foreach($number_of_unique_titles as $key=>$number_of_unique_title)
-                "{{ $number_of_unique_title->total }}",
+        @foreach($totale_title_language_counts as $key=>$totale_title_language_count)
+                "{{ $totale_title_language_count->total }}",
         @endforeach
     ],
-      backgroundColor: [
-        'rgba(255, 99, 132, 0.2)',
-        'rgba(54, 162, 235, 0.2)',
-        'rgba(255, 206, 86, 0.2)',
-        'rgba(75, 192, 192, 0.2)',
-        'rgba(153, 102, 255, 0.2)',
-        'rgba(255, 159, 64, 0.2)'
-      ],
-      borderColor: [
-        'rgba(255,99,132,1)',
-        'rgba(54, 162, 235, 1)',
-        'rgba(255, 206, 86, 1)',
-        'rgba(75, 192, 192, 1)',
-        'rgba(153, 102, 255, 1)',
-        'rgba(255, 159, 64, 1)'
-      ],
+
       borderWidth: 1,
       fill: false
     }]
@@ -256,7 +291,7 @@ function selectLanguage(val)
         $.ajax({
             url:'{{ route("admin.dashboard") }}',
             method:"GET",
-            data:{'language_id':val},
+            data:{'language':val},
             success:function(response){
                 if(response.language_count){
                     $('#NumberOfBook').html(response.language_count);
@@ -309,9 +344,9 @@ function selectStatusLanguage(val){
         $.ajax({
             url:"{{ route('admin.dashboard')  }}",
             method:"get",
-            data:{'language':val},
+            data:{'language_table':val},
             success:function(response){
-                console.log(response);
+                console.log(response.table);
                 if(response.table){
                     $('#languageTable').html(response.table);
                 }
@@ -341,33 +376,105 @@ setTimeout(() => {
 }, 5000);
 
 // Doughnut Chart
+
+
+
+
+// Show tooltips always even the stats are zero
+
+Chart.pluginService.register({
+  beforeRender: function(chart) {
+    if (chart.config.options.showAllTooltips) {
+      // create an array of tooltips
+      // we can't use the chart tooltip because there is only one tooltip per chart
+      chart.pluginTooltips = [];
+      chart.config.data.datasets.forEach(function(dataset, i) {
+        chart.getDatasetMeta(i).data.forEach(function(sector, j) {
+          chart.pluginTooltips.push(new Chart.Tooltip({
+            _chart: chart.chart,
+            _chartInstance: chart,
+            _data: chart.data,
+            _options: chart.options.tooltips,
+            _active: [sector]
+          }, chart));
+        });
+      });
+
+      // turn off normal tooltips
+      chart.options.tooltips.enabled = false;
+    }
+  },
+  afterDraw: function(chart, easing) {
+    if (chart.config.options.showAllTooltips) {
+      // we don't want the permanent tooltips to animate, so don't do anything till the animation runs atleast once
+      if (!chart.allTooltipsOnce) {
+        if (easing !== 1)
+          return;
+        chart.allTooltipsOnce = true;
+      }
+
+      // turn on tooltips
+      chart.options.tooltips.enabled = true;
+      Chart.helpers.each(chart.pluginTooltips, function(tooltip) {
+        tooltip.initialize();
+        tooltip.update();
+        // we don't actually need this since we are not animating tooltips
+        tooltip.pivot();
+        tooltip.transition(easing).draw();
+      });
+      chart.options.tooltips.enabled = false;
+    }
+  }
+});
+
+
+
 @php
-    $color_name=['chartreuse','darkolivegreen','darkmagenta','deeppink','greenyellow','purple','maroon','green','yellow','navy','maroon','teal'];
+    $status=App\Models\Status::pluck('color','status')->toArray();
 @endphp
 
 @foreach ($coughnut_charts as $key=>$col)
 
 @php
     $column_number=count($col);
+    $total=0;
+    $percentages=0;
+    $key=str_replace("-","_",$key);
+    $key=str_replace(" ","_",$key);
 @endphp
 
-var doughnutPieData{{ str_replace(" ","_",$key) }} = {
+var doughnutPieData{{ $key }} = {
     datasets: [{
+      label: "",
       data: [
           @foreach($col as $c=>$co)
-            {{ $co }},
+
+            @php
+                $total+=$co;
+
+            @endphp
           @endforeach
+
+          @foreach($col as $c=>$co)
+
+            @php
+                $percentages=($co/$total)*100;
+            @endphp
+
+            {{ number_format($percentages,2) }},
+          @endforeach
+
         ],
       backgroundColor: [
-          @for ($x = 0; $x <= $column_number; $x++)
-            "{{ $color_name[$x] }}",
-          @endfor
+        @foreach($col as $c=>$co)
+            "{{ $status[$c] }}",
+        @endforeach
 
       ],
       borderColor: [
-        @for ($x = 0; $x <= 10; $x++)
-        "{{ $color_name[$x] }}",
-        @endfor
+        @foreach($col as $c=>$co)
+            "{{ $status[$c] }}",
+        @endforeach
       ],
     }],
 
@@ -376,10 +483,11 @@ var doughnutPieData{{ str_replace(" ","_",$key) }} = {
         @foreach($col as $c=>$co)
             "{{ $c }}",
         @endforeach
-    ]
+    ],
+
   };
 
-  var doughnutPieOptions{{ str_replace(" ","_",$key) }} = {
+  var doughnutPieOptions{{ $key }} = {
     responsive: true,
     animation: {
       animateScale: true,
@@ -387,17 +495,40 @@ var doughnutPieData{{ str_replace(" ","_",$key) }} = {
     }
   };
 
-if ($("#doughnutChart{{ str_replace(" ","_",$key) }}").length) {
-    var doughnutChartCanvas{{ str_replace(" ","_",$key) }} = $("#doughnutChart{{ str_replace(" ","_",$key) }}").get(0).getContext("2d");
-    var doughnutChart = new Chart(doughnutChartCanvas{{ str_replace(" ","_",$key) }}, {
-      type: 'doughnut',
-      data: doughnutPieData{{ str_replace(" ","_",$key) }},
-      options: doughnutPieOptions{{ str_replace(" ","_",$key) }}
+if ($("#doughnutChart{{ $key }}").length) {
+
+    var doughnutChartCanvas{{ $key }} = $("#doughnutChart{{ $key }}").get(0).getContext("2d");
+
+    var doughnutChart = new Chart(doughnutChartCanvas{{ $key }}, {
+      type: 'line',
+      data: doughnutPieData{{ $key }},
+      options: {
+          showAllTooltips: true,
+          legend: {
+                display: false
+            },
+            tooltips: {
+                callbacks: {
+                label: function(tooltipItem) {
+                        return tooltipItem.yLabel;
+                }
+                }
+            }
+        }
+
     });
   }
 
-
 @endforeach
+
+
+
+
+
+//   Lanugae Seppdo Meter
+$("#languageCount").speedometer({divFact:10,eventListenerType:'click'});
+$("#languageCount").click();
+
 
 
 

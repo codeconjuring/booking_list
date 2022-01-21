@@ -2,31 +2,22 @@
 
 namespace App\Http\Controllers\Admin\Category;
 
-use App\DataTables\Category\CategoryDataTable;
+use App\DataTables\Cat\CatDateTable;
 use App\Http\Controllers\Controller;
-use App\Models\Category;
+use App\Models\Cat;
 use Illuminate\Http\Request;
 
 class CategoryController extends Controller
 {
-
-    public function __construct()
-    {
-        $this->middleware(['permission:Add Book Attributes Series'])->only(['create']);
-        $this->middleware(['permission:Edit Book Attributes Series'])->only(['edit', 'update']);
-        $this->middleware(['permission:Show Book Attributes Series'])->only(['index']);
-        $this->middleware(['permission:Delete Book Attributes Series'])->only(['destroy']);
-    }
-
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(CategoryDataTable $dataTable)
+    public function index(CatDateTable $dataTable)
     {
-        $page_title = "Series List";
-        return $dataTable->render('admin.series.index', ['page_title' => $page_title]);
+        $page_title = "Book Tags list";
+        return $dataTable->render('admin.category.index', ['page_title' => $page_title]);
         // return view('admin.category.index', compact('page_title'));
     }
 
@@ -37,8 +28,8 @@ class CategoryController extends Controller
      */
     public function create()
     {
-        $page_title = "Create Series";
-        return view('admin.series.create', compact('page_title'));
+        $page_title = "Create Tag";
+        return view('admin.category.create', compact('page_title'));
     }
 
     /**
@@ -50,14 +41,14 @@ class CategoryController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'name' => 'required|unique:categories,name',
+            'name' => 'required|unique:cats,name',
         ]);
 
-        Category::create([
+        Cat::create([
             'name' => $request->name,
         ]);
-        sendFlash("Serices Create Successfully");
-        return redirect()->route('admin.series.index');
+        sendFlash("Tags Create Successfully");
+        return redirect()->route('admin.category.index');
     }
 
     /**
@@ -79,9 +70,9 @@ class CategoryController extends Controller
      */
     public function edit($id)
     {
-        $page_title = "Edit Series";
-        $series     = Category::whereId($id)->firstOrFail();
-        return view('admin.series.edit', compact('page_title', 'series'));
+        $page_title = "Edit Tags";
+        $category   = Cat::findOrFail($id);
+        return view('admin.category.edit', compact('page_title', 'category'));
     }
 
     /**
@@ -94,15 +85,14 @@ class CategoryController extends Controller
     public function update(Request $request, $id)
     {
         $request->validate([
-            'name' => 'required|unique:categories,name,' . $id,
+            'name' => 'required|unique:cats,name,' . $id,
         ]);
-        $series = Category::whereId($id)->firstOrFail();
 
-        $series->update([
+        Cat::whereId($id)->update([
             'name' => $request->name,
         ]);
-        sendFlash("Serices Update Successfully");
-        return redirect()->route('admin.series.index');
+        sendFlash("Tags Update Successfully");
+        return redirect()->route('admin.category.index');
     }
 
     /**
@@ -113,9 +103,13 @@ class CategoryController extends Controller
      */
     public function destroy($id)
     {
-        $serise = Category::whereId($id)->first();
-        $serise->delete();
-        sendFlash("Serice Delete Successfully");
-        return back();
+        $category = Cat::whereId($id)->firstOrFail();
+        if ($category->delete()) {
+            sendFlash("Tags Delete Successfully");
+            return redirect()->route('admin.category.index');
+        } else {
+            sendFlash("Somethig is problem", "error");
+            return redirect()->route('admin.category.index');
+        }
     }
 }

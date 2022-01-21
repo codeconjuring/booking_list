@@ -47,6 +47,33 @@
                     @enderror
                 </div>
 
+                {{-- <div class="form-group">
+                    <label for="exampleInputUsername1">Category</label><span class="text-danger">*</span>
+                    <select name="categorys[]" id="" required class="form-control select2" multiple>
+                            @foreach($categories as $categorie)
+                                <option {{ in_array($categorie->id,$selected_categorys)?'selected':'' }} value="{{ $categorie->id }}">{{ $categorie->name }}</option>
+                            @endforeach
+                        </select>
+
+                    @error('categorys')
+                        <span class="text-danger">{{ $message }}</span>
+                    @enderror
+                </div> --}}
+
+                {{-- <div class="form-group">
+                    <label for="exampleInputUsername1">Author</label><span class="text-danger">*</span>
+
+                    <input type="text" list="selectAuthor" name="author" value="{{ $book_list->author }}" required class="form-control" autocomplete="off"/>
+                    <datalist id="selectAuthor">
+                        @foreach ($authors as $author)
+                            <option value="{{ $author->author }}">{{ $author->author }}</option>
+                        @endforeach
+                    </datalist>
+                    @error('author')
+                      <span class="text-danger">{{ $message }}</span>
+                    @enderror
+                </div> --}}
+
                 @foreach($form_builder as $key=>$form_build)
                 <div class="form-group">
                     <label for="exampleInputUsername1">{{ $form_build->label }}</label><span class="text-danger">*</span>
@@ -70,6 +97,15 @@
                     @endif
                 </div>
                 @endforeach
+
+                {{-- <div class="form-group">
+                    <label for="">Handwritten by ZTF</label>
+                    <p><input type="radio" checked name="available" value="0"> No&nbsp;<input type="radio"  name="available" value="1"> Yes&nbsp;<input type="radio" name="available" value="2"> Not available</p>
+
+                    @error('available')
+                      <span class="text-danger">{{ $message }}</span>
+                    @enderror
+                </div> --}}
 
                 <button type="submit" class="btn btn-gradient-primary mr-2">Create New</button>
                 <a href="{{ url()->previous() }}" class="btn btn-light">Back</a>

@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Models\Book;
 use App\Models\BookList;
 use App\Models\Category;
 use App\Models\FormBuilder;
@@ -31,24 +30,26 @@ class LoginController extends Controller
         $page_title              = "Dashboard";
         $number_of_unique_titles = BookList::whereMonth('created_at', Carbon::now()->month)->select('title', DB::raw('count(*) as total'))->groupBy('title')->get();
         // unique title
-        $unique_title = BookList::distinct('title')->count();
-        $total_series = Category::count();
-        $book         = Book::count();
+        $total_titles      = BookList::distinct('book_id')->count();
+        $total_series      = Category::count();
+        $total_books       = BookList::count();
+        $language_count    = BookList::distinct('language')->count();
+        $db_language_count = Language::count();
+        $get_languages     = Language::all();
 
         if ($request->ajax()) {
             if ($request->service_id) {
-                $series_wise_book_count = Book::whereCategoryId($request->service_id)->count();
+                $series_wise_book_count = BookList::whereCategoryId($request->service_id)->distinct('book_id')->count();
                 return response()->json(['series_count' => $series_wise_book_count]);
             }
 
-            if ($request->language_id) {
-                $get_language = Language::findOrFail($request->language_id);
+            if ($request->language) {
 
-                $book_language = BookList::whereLanguage(strtoupper($get_language->short_hand))->distinct('title')->count();
+                $book_language = BookList::whereLanguage($request->language)->count();
                 return response()->json(['language_count' => $book_language]);
             }
 
-            if ($request->language) {
+            if ($request->language_table) {
                 $form_builders             = FormBuilder::get();
                 $col_array                 = [];
                 $col_status_array          = [];
@@ -65,7 +66,7 @@ class LoginController extends Controller
                     $col_array[$form_builder->id] = $col_status_array;
                     $col_map[$form_builder->id]   = $form_builder->label;
                 }
-                $book_list_contents = BookList::whereLanguage($request->language)->get('content');
+                $book_list_contents = BookList::whereLanguage($request->language_table)->get('content');
                 foreach ($book_list_contents as $key => $book_list_content) {
 
                     foreach ($book_list_content->content as $s => $single_content) {
@@ -129,10 +130,9 @@ class LoginController extends Controller
                 foreach ($content_rows as $cr) {
                     foreach ($cr->content as $key => $value) {
                         if ($value['type'] == 1) {
-                            $column_count[$key][$value['text']] += 1;
+                            $lanwise_count[$cr->language][$key][$value['text']] += 1;
                         }
                     }
-                    $lanwise_count[$cr->language] = $column_count;
                 }
                 $table = "<table class='table table-striped table-bordered mt-2'><thead><tr><th>#</th>";
                 foreach ($column as $col) {
@@ -144,7 +144,9 @@ class LoginController extends Controller
                     foreach ($col as $sts) {
                         $table .= "<td>";
                         foreach ($sts as $k => $val) {
-                            $table .= $status_map[$k] . " " . $val . "<br/>";
+                            if ($status_map[$k] == 'Done') {
+                                $table .= $val . "<br/>";
+                            }
                         }
                         $table .= "</td>";
                     }
@@ -159,11 +161,52 @@ class LoginController extends Controller
         $coughnut_charts         = $this->getDoughnut();
         $series_wise_title_count = BookList::whereCategoryId(1)->distinct('title')->count();
 
-        $languages = Language::all();
+        $languages = BookList::distinct('language')->get(['language']);
         $series    = Category::all();
 
-        return view('admin.dashboard', compact('page_title', 'number_of_unique_titles', 'unique_title', 'total_series', 'book', 'languages', 'series', 'coughnut_charts'));
+        $form_builder_name_with_counts = $this->StatusCount();
 
+        $totale_title_language_counts = BookList::select('language', DB::raw('count(*) as total'))->groupBy('language')->get();
+
+        return view('admin.dashboard', compact('page_title', 'number_of_unique_titles', 'total_series', 'total_books', 'languages', 'series', 'total_titles', 'total_books', 'coughnut_charts', 'language_count', 'db_language_count', 'get_languages', 'form_builder_name_with_counts', 'totale_title_language_counts'));
+
+    }
+
+    public function StatusCount()
+    {
+        try {
+            // Status count
+            $form_builder      = FormBuilder::get(['label'])->toArray();
+            $form_builder_name = [];
+            $done_status_id    = Status::whereStatus('Done')->first(['id']);
+
+            foreach (FormBuilder::whereType(1)->get() as $key => $val) {
+                $form_builder_name[$val->label] = 0;
+            }
+
+            // $book_list
+            if ($done_status_id) {
+                $book_lists = BookList::all();
+                foreach ($book_lists as $b => $book) {
+                    // dd($book->content);
+                    foreach ($book->content as $c => $content) {
+
+                        $form_builder_get = FormBuilder::whereId($c)->first(['label']);
+
+                        if ($form_builder_get) {
+                            if (($content['type'] == 1) && ($content['text'] == $done_status_id->id)) {
+                                $form_builder_name[$form_builder_get->label] += 1;
+                            }
+                        }
+                    }
+                }
+            }
+
+            return $form_builder_name;
+
+        } catch (\Exception $e) {
+            sendFlash($e->getMessage(), 'error');
+        }
     }
 
     public function getDoughnut()

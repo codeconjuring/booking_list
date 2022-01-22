@@ -42,6 +42,11 @@ class FormController extends Controller
 
     public function showMoreTitle(Request $request)
     {
+        $frontend_request = 0;
+        if (isset($request->frontend_request)) {
+            $frontend_request = 1;
+        }
+
         $e_id   = $request->e_id;
         $book_i = $request->book_i;
         if ($e_id != null && $book_i != null) {
@@ -53,7 +58,7 @@ class FormController extends Controller
                 $status_array[$st->id]     = $st->status;
                 $status_array[$st->status] = $st->color;
             }
-            $view = view('admin.form.more_title', ['getBookLists' => $getBookLists, 'form_builder' => $form_builder, 'status_array' => $status_array])->render();
+            $view = view('admin.form.more_title', ['getBookLists' => $getBookLists, 'form_builder' => $form_builder, 'status_array' => $status_array, 'frontend_request' => $frontend_request])->render();
             return response()->json(['view' => $view]);
         }
     }
@@ -64,7 +69,6 @@ class FormController extends Controller
      */
     public function index(Request $request)
     {
-
         // Tempory Variable
         // $series_name = "";
 
@@ -116,27 +120,6 @@ class FormController extends Controller
         } else {
             $getSeriyes = BookList::select('category_id')->groupBy('category_id')->get();
         }
-
-        // if ($series_name) {
-        //     $query = BookList::query();
-
-        //     $try_find_series = Category::where('name', 'LIKE', "%$series_name%")->pluck('id')->toArray();
-
-        //     $try_to_find_author = BookList::where('author', 'LIKE', "%$series_name%")->pluck('id')->toArray();
-
-        //     if (count($try_find_series) > 0) {
-
-        //         $query->whereIn('category_id', $try_find_series);
-        //     }
-
-        //     if (count($try_to_find_author) > 0) {
-
-        //         $query->whereIn('id', $try_to_find_author);
-        //     }
-        //     $filter_data = 1;
-        //     $getSeriyes  = $query->select('category_id')->groupBy('category_id')->get();
-
-        // }
 
         $series_ids = [];
         foreach ($getSeriyes as $key => $series) {
@@ -333,14 +316,12 @@ class FormController extends Controller
                 ]);
             }
 
-
             DB::commit();
             if ($email_flag == 1) {
                 Mail::to(Settings::get('email_notification'))->send(new StatusChangeNotification($id, $change_value));
             }
 
             sendFlash("Book list Update Successfully");
-
 
         } catch (\Exception $e) {
             DB::rollback();
@@ -538,17 +519,17 @@ class FormController extends Controller
             }
         }
 
-        $filter_select_tag_name='Tags:';
-        $count_slect_tag=count($select_tags);
-       if($count_slect_tag>0){
-           foreach($select_tags as $key=>$filter_select_tag){
-              $find_cat=Cat::findOrFail($filter_select_tag);
+        $filter_select_tag_name = 'Tags:';
+        $count_slect_tag        = count($select_tags);
+        if ($count_slect_tag > 0) {
+            foreach ($select_tags as $key => $filter_select_tag) {
+                $find_cat = Cat::findOrFail($filter_select_tag);
 
-              if($count_slect_tag==($key+1)){
-                $filter_select_tag_name.=' '.$find_cat->name;
-              }else{
-                $filter_select_tag_name.=' '.$find_cat->name.', ';
-              }
+                if ($count_slect_tag == ($key + 1)) {
+                    $filter_select_tag_name .= ' ' . $find_cat->name;
+                } else {
+                    $filter_select_tag_name .= ' ' . $find_cat->name . ', ';
+                }
 
             }
         }
@@ -564,7 +545,7 @@ class FormController extends Controller
         ];
         $document->autoScriptToLang = true;
         $document->autoLangToFont   = true;
-        $document->WriteHTML(view('admin.form.report', ['page_title' => $page_title, 'form_builder' => $form_builder, 'series' => $series, 'getSeriyes' => $getSeriyes, 'status' => $status, 'status_array' => $status_array, 'selected_row' => $selected_row, 'show_book_list' => $show_book_list, 'pdf_font_size' => $pdf_font_size, 'select_series' => $select_series, 'select_languages' => $select_languages, 'select_tags' => $select_tags, 'select_status' => $select_status, 'today_date' => $today_date,'filter_select_tag_name'=>$filter_select_tag_name]));
+        $document->WriteHTML(view('admin.form.report', ['page_title' => $page_title, 'form_builder' => $form_builder, 'series' => $series, 'getSeriyes' => $getSeriyes, 'status' => $status, 'status_array' => $status_array, 'selected_row' => $selected_row, 'show_book_list' => $show_book_list, 'pdf_font_size' => $pdf_font_size, 'select_series' => $select_series, 'select_languages' => $select_languages, 'select_tags' => $select_tags, 'select_status' => $select_status, 'today_date' => $today_date, 'filter_select_tag_name' => $filter_select_tag_name]));
         // Save PDF on your public storage
         Storage::disk('public')->put($documentFileName, $document->Output($documentFileName, "S"));
         // Get file back from storage with the give header informations

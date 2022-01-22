@@ -2,7 +2,7 @@
 
 
 <tr class="subTitle{{ $getBookList->book_id }}">
-    <td>
+    <td class="{{ $frontend_request==1?'d-none':"" }}">
         <div class="dropdown show">
             <a class="btn btn-info btn-sm dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 

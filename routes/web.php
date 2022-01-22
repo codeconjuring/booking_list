@@ -22,10 +22,7 @@ Route::get('/clear', function () {
     return "Cleared!";
 });
 
-Route::get('/', function () {
-    return redirect()->route('login');
-    // return view('welcome');
-});
+Route::get('/', 'HomeController@index')->name('index');
 
 Route::get('/login', 'HomeController@login')->name('login');
 Route::post('/login', 'HomeController@attempt')->name('login');

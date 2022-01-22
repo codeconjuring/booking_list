@@ -1,5 +1,5 @@
   <!-- JAVASCRIPT -->
-  <script src="{{ asset('dashboard/update_assets/libs/jquery/jquery.min.js') }}"></script>
+  <script src="{{ asset('dashboard/assets/vendors/js/vendor.bundle.base.js') }}"></script>
   <script src="{{ asset('dashboard/update_assets/libs/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
 
   <script src="{{ asset('dashboard/update_assets/libs/metismenu/metisMenu.min.js') }}"></script>
@@ -26,5 +26,5 @@
   <!-- dashboard init -->
   <script src="{{ asset('dashboard/update_assets/js/app.js') }}"></script>
    <!-- Datatable init js -->
-   <script src="{{ asset('dashboard/update_assets/js/pages/datatables.init.js') }}"></script>
+   <!--<script src="{{ asset('dashboard/update_assets/js/pages/datatables.init.js') }}"></script>-->
    @yield('js')

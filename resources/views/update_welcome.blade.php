@@ -42,12 +42,12 @@
                                         </li>
                                     </ul>
                                 </div>
-                                <table cellpadding="2" class="cc-datatable table nowrap w-100">
+                                <table id="datatable"  class=" table nowrap w-100">
                                     <thead>
                                         <tr>
-                                            @canany(['Edit Book Management','Delete Book Management','Add Another Translation Book Management'])
+
                                             <th class="text-center d-none">Action</th>
-                                            @endcanany
+
                                             <th class="text-center"> Series </th>
                                             <th class="text-center"> No </th>
                                             <th class="text-center"> Author </th>
@@ -114,28 +114,23 @@
                                                         @endphp
                                                         <tr class="tableAddTitles{{ $e->id }}">
 
-                                                            <td class="d-none">
-                                                                <div class="dropdown show">
-                                                                    <a class="btn btn-info btn-sm dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-
+                                                            <td class="text-center d-none">
+                                                                <div class="dropdown">
+                                                                    <a class="btn cc-table-action p-0 dropdown-toggle" href="#"
+                                                                        role="button" id="dropdownMenuLink" data-bs-toggle="dropdown"
+                                                                        aria-expanded="false">
+                                                                        <i class="fas fa-ellipsis-v"></i>
                                                                     </a>
 
-                                                                    <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                                                                    @can('Add Another Translation Book Management')
-                                                                        <a class="dropdown-item text-dark {{ $book->add_another_book_translation==1?'d-none':'' }}" href="{{ route('admin.form.add-another-title',['id'=>$book->id]) }}"><i class="far fa-copy text-warning"></i> &nbsp; Add Another Translation</a>
-                                                                    @endcan
-
-                                                                    @can('Edit Book Management')
-                                                                    <a class="dropdown-item text-dark" href="{{ route('admin.form.edit',$book->id) }}"><i class="fas fa-edit text-info"></i> &nbsp; Edit</a>
-                                                                    @endcan
-                                                                    @can('Delete Book Management')
-                                                                    <form action="{{ route('admin.form.destroy',$book->id) }}" id="deleteForm{{ $book->id }}"  method="post">
-                                                                            @csrf
-                                                                            @method('delete')
-                                                                    </form>
-                                                                    <a class="dropdown-item text-dark" href="#" onclick="makeDeleteRequest(this,{{ $book->id }})"><i class="fas fa-trash-alt text-danger"></i> &nbsp; Delete</a>
-                                                                    @endcan
-                                                                </div>
+                                                                    <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                                                                        <li><a class="dropdown-item" href="#"><i class="mdi mdi-google-translate
+                                                                            "></i> Add Translation</a></li>
+                                                                        <li><a class="dropdown-item" href="#"><i class="fas fa-edit
+                                                                            "></i> Edit</a></li>
+                                                                        <li><a class="dropdown-item text-danger" href="#"><i
+                                                                                    class="fas fa-trash-alt text-danger"></i> Delete</a>
+                                                                        </li>
+                                                                    </ul>
                                                                 </div>
                                                             </td>
 
@@ -146,7 +141,7 @@
                                                                 @endphp
 
                                                             @else
-                                                            <td></td>
+                                                            <td class="text-center"></td>
                                                             @endif
 
                                                             @if ($entry_flag==0)
@@ -155,7 +150,7 @@
                                                                     $entry_flag=1;
                                                                 @endphp
                                                             @else
-                                                            <td></td>
+                                                            <td class="text-center"></td>
                                                             @endif
 
                                                             <td class="text-center">{{ $book->author }}</td>
@@ -234,7 +229,7 @@
                   <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <form action="{{ route('admin.form.download') }}" method="GET">
+                    <form action="{{ route('form.download') }}" method="GET">
                         @csrf
 
                     @foreach($form_builder as $key=>$form_bui)
@@ -291,7 +286,11 @@
 
 @section('js')
 <script>
-
+    $(document).ready(function () {
+      console.log('abcd');
+          $("#datatable").DataTable();
+        // $(".dataTable").wrap('<div class="table-responsive"><div>');
+    });
 
 function showMoreTitle(e_id,book_i,data_attr)
 {
@@ -305,14 +304,14 @@ function showMoreTitle(e_id,book_i,data_attr)
     {
 
         $.ajax({
-        url:"{{ route('admin.form.show-more-title') }}",
+        url:"{{ route('form.show-more-title') }}",
         method:"GET",
         data:{'e_id':e_id,'book_i':book_i,'frontend_request':1},
         success:(response)=>{
             $(`.tableAddTitles${e_id}`).after(response.view);
             $(`.buffering-img${e_id}`).addClass('d-none');
             $(`#mainTitle${e_id}`).attr('data-flag',1);
-            $('.cc-datatable').DataTable();
+            // $('.cc-datatable').DataTable();
 
         },
         error:(error)=>{

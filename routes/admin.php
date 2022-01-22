@@ -16,7 +16,7 @@ Route::middleware(['auth'])->group(function () {
     Route::post('form-builder/table-sort', 'FormBuilder\FormBuilderController@tableSort')->name('table.sort');
     Route::get('form/get-another-lanugage', 'Form\FormController@getAnotherLanguage')->name('form.get-another-lanugage');
 // Show more book title
-    Route::get('form/show-more-title', 'Form\FormController@showMoreTitle')->name('form.show-more-title');
+
     // Search Text
     // Route::get('form/search-text', 'Form\FormController@searchText')->name('form.search-text');
     Route::resources([

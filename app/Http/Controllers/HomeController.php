@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Controllers\Admin\Form\FormController;
 use App\Http\Requests\Login\LoginRequest;
 use App\Models\BookList;
 use App\Models\Cat;
@@ -13,6 +14,34 @@ use Illuminate\Http\Request;
 
 class HomeController extends Controller
 {
+
+    public function downloadPdf(Request $request)
+    {
+        return resolve(FormController::class)->downloadPdf($request);
+    }
+
+    public function showMoreTitle(Request $request)
+    {
+        $frontend_request = 0;
+        if (isset($request->frontend_request)) {
+            $frontend_request = 1;
+        }
+
+        $e_id   = $request->e_id;
+        $book_i = $request->book_i;
+        if ($e_id != null && $book_i != null) {
+            $getBookLists = BookList::whereBookId($e_id)->whereAddAnotherBookTranslation('1')->get();
+            $form_builder = FormBuilder::all();
+            $status_array = [];
+            $status       = Status::all();
+            foreach ($status as $st) {
+                $status_array[$st->id]     = $st->status;
+                $status_array[$st->status] = $st->color;
+            }
+            $view = view('admin.form.more_title', ['getBookLists' => $getBookLists, 'form_builder' => $form_builder, 'status_array' => $status_array, 'frontend_request' => $frontend_request])->render();
+            return response()->json(['view' => $view]);
+        }
+    }
 
     public function index(Request $request)
     {

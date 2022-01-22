@@ -407,7 +407,7 @@ function showMoreTitle(e_id,book_i,data_attr)
     {
 
         $.ajax({
-        url:"{{ route('admin.form.show-more-title') }}",
+        url:"{{ route('form.show-more-title') }}",
         method:"GET",
         data:{'e_id':e_id,'book_i':book_i},
         success:(response)=>{

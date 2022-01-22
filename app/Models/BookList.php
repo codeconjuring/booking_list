@@ -26,11 +26,11 @@ class BookList extends Model
     {
         $available = $this->available;
         if ($available == 0) {
-            return '<span class="badge badge-danger">No</span>';
+            return '<span class="badge bg-danger">No</span>';
         } elseif ($available == 1) {
-            return '<span class="badge badge-success">Yes</span>';
+            return '<span class="badge bg-success">Yes</span>';
         } else {
-            return '<span class="badge badge-info">N/A</span>';
+            return '<span class="badge bg-info">N/A</span>';
         }
     }
 

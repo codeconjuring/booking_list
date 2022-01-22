@@ -1,0 +1,8 @@
+.sidebar-enable {
+  #page-topbar {
+    margin-left: 80px !important;
+    @media #{$max991} {
+      margin-left: 0 !important;
+    }
+  }
+}

@@ -1,0 +1,164 @@
+.box {
+  display: flex;
+  grid-gap: 40px;
+  border: 3px solid #fff;
+  border-radius: 30px;
+  padding: 30px;
+  overflow: hidden;
+  position: relative;
+  .first-img {
+    position: absolute;
+    top: 0;
+    right: 0;
+  }
+  .second-img {
+    position: absolute;
+    top: 0;
+    right: 0;
+  }
+  .third-img {
+    position: absolute;
+    top: 0;
+    right: 0;
+  }
+  .icon {
+    width: 108px;
+    height: 108px;
+    line-height: 108px;
+    text-align: center;
+    background: $color-purple;
+    border-radius: 30px;
+    position: relative;
+    z-index: 1;
+    i {
+      line-height: unset;
+      &:before {
+        font-size: 48px;
+        color: #fff;
+      }
+    }
+  }
+  p {
+    font-style: normal;
+    font-weight: 500;
+    font-size: 20px;
+    line-height: 36px;
+    color: $color-purple;
+    margin-bottom: 0;
+    z-index: 2;
+    position: relative;
+  }
+  h3 {
+    font-style: normal;
+    font-weight: 500;
+    font-size: 48px;
+    line-height: 64px;
+    color: $color-black;
+    position: relative;
+    margin-bottom: 0;
+    z-index: 2;
+  }
+}
+
+.purple {
+  background: $soft-purple;
+  p {
+    color: $color-purple;
+  }
+}
+.orange {
+  background: $soft-orange;
+  p {
+    color: $color-orange;
+  }
+  .icon {
+    background: $color-orange;
+    z-index: 1;
+  }
+}
+.blue {
+  background: $soft-blue;
+  p {
+    color: $color-blue;
+  }
+  .icon {
+    background: $color-blue;
+  }
+}
+.sky-blue {
+  background: $soft-sky-blue;
+  p {
+    color: $color-sky;
+  }
+  .icon {
+    background: $color-sky;
+  }
+}
+.tia {
+  background: $soft-tia;
+  p {
+    color: $color-tia;
+  }
+  .icon {
+    background: $color-tia;
+  }
+}
+.brown {
+  background: $soft-brown;
+  p {
+    color: $color-brown;
+  }
+  .icon {
+    background: $color-brown;
+  }
+}
+.brown {
+  background: $soft-brown;
+  p {
+    color: $color-brown;
+  }
+  .icon {
+    background: $color-brown;
+  }
+}
+.red {
+  background: $soft-d-red;
+  p {
+    color: $color-d-red;
+  }
+  .icon {
+    background: $color-d-red;
+  }
+}
+.sky-blue {
+  background: $soft-sky-blue;
+  p {
+    color: $color-sky-blue;
+  }
+  .icon {
+    background: $color-sky-blue;
+  }
+}
+
+.ic-dashboard-card {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-gap: 30px;
+}
+
+.ic-seclect {
+  width: 263px;
+  border: 1px solid $color-primary;
+  box-sizing: border-box;
+  border-radius: 10px;
+  color: $color-primary;
+  padding: 15px 20px;
+  &:focus {
+    outline: 0;
+  }
+}
+.cc-file-card {
+  &:not(:last-child) {
+    margin-bottom: 50px;
+  }
+}

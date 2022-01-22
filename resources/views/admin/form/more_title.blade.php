@@ -27,31 +27,31 @@
         </div>
     </td>
 
-    <td></td>
+    <td class="text-center"></td>
 
 
 
-    <td></td>
+    <td class="text-center"></td>
 
 
-    <td>{{ $getBookList->author }}</td>
+    <td class="text-center">{{ $getBookList->author }}</td>
 
-    <td>{!! $getBookList->available_status !!}</td>
+    <td class="text-center">{!! $getBookList->available_status !!}</td>
 
     @php
         $categories='';
         foreach($getBookList->categories as $cat){
-            $categories.='<span class="badge badge-primary mr-1">'.$cat->category->name.'</span>';
+            $categories.='<span class="badge bg-primary mr-1">'.$cat->category->name.'</span>&nbsp;';
         }
     @endphp
-    <td>{!! $categories !!}</td>
+    <td class="text-center">{!! $categories !!}</td>
 
 
 
-    <td class="">{{ $getBookList->title }}</td>
+    <td class="text-center">{{ $getBookList->title }}</td>
 
 
-    <td>{{ $getBookList->language }}</td>
+    <td class="text-center">{{ $getBookList->language }}</td>
     @php
         $count_form_builder=count($form_builder);
         $book_content_count=count($getBookList->content);
@@ -65,12 +65,12 @@
                 $color=App\Models\Status::whereId($getBookList->content[$form_bui->id]['text'])->first();
             @endphp
 
-            <td style="background:{{ $color?$color->color:"" }}">{{ $status_array[$getBookList->content[$form_bui->id]['text']]??'-' }}</td>
+            <td class="text-center" style="background:{{ $color?$color->color:"" }}">{{ $status_array[$getBookList->content[$form_bui->id]['text']]??'-' }}</td>
             @else
-            <td>{{ $getBookList->content[$form_bui->id]['text']  }} </td>
+            <td class="text-center">{{ $getBookList->content[$form_bui->id]['text']  }} </td>
             @endif
         @else
-            <td>-</td>
+            <td class="text-center">-</td>
         @endif
 
     @endforeach

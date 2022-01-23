@@ -42,7 +42,7 @@
                                         </li>
                                     </ul>
                                 </div>
-                                <table id="datatable"  class=" table nowrap w-100">
+                                <table id="datatable"  class="dataTable table nowrap w-100">
                                     <thead>
                                         <tr>
 
@@ -51,12 +51,14 @@
                                             <th class="text-center"> Series </th>
                                             <th class="text-center"> No </th>
                                             <th class="text-center"> Author </th>
-                                            <th class="text-center"> ZTF?</th>
-                                            <th class="text-center"> Tags </th>
+                                            {{-- <th class="text-center"> ZTF?</th> --}}
+                                            {{-- <th class="text-center"> Tags </th> --}}
                                             <th class="text-center"> Title</th>
                                             <th class="text-center"> LAN </th>
                                             @foreach($form_builder as $key=>$form_bui)
-                                            <th class="text-center">{{ $form_bui->label }}</th>
+                                                @if ($form_bui->label!='GFP')
+                                                <th class="text-center">{{ $form_bui->label }}</th>
+                                                @endif
                                             @endforeach
                                         </tr>
                                     </thead>
@@ -104,14 +106,14 @@
                                                             @break
                                                         @endif
 
-                                                        @php
+                                                        {{-- @php
                                                             $categories='';
                                                             foreach($book->categories as $cat){
                                                                 if(!empty($cat->category)){
                                                                     $categories.='<span class="badge bg-primary mr-1">'.$cat->category->name.'</span>&nbsp;';
                                                                 }
                                                             }
-                                                        @endphp
+                                                        @endphp --}}
                                                         <tr class="tableAddTitles{{ $e->id }}">
 
                                                             <td class="text-center d-none">
@@ -155,14 +157,14 @@
 
                                                             <td class="text-center">{{ $book->author }}</td>
 
-                                                            <td class="text-center">{!! $book->available_status!!}</td>
+                                                            {{-- <td class="text-center">{!! $book->available_status!!}</td> --}}
 
 
-                                                            <td class="text-center">{!! $categories !!}</td>
+                                                            {{-- <td class="text-center">{!! $categories !!}</td> --}}
                                                             @if (($main_title_flag==0) && ($filter_data!=1))
-                                                            <td class="{{ $entry_id==$e->id?'bg-primary':'' }} text-center"><b><a style="text-decoration: none; color:black" data-flag="0" id="mainTitle{{ $e->id }}" onclick="showMoreTitle('{{ $e->id }}','{{ $book_i }}',$(this).attr('data-flag'))" href="javascript:void(0)">{{ $book->title }} ({{ $entry_count }})</a><img width="10%" class="buffering-img{{ $e->id }} d-none" src="{{ asset('dashboard/assets/images/loading-buffering.gif') }}" alt=""></b></td>
+                                                            <td class="{{ $entry_id==$e->id?'bg-primary':'' }}"><b><a style="text-decoration: none; color:black" data-flag="0" id="mainTitle{{ $e->id }}" onclick="showMoreTitle('{{ $e->id }}','{{ $book_i }}',$(this).attr('data-flag'))" href="javascript:void(0)">{{ $book->title }} ({{ $entry_count }})</a><img width="10%" class="buffering-img{{ $e->id }} d-none" src="{{ asset('dashboard/assets/images/loading-buffering.gif') }}" alt=""></b></td>
                                                             @else
-                                                            <td class="{{ $entry_id==$e->id?'bg-primary':'' }} text-center">{{ $book->title }}</td>
+                                                            <td class="{{ $entry_id==$e->id?'bg-primary':'' }}">{{ $book->title }}</td>
                                                             @endif
 
                                                             <td class="text-center">{{ $book->language }}</td>
@@ -172,24 +174,26 @@
                                                                 $result=$count_form_builder-$book_content_count;
                                                             @endphp
                                                             @foreach ($form_builder as $form_bui)
-                                                                @if (array_key_exists($form_bui->id,$book->content))
-                                                                    @if ($book->content[$form_bui->id]['type']=="1")
-                                                                    @php
-                                                                                $query=App\Models\Status::query();
-                                                                                if(count($select_status)>0){
-                                                                                    $query->whereIn('id',$select_status)->whereId($book->content[$form_bui->id]['text']);
-                                                                                }else{
-                                                                                    $query->whereId($book->content[$form_bui->id]['text']);
-                                                                                }
-                                                                                $color=$query->first();
-                                                                    @endphp
+                                                                @if ($form_bui->label!='GFP')
+                                                                    @if (array_key_exists($form_bui->id,$book->content))
+                                                                        @if ($book->content[$form_bui->id]['type']=="1")
+                                                                        @php
+                                                                                    $query=App\Models\Status::query();
+                                                                                    if(count($select_status)>0){
+                                                                                        $query->whereIn('id',$select_status)->whereId($book->content[$form_bui->id]['text']);
+                                                                                    }else{
+                                                                                        $query->whereId($book->content[$form_bui->id]['text']);
+                                                                                    }
+                                                                                    $color=$query->first();
+                                                                        @endphp
 
-                                                                    <td class="text-center" style="background:{{ $color?$color->color:"" }}">{{ $status_array[$book->content[$form_bui->id]['text']]??'-' }}</td>
+                                                                        <td class="text-center" style="background:{{ $color?$color->color:"" }}">{{ $status_array[$book->content[$form_bui->id]['text']]??'-' }}</td>
+                                                                        @else
+                                                                        <td class="text-center">{{ $book->content[$form_bui->id]['text']  }} </td>
+                                                                        @endif
                                                                     @else
-                                                                    <td class="text-center">{{ $book->content[$form_bui->id]['text']  }} </td>
+                                                                        <td class="text-center">-</td>
                                                                     @endif
-                                                                @else
-                                                                    <td class="text-center">-</td>
                                                                 @endif
                                                             @endforeach
                                                         </tr>
@@ -287,9 +291,8 @@
 @section('js')
 <script>
     $(document).ready(function () {
-      console.log('abcd');
-          $("#datatable").DataTable();
-        // $(".dataTable").wrap('<div class="table-responsive"><div>');
+        $("#datatable").DataTable();
+        $(".dataTable").wrap('<div class="table-responsive"><div>');
     });
 
 function showMoreTitle(e_id,book_i,data_attr)

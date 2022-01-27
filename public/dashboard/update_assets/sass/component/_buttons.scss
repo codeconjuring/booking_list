@@ -5,6 +5,15 @@
   }
   i {
     font-size: 14px;
+    color: #fff;
+  }
+  &:focus {
+    box-shadow: none;
+  }
+}
+button {
+  &:focus {
+    outline: 0;
   }
 }
 .btn-primary {
@@ -16,7 +25,7 @@
   width: 24px;
   height: 24px;
   border-radius: 50%;
-  line-height: 24px;
+  line-height: 20px;
   background: $color-light;
   color: $color-primary;
   text-align: center;
@@ -31,5 +40,11 @@
     i {
       color: #fff;
     }
+  }
+}
+
+.dropdown-toggle {
+  &::after {
+    content: unset;
   }
 }

@@ -41,15 +41,14 @@
     @php
         $categories='';
         foreach($getBookList->categories as $cat){
-            $categories.='<span class="badge bg-primary mr-1">'.$cat->category->name.'</span>&nbsp;';
+            if($cat->category){
+                $categories.='<span class="badge bg-primary mr-1">'.$cat->category->name.'</span>&nbsp;';
+            }
         }
     @endphp
-    <td class="text-center {{ $frontend_request==1?'d-none':"" }}">{!! $categories !!}</td>
-
-
+    <td class="{{ $frontend_request==1?'d-none':"" }}">{!! $categories !!}</td>
 
     <td class="">{{ $getBookList->title }}</td>
-
 
     <td class="text-center">{{ $getBookList->language }}</td>
     @php

@@ -10,11 +10,27 @@ div.dataTables_wrapper div.dataTables_paginate {
   display: inline-block;
   float: right;
 }
-.dataTables_length {
-  display: none;
+.form-control {
+  border-radius: 10px;
+  &:focus {
+    box-shadow: none;
+  }
 }
-.dataTables_filter {
-  display: none;
+div.dataTables_wrapper div.dataTables_filter {
+  input {
+    height: 40px;
+    border: 0.5px solid #efefef;
+    background: #fafafb;
+  }
+  label {
+    position: relative;
+    i {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      right: 10px;
+    }
+  }
 }
 
 .table {
@@ -170,12 +186,24 @@ div.dataTables_wrapper div.dataTables_paginate ul.pagination {
   }
 }
 .dropdown-menu {
+  box-shadow: 0px 5px 20px rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
   border: 0;
+  padding: 5px 15px;
   li {
-    padding: 10px 1rem;
     border-bottom: 1px solid #efefef;
     &:last-child {
       border-bottom: 0;
     }
+    .dropdown-item {
+      font-size: 14px;
+      padding: 0.5rem 1.5rem;
+    }
   }
+}
+
+.table td,
+.table th {
+  border-top: none;
+  color: $color-gray;
 }

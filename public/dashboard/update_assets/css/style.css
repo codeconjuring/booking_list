@@ -113,11 +113,22 @@ div.dataTables_wrapper div.dataTables_paginate {
   display: inline-block;
   float: right; }
 
-/* .dataTables_length {
-  display: none; } */
+.form-control {
+  border-radius: 10px; }
+  .form-control:focus {
+    box-shadow: none; }
 
-/* .dataTables_filter {
-  display: none; } */
+div.dataTables_wrapper div.dataTables_filter input {
+  height: 40px;
+  border: 0.5px solid #efefef;
+  background: #fafafb; }
+div.dataTables_wrapper div.dataTables_filter label {
+  position: relative; }
+  div.dataTables_wrapper div.dataTables_filter label i {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    right: 10px; }
 
 .table thead tr th {
   color: #00242d;
@@ -215,18 +226,34 @@ div.dataTables_wrapper div.dataTables_paginate ul.pagination {
       font-size: 10px; }
 
 .dropdown-menu {
-  border: 0; }
+  box-shadow: 0px 5px 20px rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
+  border: 0;
+  padding: 5px 15px; }
   .dropdown-menu li {
-    padding: 10px 1rem;
     border-bottom: 1px solid #efefef; }
     .dropdown-menu li:last-child {
       border-bottom: 0; }
+    .dropdown-menu li .dropdown-item {
+      font-size: 14px;
+      padding: 0.5rem 1.5rem; }
+
+.table td,
+.table th {
+  border-top: none;
+  color: #5b6572; }
 
 .btn svg {
   width: 14px;
   height: 14px; }
 .btn i {
-  font-size: 14px; }
+  font-size: 14px;
+  color: #fff; }
+.btn:focus {
+  box-shadow: none; }
+
+button:focus {
+  outline: 0; }
 
 .btn-primary {
   box-shadow: 0px 10px 20px rgba(247, 177, 4, 0.2);
@@ -236,7 +263,7 @@ div.dataTables_wrapper div.dataTables_paginate ul.pagination {
   width: 24px;
   height: 24px;
   border-radius: 50%;
-  line-height: 24px;
+  line-height: 20px;
   background: #fff9eb;
   color: #f7b104;
   text-align: center;
@@ -248,6 +275,9 @@ div.dataTables_wrapper div.dataTables_paginate ul.pagination {
     background: #f7b104; }
     .cc-table-action:hover i {
       color: #fff; }
+
+.dropdown-toggle::after {
+  content: unset; }
 
 .card {
   background: #ffffff;
@@ -1311,8 +1341,9 @@ body:not([data-sidebar-size="sm"]) #vertical-menu-btn {
     right: 3px;
     top: 3px;
     height: 34px;
-    padding: 0 10px; }
-    .app-search .btn svg {
+    padding: 0 10px;
+    background: transparent; }
+    .app-search .btn i {
       color: #f7b104; }
 
 .layout-mode-light {
@@ -5682,9 +5713,5 @@ table.dataTable > thead .sorting_desc_disabled::after {
 
 .cc-file-card:not(:last-child) {
   margin-bottom: 50px; }
-
-  .select2-container {
-    z-index: 99999;
-}
 
 /*# sourceMappingURL=style.css.map */

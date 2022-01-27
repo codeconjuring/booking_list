@@ -1144,7 +1144,9 @@ body {
     top: 3px;
     height: 34px;
     padding: 0 10px;
-    svg {
+    background: transparent;
+    
+    i {
       color: $color-primary;
     }
   }

@@ -1,7 +1,7 @@
   <!-- JAVASCRIPT -->
   <script src="{{ asset('dashboard/assets/vendors/js/vendor.bundle.base.js') }}"></script>
   <script src="{{ asset('dashboard/update_assets/libs/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
-
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
   <script src="{{ asset('dashboard/update_assets/libs/metismenu/metisMenu.min.js') }}"></script>
   <script src="{{ asset('dashboard/update_assets/libs/simplebar/simplebar.min.js') }}"></script>
   <script src="{{ asset('dashboard/update_assets/libs/node-waves/waves.min.js') }}"></script>

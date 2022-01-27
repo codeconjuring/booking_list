@@ -50,10 +50,9 @@
                     <span data-key="t-dashboard">Dashboard</span>
                 </a>
                 <ul class="sub-menu mm-collapse mm-show" aria-expanded="false">
-                    <li><a href="#">Single Book Dashboard</a></li>
-                    <li><a href="#">Progress Dashboard</a></li>
-                    <li><a href="#">Sales/Distribution
-                            Dashboard</a></li>
+                    <li><a href="{{ route('admin.dashboard') }}">General Progress</a></li>
+                    <li><a href="{{ route('admin.form.index') }}">Book Detail</a></li>
+                    <li><a href="#">Sales & Distribution</a></li>
                 </ul>
             </li>
 
@@ -63,8 +62,8 @@
                     <span>Book Management</span>
                 </a>
                 <ul class="sub-menu" aria-expanded="false">
-                    <li><a href="#">Book List</a></li>
-                    <li><a href="#">Book Creation</a></li>
+                    <li><a href="{{ route('admin.form.index') }}">Book List</a></li>
+                    <li><a href="{{ route('admin.form.create') }}">Book Creation</a></li>
                 </ul>
             </li>
             <li>
@@ -73,11 +72,11 @@
                     <span>Book Attributes</span>
                 </a>
                 <ul class="sub-menu" aria-expanded="false">
-                    <li><a href="#">Book Format</a></li>
-                    <li><a href="#">Book Series</a></li>
-                    <li><a href="#">Book Status</a></li>
-                    <li><a href="#">Book Tags</a></li>
-                    <li><a href="#">Book Author</a></li>
+                    <li><a href="{{ route('admin.form-builder.index') }}">Book Format</a></li>
+                    <li><a href="{{ route('admin.series.index') }}">Book Series</a></li>
+                    <li><a href="{{ route('admin.status.index') }}">Book Status</a></li>
+                    <li><a href="{{ route('admin.category.index') }}">Book Tags</a></li>
+                    <li><a href="{{ route('admin.author.index') }}">Book Author</a></li>
                 </ul>
             </li>
             <li>
@@ -86,8 +85,8 @@
                     <span>User</span>
                 </a>
                 <ul class="sub-menu" aria-expanded="false">
-                    <li><a href="#">Production Report</a></li>
-                    <li><a href="#">Distribution Report</a></li>
+                    <li><a href="{{ route('admin.role.create') }}">Create Role</a></li>
+                    <li><a href="{{ route('admin.role.index') }}">List Roles</a></li>
                 </ul>
             </li>
             <li>
@@ -99,15 +98,14 @@
                     <li>
                         <a href="javascript: void(0);" class="has-arrow">User</a>
                         <ul class="sub-menu" aria-expanded="true">
-                            <li><a href="javascript: void(0);">User List</a></li>
-                            <li><a href="javascript: void(0);">User Role</a></li>
+                            <li><a href="{{ route('admin.user.index') }}">User List</a></li>
                         </ul>
                     </li>
                     <li>
                         <a href="javascript: void(0);" class="has-arrow">Setting</a>
                         <ul class="sub-menu" aria-expanded="true">
-                            <li><a href="javascript: void(0);">System Setting</a></li>
-                            <li><a href="javascript: void(0);">Email Setting</a></li>
+                            <li><a href="{{ route('admin.setting.index') }}">System Setting</a></li>
+                            <li><a href="{{ route('admin.email.index') }}">Email Setting</a></li>
                         </ul>
                     </li>
                 </ul>

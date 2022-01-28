@@ -9,21 +9,16 @@
 <!-- pace js -->
 <script src="{{ asset('dashboard/update_assets/libs/pace-js/pace.min.js') }}"></script>
 
-<!-- Required datatable js -->
-<script src="{{ asset('dashboard/update_assets/libs/datatables.net/js/jquery.dataTables.min.js') }}"></script>
-<script src="{{ asset('dashboard/update_assets/libs/datatables.net-bs4/js/dataTables.bootstrap4.min.js') }}"></script>
-<!-- Buttons examples -->
-<script src="https://cdn.datatables.net/buttons/2.2.2/js/dataTables.buttons.min.js"></script>
-
-<!-- Datatable init js -->
-<script src="{{ asset('dashboard/update_assets/js/pages/datatables.init.js') }}"></script>
-
 <!-- apexcharts -->
 <script src="{{ asset('dashboard/update_assets/libs/apexcharts/apexcharts.min.js') }}"></script>
 <script src="{{ asset('dashboard/update_assets/libs/raphael.min.js') }}"></script>
 <script src="{{ asset('dashboard/update_assets/libs/morris.min.js') }}"></script>
 <script src="{{ asset('dashboard/update_assets/js/pages/morris.init.js') }}"></script>
-<script src="{{ asset('dashboard/update_assets/js/pages/apexcharts.init.js') }}"></script>
+
+{{-- <script src="{{ asset('dashboard/update_assets/js/pages/apexcharts.init.js') }}"></script> --}}
+
+<!-- dashboard init -->
+<script src="{{ asset('dashboard/update_assets/js/app.js') }}"></script>
 {{-- CDN --}}
 {{-- Toster Notification --}}
 <script src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
@@ -31,11 +26,11 @@
 <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 {{-- select2 --}}
 <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+
 @yield('script')
-<!-- dashboard init -->
-<script src="{{ asset('dashboard/update_assets/js/app.js') }}"></script>
+
 <script>
-    
+
     // Toster notification
     @if(Session::has('success'))
         toastr["success"]("{{ Session::get('success') }}")

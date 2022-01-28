@@ -1,7 +1,6 @@
 !(function () {
   $(document).ready(function () {
     $(".cc-datatable").DataTable({
-      lengthChange: !1,
       buttons: ["copy", "excel", "pdf", "colvis"],
       language: {
        

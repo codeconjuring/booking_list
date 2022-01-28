@@ -44,12 +44,12 @@
         </div>
         <!-- Left Menu Start -->
         <ul class="metismenu list-unstyled" id="side-menu">
-            <li class="mm-active">
+            <li>
                 <a href="javascript: void(0);" class="has-arrow" aria-expanded="true">
                     <i class="icon-dashboard"></i>
                     <span data-key="t-dashboard">Dashboard</span>
                 </a>
-                <ul class="sub-menu mm-collapse mm-show" aria-expanded="false">
+                <ul class="sub-menu mm-collapse" aria-expanded="false">
                     <li><a href="{{ route('admin.dashboard') }}">General Progress</a></li>
                     <li><a href="{{ route('admin.form.index') }}">Book Detail</a></li>
                     <li><a href="#">Sales & Distribution</a></li>

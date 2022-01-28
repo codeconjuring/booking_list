@@ -1,83 +1,99 @@
-@extends('admin.layouts._master')
-
+@extends('admin.layout._master')
 
 
 @section('content')
-<div class="content-wrapper">
 
-    @include('admin.layouts._page_header',['title'=>$page_title,'type'=>'Form'])
-
-      <div class="row">
-        <div class="col-md-12 grid-margin stretch-card">
-          <div class="card">
-            <div class="card-body">
-              <h4 class="card-title">{{ $page_title }}</h4>
-              <form class="forms-sample" action="{{route('admin.role.store')}}" method="POST">
-                @csrf
-
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <label for="ic_role_name">Role Name</label>
-                            <input type="text" class="form-control ic_custom-form-input" id="ic_role_name" autocomplete="off" name="role_name" placeholder="Enter Role Name" required value="{{old('role_name')}}">
-                        </div>
-
-                        <div class="row my-2">
-                            <div class="col-8 pt-1">
-                                <div class="custom-control" style="padding-left: 0px;">
-                                    <label for="customCheck-all">All Permissions</label>
-                                </div>
-                            </div>
-                            <div class="col-4 pt-1">
-                                <div class="custom-control custom-checkbox">
-                                    <input type="checkbox" name="parent_id" class="custom-control-input" id="customCheck-all" value="all">
-                                    <label class="custom-control-label" for="customCheck-all"></label>
-                                </div>
-                            </div>
-                        </div>
-
-                        @foreach ($permissions as $i => $permission)
-                            <div class="row ic_parent_permission my-2">
-                                <div class="col-8 pt-1">
-                                    <div class="custom-control" style="padding-left: 0px">
-                                        <label for="customCheck-{{$permission->id}}"><strong>{{$permission->name}} All</strong></label>
-                                    </div>
-                                </div>
-                                <div class="col-4 pt-1">
-                                    <div class="custom-control custom-checkbox">
-                                        <input type="checkbox" name="parent_id" class="custom-control-input" id="customCheck-{{$permission->id}}" onchange="loadChildren({{$permission->id}})">
-                                        <label class="custom-control-label" for="customCheck-{{$permission->id}}"></label>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row ic_div-show" id="ic_parent-{{$permission->id}}" style="display: none;transition: all 10s ease">
-                                @foreach ($permission->children as $children)
-                                    <div class="col-8 pt-1">
-                                        <div class="custom-control" style="padding-left: 0px">
-                                            <label for="customCheck-{{$children->id}}">{{$children->name}}</label>
-                                        </div>
-                                    </div>
-                                    <div class="col-4 pt-1">
-                                        <div class="custom-control custom-checkbox">
-                                            <input type="checkbox" name="permissions[]" class="custom-control-input parent-identy-{{$permission->id}}" id="customCheck-{{$children->id}}" value="{{$children->id}}">
-                                            <label class="custom-control-label" for="customCheck-{{$children->id}}"></label>
-                                        </div>
-                                    </div>
-                                @endforeach
-                            </div>
-                        @endforeach
-
-                        <button type="submit" class="btn btn-gradient-primary mr-2">Create Role</button>
-                        <a href="{{ url()->previous() }}" class="btn btn-light">Back</a>
-                    </div>
-
-              </form>
-
+<div class="page-content">
+    <div class="container-fluid">
+        <!-- start page title -->
+        <div class="row">
+            <div class="col-12">
+                <div class="page-title-box d-sm-flex align-items-center justify-content-between">
+                    <h4 class="mb-sm-0 font-size-18">{{ $page_title }}</h4>
+                </div>
             </div>
-          </div>
+        </div>
+        <!-- end page title -->
+
+    </div>
+    <!-- container-fluid -->
+
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="card">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-lg-10 m-auto">
+
+                            <form action="{{route('admin.role.store')}}" method="POST">
+                                @csrf
+
+                                <div class="form-group">
+                                    <label for="#">Role Name</label>
+                                    <div class="position-relative">
+                                        <input type="text" name="role_name" class="form-control" placeholder="Type role name" required>
+                                    </div>
+                                </div>
+
+
+                                <div class="cc-permission-all mt-4 ">
+                                    <div class="d-flex align-items-cnter">
+                                        <h4 class="d-flex">All Permissions</h4>
+                                        <div class="custom-control custom-switch">
+                                            <input type="checkbox" name="parent_id" class="custom-control-input" id="customCheck-all" value="all">
+                                            <label class="custom-control-label" for="customCheck-all"></label>
+                                        </div>
+                                    </div>
+
+
+
+                                        <div class="cc-permission-inner mt-4">
+                                            <div class="accordion" id="accordionExample">
+                                                @foreach ($permissions as $i => $permission)
+                                                    <div class="card">
+                                                        <div class="card-header d-flex align-items-center justify-content-between" id="heading{{$permission->id}}">
+                                                            <p class="mb-0">{{$permission->name}} All</p>
+
+                                                            <div class="custom-control custom-switch">
+                                                                <input type="checkbox" name="parent_id" class="custom-control-input" id="customSwitch{{$permission->id}}" onchange="loadChildren({{$permission->id}})" data-toggle="collapse" data-target="#collapse{{$permission->id}}" aria-expanded="false" aria-controls="collapseOne">
+                                                                <label class="custom-control-label" for="customSwitch{{$permission->id}}"></label>
+                                                            </div>
+                                                        </div>
+                                                        @foreach ($permission->children as $children)
+                                                        <div id="collapse{{$permission->id}}" class="collapse ic_parent-{{$permission->id}}" aria-labelledby="heading{{$permission->id}}" data-parent="#accordionExample">
+                                                            <div class="card-body">
+                                                                <ul class="cc-permission-under">
+                                                                    <li class="d-flex align-items-center justify-content-between">
+                                                                        <p class="mb-0">{{$children->name}}</p>
+                                                                        <div class="custom-control custom-switch">
+                                                                            <input type="checkbox" name="permissions[]" class="custom-control-input parent-identy-{{$permission->id}}" id="customSwitch{{$children->id}}" value="{{$children->id}}">
+                                                                            <label class="custom-control-label" for="customSwitch{{$children->id}}"></label>
+                                                                        </div>
+                                                                    </li>
+                                                                </ul>
+                                                            </div>
+                                                        </div>
+                                                        @endforeach
+                                                    </div>
+                                                @endforeach
+                                            </div>
+                                        </div>
+
+
+                                </div>
+                                <div class="cc-button-heads mt-5 text-center">
+                                    <button class="btn btn-primary">Create Role</button>
+                                    <a href="{{ url()->previous() }}" class="btn btn-light">Back</a>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
-
 </div>
+
 
 
 @endsection
@@ -86,14 +102,15 @@
 <script>
         $("#customCheck-all").click(function(){
             $('input:checkbox').not(this).prop('checked', this.checked);
-            $('div .ic_div-show').toggle();
+            // $('div .ic_div-show').toggle();
+            $('div .collapse').toggle();
         });
 
         function loadChildren(parent_id) {
 
             $(`#ic_parent-${parent_id}`).toggle();
 
-            if ($(`#customCheck-${parent_id}`).is(':checked')){
+            if ($(`#customSwitch${parent_id}`).is(':checked')){
                 $(`.parent-identy-${parent_id}`).each(function(){
                     $(this).prop('checked', true);
                 });
@@ -115,8 +132,3 @@
         }
     </style>
 @endsection
-
-
-
-
-

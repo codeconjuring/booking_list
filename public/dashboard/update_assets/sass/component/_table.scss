@@ -10,12 +10,7 @@ div.dataTables_wrapper div.dataTables_paginate {
   display: inline-block;
   float: right;
 }
-.form-control {
-  border-radius: 10px;
-  &:focus {
-    box-shadow: none;
-  }
-}
+
 div.dataTables_wrapper div.dataTables_filter {
   input {
     height: 40px;

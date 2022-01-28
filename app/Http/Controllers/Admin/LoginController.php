@@ -82,19 +82,19 @@ class LoginController extends Controller
                         $col_final_array[$col_map[$c]] = $col_status_map_name_array;
                     }
                 }
-                $table = "<table class='table table-striped table-bordered mt-2'><thead><tr><th>#</th>";foreach ($colum_status_map as $m => $colum_status_ma) {$table .= "<th>" . $colum_status_ma . "</th>";}
+                $table = "<table cellpadding='2' class='cc-datatable table nowrap w-100'><thead><tr class='text-center'><th class='text-center'>#</th>";foreach ($colum_status_map as $m => $colum_status_ma) {$table .= "<th class='text-center'>" . $colum_status_ma . "</th>";}
                 $table .= "</tr></thead>
                     <tbody>
                     ";
                 foreach ($col_final_array as $f => $final) {$table .= "
-                        <tr>
+                        <tr class='text-center'>
                             <th>$f</th>
                             ";
                     foreach ($colum_status_map as $key => $value) {
                         if (array_key_exists($value, $final)) {
-                            $table .= "<td>$final[$value]</td>";
+                            $table .= "<td class='text-center'>$final[$value]</td>";
                         } else {
-                            $table .= "<td>-</td>";
+                            $table .= "<td class='text-center'>-</td>";
                         }
                     }
                     $table .= "</tr>
@@ -134,15 +134,15 @@ class LoginController extends Controller
                         }
                     }
                 }
-                $table = "<table class='table table-striped table-bordered mt-2'><thead><tr><th>#</th>";
+                $table = "<table id='dataTable' cellpadding='2' class='cc-datatable table nowrap w-100'><thead><tr><th class='text-center'>#</th>";
                 foreach ($column as $col) {
-                    $table .= "<th>" . $col->label . "</th>";
+                    $table .= "<th class='text-center'>" . $col->label . "</th>";
                 }
                 $table .= "</tr></thead><tbody>";
                 foreach ($lanwise_count as $lan => $col) {
-                    $table .= "<tr><td>" . $lan . "</td>";
+                    $table .= "<tr class='text-center'><td class='text-center'>" . $lan . "</td>";
                     foreach ($col as $sts) {
-                        $table .= "<td>";
+                        $table .= "<td class='text-center'>";
                         foreach ($sts as $k => $val) {
                             if ($status_map[$k] == 'Done') {
                                 $table .= $val . "<br/>";

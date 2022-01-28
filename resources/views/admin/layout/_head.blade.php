@@ -23,8 +23,6 @@
 <link href="{{ asset('dashboard/update_assets/icomoon/icon-moons.css') }}" rel="stylesheet" type="text/css" />
 <!-- Icons Css -->
 <link href="{{ asset('dashboard/update_assets/css/icons.min.css') }}" rel="stylesheet" type="text/css" />
-<!-- App Css-->
-<link href="{{ asset('dashboard/update_assets/css/style.css') }}" rel="stylesheet" type="text/css" />
 
 {{-- CDN --}}
 {{-- Toster Notification --}}
@@ -33,5 +31,11 @@
 <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css"/>
 {{-- select2 --}}
 <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+
+<!-- App Css-->
+<link href="{{ asset('dashboard/update_assets/css/style.css') }}" rel="stylesheet" type="text/css" />
+<link href="{{ asset('dashboard/update_assets/css/custome.css') }}" rel="stylesheet" type="text/css" />
+
+
 
 @yield('css')

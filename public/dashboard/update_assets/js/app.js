@@ -264,4 +264,25 @@
   //     ? n("#checkAll").prop("checked", !0)
   //     : n("#checkAll").prop("checked", !1);
   // });
+
+
+  $('.owl-carousel').owlCarousel({
+    loop:true,
+    margin:10,
+    nav:true,
+    dots: false,
+    responsive:{
+        0:{
+              items:1
+          },
+          600:{
+              items:3
+          },
+          1000:{
+              items:4
+          }
+      }
+    })
+    $('.owl-prev').html('<i class="fas fa-chevron-left"></i>')
+    $('.owl-next').html('<i class="fas fa-chevron-right"></i>')
 })(jQuery);

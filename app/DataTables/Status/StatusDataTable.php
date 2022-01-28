@@ -23,16 +23,16 @@ class StatusDataTable extends DataTable
 
             ->eloquent($query)
             ->editColumn('color', function ($status) {
-                return '<span class="dot" style="background-color:' . $status->color . '"></span>';
+                return '<div class="cc-circle-color" style="border: 1px solid ' . $status->color . '"><span style="background-color:' . $status->color . '"> </span></div>';
             })
             ->addColumn('action', function ($status) {
                 $authUser = Auth::user();
                 $buttons  = '';
                 if ($authUser->can('Edit Book Attributes Status')) {
-                    $buttons .= '<a class="dropdown-item text-success" href="' . route('admin.status.edit',
+                    $buttons .= '<li><a class="dropdown-item" href="' . route('admin.status.edit',
                         $status->id) . '" title="Edit Category">
                         <i class="fas fa-edit"></i>&nbsp;Edit
-                    </a>';
+                    </a></li>';
                 }
 
                 if ($authUser->can('Delete Book Attributes Status')) {
@@ -40,16 +40,19 @@ class StatusDataTable extends DataTable
                 <input type="hidden" name="_token" value="' . csrf_token() . '">
                 <input type="hidden" name="_method" value="DELETE">
                 </form>
-                <a href="javascript:void(0)" class="dropdown-item text-danger" onclick="makeDeleteRequest(event, ' . $status->id . ')" title="Delete status"><i class="fas fa-trash"></i>&nbsp;Delete</a>';
+                <li><a href="javascript:void(0)" class="dropdown-item text-danger" onclick="makeDeleteRequest(event, ' . $status->id . ')" title="Delete status"><i class="fas fa-trash-alt text-danger"></i>&nbsp;Delete</a></li>';
                 }
                 return '<div class="dropdown">
-                    <button class="btn btn-info btn-sm" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        <i class="mdi mdi-dots-vertical"></i>
-                    </button>
-                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                <a class="btn cc-table-action p-0 dropdown-toggle" href="#"
+                    id="dropdownMenuButton" data-toggle="dropdown"
+                    aria-expanded="false">
+                    <i class="fas fa-ellipsis-v"></i>
+                </a>
+
+                <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                         ' . $buttons . '
-                    </div>
-                    </div>';
+                        </ul>
+                        </div>';
             })->rawColumns([
             'action',
             'color',

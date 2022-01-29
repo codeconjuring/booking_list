@@ -151,10 +151,18 @@
   border: 1px solid $color-primary;
   box-sizing: border-box;
   border-radius: 10px;
+  background: transparent;
   color: $color-primary;
-  padding: 15px 20px;
+  padding: 11px 20px;
   &:focus {
     outline: 0;
+  }
+}
+
+.ic-select-heads {
+  margin-bottom: 20px;
+  .ic-seclect {
+    width: 214px;
   }
 }
 .cc-file-card {
@@ -166,6 +174,7 @@
 .cc-formate {
   display: flex;
   grid-gap: 15px;
+  flex-wrap: wrap;
   .cc-badege {
     padding: 5px 20px 5px 5px;
     background-color: #ffe5cd;
@@ -261,8 +270,6 @@
 }
 .audio {
   margin-top: 20px;
-  .green-audio-player {
-  }
 }
 
 .cc-count-app {
@@ -271,6 +278,9 @@
   align-items: center;
   margin-top: 10px;
   grid-gap: 10px;
+  @media #{$max1280} {
+    grid-template-columns: repeat(1, 1fr);
+  }
   .cc-count-items {
     background: #fff9eb;
     border-radius: 10px;
@@ -372,6 +382,9 @@
     max-width: 200px;
     max-height: 225px;
     border-radius: 30px;
+    @media #{$max767} {
+      max-width: 100%;
+    }
   }
 }
 .ic-books-slider {

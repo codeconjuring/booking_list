@@ -265,7 +265,7 @@
   //     : n("#checkAll").prop("checked", !1);
   // });
 
-
+if($('.owl-carousel').length > 0){
   $('.owl-carousel').owlCarousel({
     loop:true,
     margin:10,
@@ -285,4 +285,6 @@
     })
     $('.owl-prev').html('<i class="fas fa-chevron-left"></i>')
     $('.owl-next').html('<i class="fas fa-chevron-right"></i>')
+}
+ 
 })(jQuery);

@@ -8,15 +8,19 @@
 <script src="{{ asset('dashboard/assets/js/jquery-ui-git.js') }}"></script>
 <script src="{{ asset('dashboard/assets/js/speedometer.js') }}"></script>
 
-@yield('js')
+<script src="{{ asset('dashboard/update_assets/libs/select2/js/select2.min.js') }}"></script>
+<script src="{{ asset('dashboard/update_assets/js/pages/select2.init.js') }}"></script>
+<script src="{{ asset('dashboard/update_assets/libs/dropzone/min/dropzone.min.js') }}"></script>
+
 {{-- CDN --}}
 {{-- Toster Notification --}}
 <script src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
 {{-- Swtte alert --}}
 <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-{{-- select2 --}}
-<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+@yield('js')
+
 @yield('script')
+
 <script>
     // Toster notification
     @if(Session::has('success'))
@@ -61,3 +65,5 @@
     }
 
 </script>
+
+

@@ -1,16 +1,27 @@
-@extends('admin.layouts._master')
+@extends('admin.layout._master')
 
 @section('css')
 
-<link rel="stylesheet" href="{{ asset('dashboard/assets/css/dataTables.min.css') }}">
-{{-- <link rel="stylesheet" href="//code.jquery.com/ui/1.13.0/themes/base/jquery-ui.css"> --}}
 @endsection
 
-
 @section('content')
-<div class="content-wrapper">
 
-    @include('admin.layouts._page_header',['title'=>$page_title,'type'=>'List'])
+<div class="page-content">
+    <div class="container-fluid">
+        <!-- start page title -->
+        <div class="row">
+            <div class="col-12">
+                <div class="page-title-box d-sm-flex align-items-center justify-content-between">
+                    <h4 class="mb-sm-0 font-size-18">{{ $page_title }}</h4>
+                    <div class="page-title-right">
+                        <a href="{{ route('admin.form.create') }}" class="btn btn-primary"><i data-feather="plus"></i> Create Book</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- end page title -->
+
+    </div>
 
     <div class="row">
         <div class="col-md-12">
@@ -41,7 +52,7 @@
                                 <div class="row">
                                     <div class="col-md-4">
                                         <label for="">Select Series</label>
-                                        <select name="series_ids[]" id="" class="form-control" multiple>
+                                        <select name="series_ids[]" id="" class="form-control select2" multiple>
                                             <option value="">Select Series</option>
                                             @foreach ($series as $key=>$ser)
                                                 <option {{ in_array($ser->id,$select_series)?"selected":"" }} value="{{ $ser->id }}">{{ $ser->name }}</option>
@@ -51,7 +62,7 @@
 
                                     <div class="col-md-4">
                                         <label for="">Select Languages</label>
-                                        <select name="language[]" id="" class="form-control" multiple>
+                                        <select name="language[]" id="" class="form-control select2" multiple>
                                             <option value="">Select Series</option>
                                             @foreach ($languages as $key=>$lan)
                                                 <option {{ in_array($lan->language,$select_language)?"selected":"" }} value="{{ $lan->language }}">{{ $lan->language }}</option>
@@ -61,7 +72,7 @@
 
                                     <div class="col-md-4">
                                         <label for="">Select Status</label>
-                                        <select name="status_ids[]" id="" class="form-control" multiple>
+                                        <select name="status_ids[]" id="" class="form-control select2" multiple>
                                             <option value="">Select Status</option>
                                             @foreach ($status as $sta)
                                                 <option {{ in_array($sta->id,$select_status)?"selected":"" }} value="{{ $sta->id }}">{{ $sta->status }}</option>
@@ -78,212 +89,201 @@
                             </form>
                         </div>
                 </div>
+
+
             </div>
         </div>
     </div>
-
     <br>
+    <!-- container-fluid -->
 
-      <div class="row">
-        <div class="col-md-12 grid-margin stretch-card">
-          <div class="card">
-            <div class="card-body">
-              <h4 class="card-title">{{ $page_title }}
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="card">
+                <div class="card-body">
 
-
-                @can('Download Report Book Management')
-
-                    <a href="#" onclick="downloadReport()" class="btn btn-info btn-sm  mb-1 float-right"><i class="fas fa-download"></i> &nbsp;Download Report</a>
-
-                @endcan
-
-                {{-- <div class="offset-md-9 col-md-3">
-                    <form action="" method="GET">
-                        @csrf
-                        <input type="text" name="search" id="search_text" class="form-control float-right" placeholder="Search">
-
-                    </form>
-                </div> --}}
-
-            </h4>
-
-
-              <table class="table table-bordered table-responsive" id="myTable">
-                <thead>
-                  <tr>
-                    @canany(['Edit Book Management','Delete Book Management','Add Another Translation Book Management'])
-                    <th>Action</th>
-                    @endcanany
-                    <th> Series </th>
-                    <th> No </th>
-                    <th> Author </th>
-                    <th> ZTF?</th>
-                    <th> Tags </th>
-                    <th> Title</th>
-                    <th> LAN </th>
-                    @foreach($form_builder as $key=>$form_bui)
-                    <th>{{ $form_bui->label }}</th>
-                    @endforeach
-                  </tr>
-                </thead>
-                <tbody>
-
-                    @php
-                        $book_i=1;
-                        $row_count=0;
-                    @endphp
-                    @foreach ($getSeriyes as $key=>$getSeriye)
-                        @php
-                            $entry=App\Models\Book::whereCategoryId($getSeriye->category_id)->get();
-
-                            $series_wise_titles=App\Models\BookList::whereCategoryId($getSeriye->category_id)->get();
-                            $books_count=count($series_wise_titles);
-                            $series_flag=0;
-
-                        @endphp
-
-                        @foreach ($entry as $e)
+                    <table cellpadding="2" class="cc-datatable table nowrap w-100" id="myTable">
+                        <thead>
+                          <tr>
+                            @canany(['Edit Book Management','Delete Book Management','Add Another Translation Book Management'])
+                            <th class="text-center">Action</th>
+                            @endcanany
+                            <th class="text-center"> Series </th>
+                            <th class="text-center"> No </th>
+                            <th class="text-center"> Author </th>
+                            <th class="text-center"> ZTF?</th>
+                            <th class="text-center"> Tags </th>
+                            <th class="text-center"> Title</th>
+                            <th class="text-center"> LAN </th>
+                            @foreach($form_builder as $key=>$form_bui)
+                            <th class="text-center">{{ $form_bui->label }}</th>
+                            @endforeach
+                          </tr>
+                        </thead>
+                        <tbody>
 
                             @php
-                                if(count($select_language)){
-                                    $books=App\Models\BookList::whereIn('language',$select_language)->whereBookId($e->id)->get();
-                                }else{
-                                    $books=App\Models\BookList::whereBookId($e->id)->get();
-                                }
-
-                                $entry_count=count($books);
-                                $entry_flag=0;
-                                $main_title_flag=0;
+                                $book_i=1;
+                                $row_count=0;
                             @endphp
-
-                                @foreach ($books as $b=>$book)
-
-
-                                @if ($filter_data!=1)
-                                    @if (($main_title_flag==1) && ($entry_id!=$e->id))
-                                        @break
-                                    @endif
-                                @endif
-
-
-                                @if ($row_show!=0 && $row_count>=$row_show)
-                                    @break
-                                @endif
-
+                            @foreach ($getSeriyes as $key=>$getSeriye)
                                 @php
-                                    $categories='';
-                                    foreach($book->categories as $cat){
-                                        if(!empty($cat->category)){
-                                            $categories.='<span class="badge badge-primary mr-1">'.$cat->category->name.'</span>';
-                                        }
-                                    }
+                                    $entry=App\Models\Book::whereCategoryId($getSeriye->category_id)->get();
+
+                                    $series_wise_titles=App\Models\BookList::whereCategoryId($getSeriye->category_id)->get();
+                                    $books_count=count($series_wise_titles);
+                                    $series_flag=0;
+
                                 @endphp
-                                <tr class="tableAddTitles{{ $e->id }}">
-                                    <td>
-                                        <div class="dropdown show">
-                                            <a class="btn btn-info btn-sm dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 
-                                            </a>
+                                @foreach ($entry as $e)
 
-                                            <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                                            @can('Add Another Translation Book Management')
-                                                <a class="dropdown-item text-dark {{ $book->add_another_book_translation==1?'d-none':'' }}" href="{{ route('admin.form.add-another-title',['id'=>$book->id]) }}"><i class="far fa-copy text-warning"></i> &nbsp; Add Another Translation</a>
-                                            @endcan
-
-                                            @can('Edit Book Management')
-                                            <a class="dropdown-item text-dark" href="{{ route('admin.form.edit',$book->id) }}"><i class="fas fa-edit text-info"></i> &nbsp; Edit</a>
-                                            @endcan
-                                            @can('Delete Book Management')
-                                            <form action="{{ route('admin.form.destroy',$book->id) }}" id="deleteForm{{ $book->id }}"  method="post">
-                                                    @csrf
-                                                    @method('delete')
-                                            </form>
-                                            <a class="dropdown-item text-dark" href="#" onclick="makeDeleteRequest(this,{{ $book->id }})"><i class="fas fa-trash-alt text-danger"></i> &nbsp; Delete</a>
-                                            @endcan
-                                        </div>
-                                        </div>
-                                    </td>
-                                    @if ($series_flag==0)
-                                        <td >{{ $book->serise->name }}</td>
-                                        @php
-                                            $series_flag=1;
-                                        @endphp
-
-                                    @else
-                                    <td></td>
-                                    @endif
-
-                                    @if ($entry_flag==0)
-                                        <td >{{ $book_i++ }}</td>
-                                        @php
-                                            $entry_flag=1;
-                                        @endphp
-                                    @else
-                                    <td></td>
-                                    @endif
-
-                                    <td>{{ $book->author }}</td>
-
-                                    <td>{!! $book->available_status!!}</td>
-
-
-                                    <td>{!! $categories !!}</td>
-                                    @if (($main_title_flag==0) && ($filter_data!=1))
-                                    <td class="{{ $entry_id==$e->id?'bg-primary':'' }}"><b><a style="text-decoration: none; color:black" data-flag="0" id="mainTitle{{ $e->id }}" onclick="showMoreTitle('{{ $e->id }}','{{ $book_i }}',$(this).attr('data-flag'))" href="javascript:void(0)">{{ $book->title }} ({{ $entry_count }})</a><img  class="buffering-img{{ $e->id }} d-none" src="{{ asset('dashboard/assets/images/loading-buffering.gif') }}" alt=""></b></td>
-                                    @else
-                                    <td class="{{ $entry_id==$e->id?'bg-primary':'' }}">{{ $book->title }}</td>
-                                    @endif
-
-                                    <td>{{ $book->language }}</td>
                                     @php
-                                        $count_form_builder=count($form_builder);
-                                        $book_content_count=count($book->content);
-                                        $result=$count_form_builder-$book_content_count;
+                                        if(count($select_language)){
+                                            $books=App\Models\BookList::whereIn('language',$select_language)->whereBookId($e->id)->get();
+                                        }else{
+                                            $books=App\Models\BookList::whereBookId($e->id)->get();
+                                        }
+
+                                        $entry_count=count($books);
+                                        $entry_flag=0;
+                                        $main_title_flag=0;
                                     @endphp
-                                    @foreach ($form_builder as $form_bui)
-                                        @if (array_key_exists($form_bui->id,$book->content))
-                                            @if ($book->content[$form_bui->id]['type']=="1")
-                                            @php
-                                                        $query=App\Models\Status::query();
-                                                        if(count($select_status)>0){
-                                                            $query->whereIn('id',$select_status)->whereId($book->content[$form_bui->id]['text']);
-                                                        }else{
-                                                            $query->whereId($book->content[$form_bui->id]['text']);
-                                                        }
-                                                        $color=$query->first();
-                                            @endphp
 
-                                            <td style="background:{{ $color?$color->color:"" }}">{{ $status_array[$book->content[$form_bui->id]['text']]??'-' }}</td>
-                                            @else
-                                            <td>{{ $book->content[$form_bui->id]['text']  }} </td>
+                                        @foreach ($books as $b=>$book)
+
+
+                                        @if ($filter_data!=1)
+                                            @if (($main_title_flag==1) && ($entry_id!=$e->id))
+                                                @break
                                             @endif
-                                        @else
-                                            <td>-</td>
                                         @endif
-                                    @endforeach
-                                </tr>
-                                        @php
-                                            $row_count+=1;
-                                        @endphp
+
+
+                                        @if ($row_show!=0 && $row_count>=$row_show)
+                                            @break
+                                        @endif
 
                                         @php
-                                            if($main_title_flag==0){
-                                                $main_title_flag=1;
+                                            $categories='';
+                                            foreach($book->categories as $cat){
+                                                if(!empty($cat->category)){
+                                                    $categories.='<span class="badge badge-primary mr-1">'.$cat->category->name.'</span>';
+                                                }
                                             }
                                         @endphp
+                                        <tr class="tableAddTitles{{ $e->id }}">
+                                            <td class="text-center">
 
-                                    @endforeach
-                                @endforeach
-                    @endforeach
-                </tbody>
-              </table>
+                                                <div class="dropdown">
+                                                    <a class="btn cc-table-action p-0 dropdown-toggle" href="#"
+                                                        id="dropdownMenuButton" data-toggle="dropdown"
+                                                        aria-expanded="false">
+                                                        <i class="fas fa-ellipsis-v"></i>
+                                                    </a>
+
+                                                    <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+
+                                                        @can('Add Another Translation Book Management')
+                                                        <li><a class="dropdown-item {{ $book->add_another_book_translation==1?'d-none':'' }}" href="{{ route('admin.form.add-another-title',['id'=>$book->id]) }}"><i class="mdi mdi-google-translate"></i> Add Translation</a></li>
+                                                        @endcan
+
+                                                        @can('Edit Book Management')
+                                                        <li><a class="dropdown-item" href="{{ route('admin.form.edit',$book->id) }}"><i class="fas fa-edit"></i> Edit</a></li>
+                                                        @endcan
+
+                                                        @can('Delete Book Management')
+                                                        <form action="{{ route('admin.form.destroy',$book->id) }}" id="deleteForm{{ $book->id }}"  method="post">
+                                                                @csrf
+                                                                @method('delete')
+                                                        </form>
+
+                                                        <li><a class="dropdown-item text-danger" href="#" onclick="makeDeleteRequest(this,{{ $book->id }})"><i class="fas fa-trash-alt text-danger"></i> Delete</a></li>
+                                                        @endcan
+                                                    </ul>
+                                                </div>
+
+                                            </td>
+                                            @if ($series_flag==0)
+                                                <td class="text-center">{{ $book->serise->name }}</td>
+                                                @php
+                                                    $series_flag=1;
+                                                @endphp
+
+                                            @else
+                                            <td class="text-center"></td>
+                                            @endif
+
+                                            @if ($entry_flag==0)
+                                                <td class="text-center">{{ $book_i++ }}</td>
+                                                @php
+                                                    $entry_flag=1;
+                                                @endphp
+                                            @else
+                                            <td class="text-center"></td>
+                                            @endif
+
+                                            <td class="text-center">{{ $book->author }}</td>
+
+                                            <td class="text-center">{!! $book->available_status!!}</td>
+
+
+                                            <td>{!! $categories !!}</td>
+                                            @if (($main_title_flag==0) && ($filter_data!=1))
+                                            <td class="{{ $entry_id==$e->id?'bg-primary':'' }}"><b><a style="text-decoration: none; color:black" data-flag="0" id="mainTitle{{ $e->id }}" onclick="showMoreTitle('{{ $e->id }}','{{ $book_i }}',$(this).attr('data-flag'))" href="javascript:void(0)">{{ $book->title }} ({{ $entry_count }})</a><img width="10%"  class="buffering-img{{ $e->id }} d-none" src="{{ asset('dashboard/assets/images/loading-buffering.gif') }}" alt=""></b></td>
+                                            @else
+                                            <td class="{{ $entry_id==$e->id?'bg-primary':'' }}">{{ $book->title }}</td>
+                                            @endif
+
+                                            <td class="text-center">{{ $book->language }}</td>
+                                            @php
+                                                $count_form_builder=count($form_builder);
+                                                $book_content_count=count($book->content);
+                                                $result=$count_form_builder-$book_content_count;
+                                            @endphp
+                                            @foreach ($form_builder as $form_bui)
+                                                @if (array_key_exists($form_bui->id,$book->content))
+                                                    @if ($book->content[$form_bui->id]['type']=="1")
+                                                    @php
+                                                                $query=App\Models\Status::query();
+                                                                if(count($select_status)>0){
+                                                                    $query->whereIn('id',$select_status)->whereId($book->content[$form_bui->id]['text']);
+                                                                }else{
+                                                                    $query->whereId($book->content[$form_bui->id]['text']);
+                                                                }
+                                                                $color=$query->first();
+                                                    @endphp
+
+                                                    <td class="text-center" style="background:{{ $color?$color->color:"" }}">{{ $status_array[$book->content[$form_bui->id]['text']]??'-' }}</td>
+                                                    @else
+                                                    <td class="text-center">{{ $book->content[$form_bui->id]['text']  }} </td>
+                                                    @endif
+                                                @else
+                                                    <td class="text-center">-</td>
+                                                @endif
+                                            @endforeach
+                                        </tr>
+                                                @php
+                                                    $row_count+=1;
+                                                @endphp
+
+                                                @php
+                                                    if($main_title_flag==0){
+                                                        $main_title_flag=1;
+                                                    }
+                                                @endphp
+
+                                            @endforeach
+                                        @endforeach
+                            @endforeach
+                        </tbody>
+                      </table>
+                </div>
             </div>
-          </div>
         </div>
-      </div>
-
-
+    </div>
 </div>
+
 
 {{-- Download Modal --}}
 <div class="modal" id="myModal" tabindex="-1" role="dialog">
@@ -352,13 +352,14 @@
 
 @endsection
 
+
 @section('js')
 
-<script src="{{ asset('dashboard/assets/js/dataTables.js') }}"></script>
-{{-- <script src="https://code.jquery.com/ui/1.13.0/jquery-ui.js"></script> --}}
 
+@endsection
+
+@section('script')
 <script>
-
     var mytable="";
     $(document).ready( function () {
         mytable=$('#myTable').DataTable({
@@ -386,6 +387,9 @@
         // info: true
 
     });
+
+    $(".dataTable").wrap('<div class="table-responsive"><div>');
+
     setTimeout(() => {
         $(window).scrollTop({{ $top_scroll }});
     }, 1000);
@@ -444,23 +448,9 @@ function downloadReport(){
 // Filter Colaps
 function getFilter()
 {
+    console.log('abcd');
     $('.select2').select2();
 }
-
-// Col spand
-// @if($entry_id!=0)
-// $(document).ready( function () {
-//     window.history.pushState({}, document.title, "/" + "admin/form");
-// });
-// @endif
-
-
 </script>
+
 @endsection
-
-
-
-
-
-
-

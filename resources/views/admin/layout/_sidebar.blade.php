@@ -51,7 +51,7 @@
                 </a>
                 <ul class="sub-menu mm-collapse" aria-expanded="false">
                     <li><a href="{{ route('admin.dashboard') }}">General Progress</a></li>
-                    <li><a href="{{ route('admin.form.index') }}">Book Detail</a></li>
+                    <li><a href="#">Book Details</a></li>
                     <li><a href="#">Sales & Distribution</a></li>
                 </ul>
             </li>

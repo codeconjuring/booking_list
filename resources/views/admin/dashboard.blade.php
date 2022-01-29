@@ -15,10 +15,7 @@
         <div class="row">
             <div class="col-12">
                 <div class="page-title-box d-sm-flex align-items-center justify-content-between">
-                    <h4 class="mb-sm-0 font-size-18">Book Lists</h4>
-                    <div class="page-title-right">
-                        <a class="btn btn-primary" href="{{ route('admin.form.create') }}"><i data-feather="plus"></i> Create Book</a>
-                    </div>
+                    <h4 class="mb-sm-0 font-size-18">{{ $page_title }}</h4>
                 </div>
             </div>
         </div>
@@ -28,9 +25,9 @@
 
     <div class="ic-dashboard-card">
         <div class="ic-dashboard-card-items box purple">
-            <img src="assets/images/purple/purple-1.png" class="first-img" alt="">
-            <img src="assets/images/purple/purple-2.png" class="second-img" alt="">
-            <img src="assets/images/purple/purlple-3.png" class="third-img" alt="">
+            <img src="{{ asset('dashboard/update_assets/images/purple/purple-1.png') }}" class="first-img" alt="">
+            <img src="{{ asset('dashboard/update_assets/images/purple/purple-2.png') }}" class="second-img" alt="">
+            <img src="{{ asset('dashboard/update_assets/images/purple/purlple-3.png') }}" class="third-img" alt="">
             <div class="icon">
                 <i class="icon-books"></i>
             </div>
@@ -40,9 +37,9 @@
             </div>
         </div>
         <div class="ic-dashboard-card-items box orange">
-            <img src="assets/images/purple/purple-1.png" class="first-img" alt="">
-            <img src="assets/images/purple/purple-2.png" class="second-img" alt="">
-            <img src="assets/images/purple/purlple-3.png" class="third-img" alt="">
+            <img src="{{ asset('dashboard/update_assets/images/purple/purple-1.png') }}" class="first-img" alt="">
+            <img src="{{ asset('dashboard/update_assets/images/purple/purple-2.png') }}" class="second-img" alt="">
+            <img src="{{ asset('dashboard/update_assets/images/purple/purlple-3.png') }}" class="third-img" alt="">
             <div class="icon">
                 <i class="icon-a-books"></i>
             </div>
@@ -52,9 +49,9 @@
             </div>
         </div>
         <div class="ic-dashboard-card-items box blue">
-            <img src="assets/images/purple/purple-1.png" class="first-img" alt="">
-            <img src="assets/images/purple/purple-2.png" class="second-img" alt="">
-            <img src="assets/images/purple/purlple-3.png" class="third-img" alt="">
+            <img src="{{ asset('dashboard/update_assets/images/purple/purple-1.png') }}" class="first-img" alt="">
+            <img src="{{ asset('dashboard/update_assets/images/purple/purple-2.png') }}" class="second-img" alt="">
+            <img src="{{ asset('dashboard/update_assets/images/purple/purlple-3.png') }}" class="third-img" alt="">
             <div class="icon">
                 <i class="icon-book-open"></i>
             </div>
@@ -63,10 +60,38 @@
                 <h3>{{ $total_books }}</h3>
             </div>
         </div>
+
+        <div class="ic-dashboard-card-items box blue">
+            <img src="{{ asset('dashboard/update_assets/images/purple/purple-1.png') }}" class="first-img" alt="">
+            <img src="{{ asset('dashboard/update_assets/images/purple/purple-2.png') }}" class="second-img" alt="">
+            <img src="{{ asset('dashboard/update_assets/images/purple/purlple-3.png') }}" class="third-img" alt="">
+            <div class="icon">
+                <i class="icon-book-open"></i>
+            </div>
+            <div class="ic-card-content">
+                <p>Total Titles Published</p>
+                <h3>{{ $total_title_published }}</h3>
+            </div>
+        </div>
+
+        <div class="ic-dashboard-card-items box blue">
+            <img src="{{ asset('dashboard/update_assets/images/purple/purple-1.png') }}" class="first-img" alt="">
+            <img src="{{ asset('dashboard/update_assets/images/purple/purple-2.png') }}" class="second-img" alt="">
+            <img src="{{ asset('dashboard/update_assets/images/purple/purlple-3.png') }}" class="third-img" alt="">
+            <div class="icon">
+                <i class="icon-book-open"></i>
+            </div>
+            <div class="ic-card-content">
+                <p>Total Books Published</p>
+                <h3>{{ $total_books_published }}</h3>
+            </div>
+        </div>
+
+
         <div class="ic-dashboard-card-items box sky-blue">
-            <img src="assets/images/purple/purple-1.png" class="first-img" alt="">
-            <img src="assets/images/purple/purple-2.png" class="second-img" alt="">
-            <img src="assets/images/purple/purlple-3.png" class="third-img" alt="">
+            <img src="{{ asset('dashboard/update_assets/images/purple/purple-1.png') }}" class="first-img" alt="">
+            <img src="{{ asset('dashboard/update_assets/images/purple/purple-2.png') }}" class="second-img" alt="">
+            <img src="{{ asset('dashboard/update_assets/images/purple/purlple-3.png') }}" class="third-img" alt="">
             <div class="icon">
                 <i class="icon-book-open"></i>
             </div>
@@ -83,9 +108,9 @@
         @foreach ($form_builder_name_with_counts as $key=>$form_builder_count)
 
             <div class="ic-dashboard-card-items box tia bg-gradient-{{ $bootstrap_colors[$loop->iteration]??'primary' }}">
-                <img src="assets/images/purple/purple-1.png" class="first-img" alt="">
-                <img src="assets/images/purple/purple-2.png" class="second-img" alt="">
-                <img src="assets/images/purple/purlple-3.png" class="third-img" alt="">
+                <img src="{{ asset('dashboard/update_assets/images/purple/purple-1.png') }}" class="first-img" alt="">
+                <img src="{{ asset('dashboard/update_assets/images/purple/purple-2.png') }}" class="second-img" alt="">
+                <img src="{{ asset('dashboard/update_assets/images/purple/purlple-3.png') }}" class="third-img" alt="">
                 <div class="icon">
                     <i class="icon-book-open"></i>
                 </div>
@@ -101,7 +126,7 @@
     </div>
 
 
-    <div class="row mt-5">
+    {{-- <div class="row mt-5">
 
     <div class="col-lg-4 grid-margin stretch-card">
         <div class="card">
@@ -179,7 +204,7 @@
         </div>
       </div>
 
-    </div>
+    </div> --}}
 
 
 
@@ -189,7 +214,7 @@
             <div class="col-lg-6">
                 <div class="card">
                     <div class="card-header">
-                        <h4>Available Languages and Titles</h4>
+                        <h4>Top 10 languges by titles published</h4>
                     </div>
                     <div class="card-body pt-0 ps-0 pe-0">
                         <div id="column_chart_datalabel" class="apex-charts" dir="ltr"></div>
@@ -216,7 +241,7 @@
                     <div class="card-body">
                         <div
                             class="cc-table-button-heads align-items-center d-flex justify-content-between ic-pb-20">
-                            <h4>Language wise status metrices of cols</h4>
+                            <h4>Books per format per language</h4>
                         </div>
                         <div id="tableLanguage">
                             Loading. . .
@@ -576,7 +601,12 @@ var doughnutPieData{{ $key }} = {
           @foreach($col as $c=>$co)
 
             @php
-                $percentages=($co/$total)*100;
+                if($co>0)
+                {
+                    $percentages=($co/$total)*100;
+                }else{
+                    $percentages=0;
+                }
             @endphp
 
             {{ number_format($percentages,2) }},

@@ -2,28 +2,30 @@
 
 
 <tr class="subTitle{{ $getBookList->book_id }}">
-    <td class="{{ $frontend_request==1?'d-none':"" }}">
-        <div class="dropdown show">
-            <a class="btn btn-info btn-sm dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+    <td class="{{ $frontend_request==1?'d-none':"" }} text-center">
 
+        <div class="dropdown">
+            <a class="btn cc-table-action p-0 dropdown-toggle" href="#"
+                id="dropdownMenuButton" data-toggle="dropdown"
+                aria-expanded="false">
+                <i class="fas fa-ellipsis-v"></i>
             </a>
 
-            <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-            {{-- @can('Add Another Translation Book Management')
-                <a class="dropdown-item text-dark {{ $getBookList->add_another_book_translation==1?'d-none':'' }}" href="{{ route('admin.form.add-another-title',['id'=>$getBookList->id]) }}"><i class="far fa-copy text-warning"></i> &nbsp; Add Another Translation</a>
-            @endcan --}}
+            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
 
-            @can('Edit Book Management')
-            <a class="dropdown-item text-dark" href="{{ route('admin.form.edit',$getBookList->id) }}"><i class="fas fa-edit text-info"></i> &nbsp; Edit</a>
-            @endcan
-            @can('Delete Book Management')
-            <form action="{{ route('admin.form.destroy',$getBookList->id) }}" id="deleteForm{{ $getBookList->id }}"  method="post">
-                    @csrf
-                    @method('delete')
-            </form>
-            <a class="dropdown-item text-dark" href="#" onclick="makeDeleteRequest(this,{{ $getBookList->id }})"><i class="fas fa-trash-alt text-danger"></i> &nbsp; Delete</a>
-            @endcan
-        </div>
+                @can('Edit Book Management')
+                <li><a class="dropdown-item" href="{{ route('admin.form.edit',$getBookList->id) }}"><i class="fas fa-edit"></i> Edit</a></li>
+                @endcan
+
+                @can('Delete Book Management')
+                <form action="{{ route('admin.form.destroy',$getBookList->id) }}" id="deleteForm{{ $getBookList->id }}"  method="post">
+                        @csrf
+                        @method('delete')
+                </form>
+
+                <li><a class="dropdown-item text-danger" href="#" nclick="makeDeleteRequest(this,{{ $getBookList->id }})"><i class="fas fa-trash-alt text-danger"></i> Delete</a></li>
+                @endcan
+            </ul>
         </div>
     </td>
 

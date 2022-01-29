@@ -37,6 +37,42 @@ class LoginController extends Controller
         $db_language_count = Language::count();
         $get_languages     = Language::all();
 
+        $total_title_published = 0;
+        $get_en_book_lists     = BookList::whereLanguage('EN')->get();
+
+        foreach ($get_en_book_lists as $get_en_book_list) {
+
+            foreach ($get_en_book_list->content as $key => $book_content) {
+
+                if ($book_content['type'] == 1) {
+                    $get_status = Status::findOrFail($book_content['text']);
+
+                    if ($get_status && $get_status->status == "Done") {
+                        $total_title_published += 1;
+                        break;
+                    }
+                }
+            }
+        }
+
+        $total_books_published = 0;
+        $get_all_book_lists    = BookList::all();
+
+        foreach ($get_all_book_lists as $get_all_book_list) {
+
+            foreach ($get_all_book_list->content as $key => $book_content) {
+
+                if ($book_content['type'] == 1) {
+                    $get_status = Status::findOrFail($book_content['text']);
+
+                    if ($get_status && $get_status->status == "Done") {
+                        $total_books_published += 1;
+                        break;
+                    }
+                }
+            }
+        }
+
         if ($request->ajax()) {
             if ($request->service_id) {
                 $series_wise_book_count = BookList::whereCategoryId($request->service_id)->distinct('book_id')->count();
@@ -166,9 +202,9 @@ class LoginController extends Controller
 
         $form_builder_name_with_counts = $this->StatusCount();
 
-        $totale_title_language_counts = BookList::select('language', DB::raw('count(*) as total'))->groupBy('language')->get();
+        $totale_title_language_counts = BookList::select('language', DB::raw('count(*) as total'))->groupBy('language')->orderBy('total', 'DESC')->take(10)->get();
 
-        return view('admin.dashboard', compact('page_title', 'number_of_unique_titles', 'total_series', 'total_books', 'languages', 'series', 'total_titles', 'total_books', 'coughnut_charts', 'language_count', 'db_language_count', 'get_languages', 'form_builder_name_with_counts', 'totale_title_language_counts'));
+        return view('admin.dashboard', compact('page_title', 'number_of_unique_titles', 'total_series', 'total_books', 'languages', 'series', 'total_titles', 'total_books', 'coughnut_charts', 'language_count', 'db_language_count', 'get_languages', 'form_builder_name_with_counts', 'totale_title_language_counts', 'total_title_published', 'total_books_published'));
 
     }
 

@@ -1145,7 +1145,7 @@ body {
     height: 34px;
     padding: 0 10px;
     background: transparent;
-    
+
     i {
       color: $color-primary;
     }
@@ -7120,4 +7120,9 @@ table.dataTable {
 
 .cc-select-items {
   grid-gap: 30px;
+}
+
+.ic-select-heads {
+  display: flex;
+  grid-gap: 20px;
 }

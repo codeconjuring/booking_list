@@ -4964,7 +4964,9 @@ table.dataTable {
   .select2-selection--multiple {
     min-height: 38px;
     background-color: #fff;
-    border: 1px solid #ced4da !important;
+    border: 1px solid $color-primary !important;
+    border-radius: 10px;
+
     .select2-selection__rendered {
       padding: 2px 0.75rem;
     }
@@ -4988,10 +4990,11 @@ table.dataTable {
       }
     }
     .select2-selection__choice {
-      background-color: #e9e9ef;
-      border: 1px solid #f6f6f6;
+      background-color: $color-primary;
+      border: 1px solid $color-primary;
       border-radius: 1px;
       padding: 0 7px;
+      color: #fff;
     }
   }
 }

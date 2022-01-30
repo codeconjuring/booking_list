@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Admin\Form;
 
 use App\Http\Controllers\Controller;
-use App\Mail\StatusChangeNotification;
 use App\Models\Author;
 use App\Models\Book;
 use App\Models\BookList;
@@ -16,7 +15,6 @@ use App\Models\Status;
 use Carbon\Carbon;
 use DB;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Storage;
 use Robiussani152\Settings\Facades\Settings;
 use \Mpdf\Mpdf as PDF;
@@ -40,7 +38,6 @@ class FormController extends Controller
     //     return response()->json($my_array);
     // }
 
-   
     /**
      * Display a listing of the resource.
      *
@@ -296,9 +293,9 @@ class FormController extends Controller
             }
 
             DB::commit();
-            if ($email_flag == 1) {
-                Mail::to(Settings::get('email_notification'))->send(new StatusChangeNotification($id, $change_value));
-            }
+            // if ($email_flag == 1) {
+            //     Mail::to(Settings::get('email_notification'))->send(new StatusChangeNotification($id, $change_value));
+            // }
 
             sendFlash("Book list Update Successfully");
 

@@ -27,6 +27,7 @@
                             <div class="col-lg-10 m-auto">
                                 <form class="forms-sample" action="{{ route('admin.series.update',$series->id) }}" method="POST" autocomplete="off">
                                     @csrf
+                                    @method('put')
 
 
                                     <div class="form-group">

@@ -25,9 +25,9 @@
                     <div class="card-body">
                         <div class="row">
                             <div class="col-lg-10 m-auto">
-                                <form class="forms-sample" action="{{ route('admin.form-builder.store') }}" method="POST" autocomplete="off">
+                                <form class="forms-sample" action="{{ route('admin.form-builder.update',$formBuilder) }}" method="POST" autocomplete="off">
                                     @csrf
-
+                                    @method('put')
 
                                     <div class="form-group">
                                         <label for="exampleInputUsername1">Label</label><span class="text-danger">*</span>

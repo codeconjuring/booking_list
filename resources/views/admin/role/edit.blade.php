@@ -25,8 +25,9 @@
                     <div class="row">
                         <div class="col-lg-10 m-auto">
 
-                            <form action="{{route('admin.role.store')}}" method="POST">
+                            <form action="{{route('admin.role.update',[$role->id])}}" method="POST">
                                 @csrf
+                                @method('PUT')
 
                                 <div class="form-group">
                                     <label for="#">Role Name</label>

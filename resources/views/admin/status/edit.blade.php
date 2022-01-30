@@ -25,8 +25,9 @@
                     <div class="card-body">
                         <div class="row">
                             <div class="col-lg-10 m-auto">
-                                <form class="forms-sample" action="{{ route('admin.series.store') }}" method="POST">
+                                <form class="forms-sample" action="{{ route('admin.status.update',[$status]) }}" method="POST">
                                     @csrf
+                                    @method('put')
 
                                     <div class="form-group">
                                       <label for="exampleInputUsername1">Status</label><span class="text-danger">*</span>

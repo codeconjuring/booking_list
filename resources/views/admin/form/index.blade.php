@@ -14,7 +14,11 @@
                 <div class="page-title-box d-sm-flex align-items-center justify-content-between">
                     <h4 class="mb-sm-0 font-size-18">{{ $page_title }}</h4>
                     <div class="page-title-right">
-                        <a href="{{ route('admin.form.create') }}" class="btn btn-primary"><i data-feather="plus"></i> Create Book</a>
+                        @can('Download Report Book Management')
+
+                            <a href="#" onclick="downloadReport()" class="btn btn-primary"><i class="fas fa-download"></i> &nbsp;Download Report</a>
+
+                        @endcan
                     </div>
                 </div>
             </div>

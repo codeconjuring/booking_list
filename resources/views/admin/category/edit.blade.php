@@ -27,6 +27,7 @@
                             <div class="col-lg-10 m-auto">
                                 <form class="forms-sample" action="{{ route('admin.category.update',$category) }}" method="POST" autocomplete="off">
                                     @csrf
+                                    @method('PUT')
 
 
                                     <div class="form-group">

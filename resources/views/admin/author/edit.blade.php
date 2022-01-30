@@ -27,6 +27,7 @@
                             <div class="col-lg-10 m-auto">
                                 <form class="forms-sample" action="{{ route('admin.author.update',$author) }}" method="POST" autocomplete="off">
                                     @csrf
+                                    @method('PUT')
 
                                       <div class="form-group">
                                         <label for="exampleInputUsername1">Author Name</label><span class="text-danger">*</span>

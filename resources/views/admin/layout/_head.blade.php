@@ -6,16 +6,18 @@
 <!-- App favicon -->
 <meta name="csrf-token" content="{{ csrf_token() }}">
 @if(Settings::get('favicon'))
-    <link rel="shortcut icon" href="{{ asset(Storage::url(Settings::get('favicon'))) }}" />
+<link rel="shortcut icon" href="{{ asset(Storage::url(Settings::get('favicon'))) }}" />
 @else
-    <link rel="shortcut icon" href="{{ asset(config('settings.favicon')) }}" />
+<link rel="shortcut icon" href="{{ asset(config('settings.favicon')) }}" />
 @endif
 
 <!-- preloader css -->
 <link rel="stylesheet" href="{{ asset('dashboard/update_assets/css/preloader.min.css') }}" type="text/css" />
 <!-- DataTables -->
-<link href="{{ asset('dashboard/update_assets/libs/datatables.net-bs4/css/dataTables.bootstrap4.min.css') }}" rel="stylesheet" type="text/css" />
-<link href="{{ asset('dashboard/update_assets/libs/datatables.net-buttons-bs4/css/buttons.bootstrap4.min.css') }}" rel="stylesheet" type="text/css" />
+<link href="{{ asset('dashboard/update_assets/libs/datatables.net-bs4/css/dataTables.bootstrap4.min.css') }}"
+    rel="stylesheet" type="text/css" />
+<link href="{{ asset('dashboard/update_assets/libs/datatables.net-buttons-bs4/css/buttons.bootstrap4.min.css') }}"
+    rel="stylesheet" type="text/css" />
 
 <!-- Bootstrap Css -->
 <link href="{{ asset('dashboard/update_assets/css/bootstrap.min.css') }}" rel="stylesheet" type="text/css" />
@@ -25,7 +27,8 @@
 
 
 <link href="{{ asset('dashboard/update_assets/libs/select2/css/select2.min.css') }}" rel="stylesheet" type="text/css" />
-<link href="{{ asset('dasboard/update_assets/libs/dropzone/min/dropzone.min.css') }}" rel="stylesheet" type="text/css" />
+<link href="{{ asset('dashboard/update_assets/libs/dropzone/min/dropzone.min.css') }}" rel="stylesheet"
+    type="text/css" />
 <link href="{{ asset('dashboard/update_assets/libs/select2/css/select2.min.css') }}" rel="stylesheet" type="text/css" />
 
 

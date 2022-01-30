@@ -2,12 +2,12 @@
 
 @import "../base/variable";
 body {
-  background-color: #f8f8f8;
-  font-family: "Poppins", sans-serif;
-  overflow-x: hidden;
+    background-color: #f8f8f8;
+    font-family: "Poppins", sans-serif;
+    overflow-x: hidden;
 }
 i {
-  color: $color-primary;
+    color: $color-primary;
 }
 h1,
 h2,
@@ -15,10 +15,23 @@ h3,
 h4,
 h5,
 h6 {
-  margin-bottom: 0;
+    margin-bottom: 0;
 }
 .cc-heading-24 {
-  font-size: 24px;
-  font-weight: 500;
-  padding-bottom: 15px;
+    font-size: 24px;
+    font-weight: 500;
+    padding-bottom: 15px;
+}
+
+a {
+    text-decoration: none;
+    &:hover {
+        text-decoration: none;
+    }
+}
+
+h4 {
+    @media #{$max1440} {
+        font-size: 16px;
+    }
 }

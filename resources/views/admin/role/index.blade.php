@@ -29,7 +29,7 @@
         <div class="col-lg-12">
             <div class="card">
                 <div class="card-body">
-                    {!! $dataTable->table(['class'=>'table table-striped table-bordered dt-responsive nowrap no-footer dtr-inline text-center'], false) !!}
+                    {!! $dataTable->table(['class'=>'table table-striped table-bordered nowrap no-footer dtr-inline text-center'], false) !!}
                 </div>
             </div>
         </div>

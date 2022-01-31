@@ -133,7 +133,11 @@ class HomeController extends Controller
 
     public function login()
     {
-        return view('login');
+        if (auth()->check()) {
+            return redirect(route('admin.dashboard'));
+        } else {
+            return view('login');
+        }
     }
 
     public function attempt(LoginRequest $request)

@@ -1,7 +1,8 @@
 @extends('admin.layout._master')
 
 @section('css')
-
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/dt/dt-1.10.12/datatables.min.css"/>
+<link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.1.0/css/buttons.dataTables.min.css">
 @endsection
 
 @section('content')
@@ -14,11 +15,14 @@
                 <div class="page-title-box d-sm-flex align-items-center justify-content-between">
                     <h4 class="mb-sm-0 font-size-18">{{ $page_title }}</h4>
                     <div class="page-title-right">
-                        @can('Download Report Book Management')
+                        <div class="page-title-right">
+                            <a href="{{ route('admin.form.create') }}" class="btn btn-primary"><i data-feather="plus"></i> Create Book</a>
+                        </div>
+                        {{-- @can('Download Report Book Management')
 
                             <a href="#" onclick="downloadReport()" class="btn btn-primary"><i class="fas fa-download"></i> &nbsp;Download Report</a>
 
-                        @endcan
+                        @endcan --}}
                     </div>
                 </div>
             </div>
@@ -109,9 +113,7 @@
                     <table cellpadding="2" class="cc-datatable table nowrap w-100" id="myTable">
                         <thead>
                           <tr>
-                            @canany(['Edit Book Management','Delete Book Management','Add Another Translation Book Management'])
-                            <th class="text-center">Action</th>
-                            @endcanany
+                            <th class="text-center d-none">  </th>
                             <th class="text-center"> Series </th>
                             <th class="text-center"> No </th>
                             <th class="text-center"> Author </th>
@@ -122,6 +124,9 @@
                             @foreach($form_builder as $key=>$form_bui)
                             <th class="text-center">{{ $form_bui->label }}</th>
                             @endforeach
+                            @canany(['Edit Book Management','Delete Book Management','Add Another Translation Book Management'])
+                            <th class="text-center">Action</th>
+                            @endcanany
                           </tr>
                         </thead>
                         <tbody>
@@ -137,7 +142,6 @@
                                     $series_wise_titles=App\Models\BookList::whereCategoryId($getSeriye->category_id)->get();
                                     $books_count=count($series_wise_titles);
                                     $series_flag=0;
-
                                 @endphp
 
                                 @foreach ($entry as $e)
@@ -177,6 +181,68 @@
                                             }
                                         @endphp
                                         <tr class="tableAddTitles{{ $e->id }}">
+                                            <td class="d-none">-</td>
+                                            @if ($series_flag==0)
+                                                <td class="text-center">{{ $book->serise->name }}</td>
+                                                @php
+                                                    $series_flag=1;
+                                                @endphp
+
+                                            @else
+                                                <td class="text-center"></td>
+                                            @endif
+
+                                            @if ($entry_flag==0)
+                                                <td class="text-center">{{ $book_i++ }}</td>
+                                                @php
+                                                    $entry_flag=1;
+                                                @endphp
+                                            @else
+                                            <td class="text-center"></td>
+                                            @endif
+
+                                            <td class="text-center">{{ $book->author }}</td>
+
+                                            <td class="text-center">{!! $book->available_status!!}</td>
+
+
+                                            <td>{!! $categories !!}</td>
+                                            @if (($main_title_flag==0) && ($filter_data!=1))
+                                            <td class="{{ $entry_id==$e->id?'bg-primary':'' }}"><b><a style="text-decoration: none; color:black" data-flag="0" id="mainTitle{{ $e->id }}" onclick="showMoreTitle('{{ $e->id }}','{{ $book_i }}',$(this).attr('data-flag'))" href="javascript:void(0)">{{ $book->title }} ({{ $entry_count }})</a><img width="10%"  class="buffering-img{{ $e->id }} d-none" src="{{ asset('dashboard/assets/images/loading-buffering.gif') }}" alt=""></b></td>
+                                            @else
+                                            <td class="{{ $entry_id==$e->id?'bg-primary':'' }}">{{ $book->title }}</td>
+                                            @endif
+
+                                            <td class="text-center">{{ $book->language }}</td>
+
+
+
+                                            @php
+                                                $count_form_builder=count($form_builder);
+                                                $book_content_count=count($book->content);
+                                                $result=$count_form_builder-$book_content_count;
+                                            @endphp
+                                            @foreach ($form_builder as $form_bui)
+                                                @if (array_key_exists($form_bui->id,$book->content))
+                                                    @if ($book->content[$form_bui->id]['type']=="1")
+                                                    @php
+                                                                $query=App\Models\Status::query();
+                                                                if(count($select_status)>0){
+                                                                    $query->whereIn('id',$select_status)->whereId($book->content[$form_bui->id]['text']);
+                                                                }else{
+                                                                    $query->whereId($book->content[$form_bui->id]['text']);
+                                                                }
+                                                                $color=$query->first();
+                                                    @endphp
+
+                                                    <td class="text-center" style="background:{{ $color?$color->color:"" }}">{{ $status_array[$book->content[$form_bui->id]['text']]??'-' }}</td>
+                                                    @else
+                                                    <td class="text-center">{{ $book->content[$form_bui->id]['text']  }} </td>
+                                                    @endif
+                                                @else
+                                                    <td class="text-center">-</td>
+                                                @endif
+                                            @endforeach
                                             <td class="text-center">
 
                                                 <div class="dropdown">
@@ -208,64 +274,6 @@
                                                 </div>
 
                                             </td>
-                                            @if ($series_flag==0)
-                                                <td class="text-center">{{ $book->serise->name }}</td>
-                                                @php
-                                                    $series_flag=1;
-                                                @endphp
-
-                                            @else
-                                            <td class="text-center"></td>
-                                            @endif
-
-                                            @if ($entry_flag==0)
-                                                <td class="text-center">{{ $book_i++ }}</td>
-                                                @php
-                                                    $entry_flag=1;
-                                                @endphp
-                                            @else
-                                            <td class="text-center"></td>
-                                            @endif
-
-                                            <td class="text-center">{{ $book->author }}</td>
-
-                                            <td class="text-center">{!! $book->available_status!!}</td>
-
-
-                                            <td>{!! $categories !!}</td>
-                                            @if (($main_title_flag==0) && ($filter_data!=1))
-                                            <td class="{{ $entry_id==$e->id?'bg-primary':'' }}"><b><a style="text-decoration: none; color:black" data-flag="0" id="mainTitle{{ $e->id }}" onclick="showMoreTitle('{{ $e->id }}','{{ $book_i }}',$(this).attr('data-flag'))" href="javascript:void(0)">{{ $book->title }} ({{ $entry_count }})</a><img width="10%"  class="buffering-img{{ $e->id }} d-none" src="{{ asset('dashboard/assets/images/loading-buffering.gif') }}" alt=""></b></td>
-                                            @else
-                                            <td class="{{ $entry_id==$e->id?'bg-primary':'' }}">{{ $book->title }}</td>
-                                            @endif
-
-                                            <td class="text-center">{{ $book->language }}</td>
-                                            @php
-                                                $count_form_builder=count($form_builder);
-                                                $book_content_count=count($book->content);
-                                                $result=$count_form_builder-$book_content_count;
-                                            @endphp
-                                            @foreach ($form_builder as $form_bui)
-                                                @if (array_key_exists($form_bui->id,$book->content))
-                                                    @if ($book->content[$form_bui->id]['type']=="1")
-                                                    @php
-                                                                $query=App\Models\Status::query();
-                                                                if(count($select_status)>0){
-                                                                    $query->whereIn('id',$select_status)->whereId($book->content[$form_bui->id]['text']);
-                                                                }else{
-                                                                    $query->whereId($book->content[$form_bui->id]['text']);
-                                                                }
-                                                                $color=$query->first();
-                                                    @endphp
-
-                                                    <td class="text-center" style="background:{{ $color?$color->color:"" }}">{{ $status_array[$book->content[$form_bui->id]['text']]??'-' }}</td>
-                                                    @else
-                                                    <td class="text-center">{{ $book->content[$form_bui->id]['text']  }} </td>
-                                                    @endif
-                                                @else
-                                                    <td class="text-center">-</td>
-                                                @endif
-                                            @endforeach
                                         </tr>
                                                 @php
                                                     $row_count+=1;
@@ -359,6 +367,15 @@
 
 @section('js')
 
+<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/v/dt/dt-1.10.12/datatables.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/2.1.0/js/dataTables.buttons.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
+<script src="https://cdn.datatables.net/buttons/2.1.0/js/buttons.html5.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/2.1.0/js/buttons.print.min.js"></script>
+
 
 @endsection
 
@@ -366,37 +383,75 @@
 <script>
     var mytable="";
     $(document).ready( function () {
-        mytable=$('#myTable').DataTable({
 
-        @if($paginate_range<=11)
 
-        "pageLength": 10,
+    // $('#myTable').dataTable({
+    //     dom: 'Bfrtip',
+    //     buttons: [
+    //         {
+    //             text: 'Create',
+    //             action: function ( e, dt, node, config ) {
+    //                 window.location =""
+    //             }
+    //         },
+    //         'copy',
+    //         'csv',
+    //         'excel',
+    //         'pdf',
+    //         'print',
 
-        @elseif($paginate_range>11 && $paginate_range<=26)
+    //     ],
+    //     language: {
+    //         paginate: {
+    //         next: '<i class="icon-right-arrow"></i>',
+    //         previous: '<i class="icon-left-arrow"></i>',
+    //         },
+    //         searchPlaceholder: "Search",
+    //         search: '<i class="fas fa-search"></i>',
+    //     },
+    //     });
 
-        "pageLength": 25,
+    // $(".dataTable").wrap('<div class="table-responsive"><div>');
 
-        @elseif($paginate_range>26 && $paginate_range<=51)
+        var table = $('#myTable').DataTable({
+        dom: '<"toolbar">lBftip',
+        buttons:
+        [
 
-        "pageLength": 50,
-
-        @else
-
-        "pageLength": 100,
-
-        @endif
-        "stateSave": true,
-        // searching: false,
-        // paging: true,
-        // info: true
-
+            {
+            text: 'Download Report',
+                action: function ( e, dt, node, config ) {
+                    downloadReport()
+                }
+            },
+            {
+            text: 'Create',
+                action: function ( e, dt, node, config ) {
+                    window.location ="{{ route('admin.form.create') }}"
+                }
+            },
+            'copy',
+            'csv',
+            'excel',
+            'print',
+            {
+                extend: 'pdf',
+                text: 'pdf',
+                orientation: 'landscape',
+                pageSize: 'LEGAL',
+                exportOptions: {
+                    columns: [ -1, ':visible' ]
+                }
+            }
+        ]
     });
 
-    $(".dataTable").wrap('<div class="table-responsive"><div>');
+    $('.dataTable').wrap('<div class="table-responsive"></div>');
 
-    setTimeout(() => {
-        $(window).scrollTop({{ $top_scroll }});
-    }, 1000);
+    $("div.toolbar").html('<b class="float-right mt-1">Download As: &nbsp; </b>');
+
+    table.buttons().container().appendTo($('#printbar'));
+    table.buttons().container().appendTo('#datatable-buttons_wrapper .col-md-6:eq(0)');
 
 
 });

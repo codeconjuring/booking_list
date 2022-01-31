@@ -7,7 +7,7 @@
             @if (Settings::get('site_logo'))
                 <a href="{{ route('admin.dashboard') }}" class="logo logo-dark">
                     <span class="logo-sm">
-                        <img src="{{ asset(Storage::url(Settings::get('site_logo'))) }}" alt="{{ Settings::get('title') }}">
+                        <img src="{{ asset('dashboard/update_assets/images/sort-logo.png') }}" alt="{{ Settings::get('title') }}">
                     </span>
                     <span class="logo-lg">
                         <img src="{{ asset(Storage::url(Settings::get('site_logo'))) }}" alt="{{ Settings::get('title') }}">
@@ -16,7 +16,7 @@
 
                 <a href="{{ route('admin.dashboard') }}" class="logo logo-light">
                     <span class="logo-sm">
-                        <img src="{{ asset(Storage::url(Settings::get('site_logo'))) }}" alt="{{ Settings::get('title') }}">
+                        <img src="{{ asset('dashboard/update_assets/images/sort-logo.png') }}" alt="{{ Settings::get('title') }}">
                     </span>
                     <span class="logo-lg">
                         <img src="{{ asset(Storage::url(Settings::get('site_logo'))) }}" alt="{{ Settings::get('title') }}">
@@ -25,7 +25,7 @@
             @else
                 <a href="{{ route('admin.dashboard') }}" class="logo logo-dark">
                     <span class="logo-sm">
-                        <img src="{{ asset(Storage::url(Settings::get('site_logo'))) }}" alt="{{ Settings::get('title') }}">
+                        <img src="{{ asset('dashboard/update_assets/images/sort-logo.png') }}" alt="{{ Settings::get('title') }}">
                     </span>
                     <span class="logo-lg">
                         <img src="{{ asset(Storage::url(Settings::get('site_logo'))) }}" alt="{{ Settings::get('title') }}">
@@ -34,7 +34,7 @@
 
                 <a href="{{ route('admin.dashboard') }}" class="logo logo-light">
                     <span class="logo-sm">
-                        <img src="{{ asset(config('settings.site_logo')) }}" alt="{{ Settings::get('title') }}">
+                        <img src="{{ asset('dashboard/update_assets/images/sort-logo.png') }}" alt="{{ Settings::get('title') }}">
                     </span>
                     <span class="logo-lg">
                         <img src="{{ asset(config('settings.site_logo')) }}" alt="{{ Settings::get('title') }}">
@@ -81,18 +81,18 @@
             </li>
             <li>
                 <a href="javascript: void(0);" class="has-arrow">
-                    <i class="icon-user"></i>
-                    <span>User</span>
+                     <i class="fas fa-cog"></i>
+                    <span>Sales/Distribution</span>
                 </a>
                 <ul class="sub-menu" aria-expanded="false">
-                    <li><a href="{{ route('admin.role.create') }}">Create Role</a></li>
-                    <li><a href="{{ route('admin.role.index') }}">List Roles</a></li>
+                    <li><a href="#">Production Report</a></li>
+                    <li><a href="#">Distribution Report</a></li>
                 </ul>
             </li>
             <li>
                 <a href="javascript: void(0);" class="has-arrow">
-                    <i class="fas fa-cog"></i>
-                    <span>Settings</span>
+                    <i class="icon-user"></i>
+                    <span>Administration</span>
                 </a>
                 <ul class="sub-menu" aria-expanded="true">
                     <li>
@@ -102,12 +102,20 @@
                         </ul>
                     </li>
                     <li>
+                        <a href="javascript: void(0);" class="has-arrow">Role</a>
+                        <ul class="sub-menu" aria-expanded="true">
+                            <li><a href="{{ route('admin.role.create') }}">Create Role</a></li>
+                            <li><a href="{{ route('admin.role.index') }}">List Roles</a></li>
+                        </ul>
+                    </li>
+                    <li>
                         <a href="javascript: void(0);" class="has-arrow">Setting</a>
                         <ul class="sub-menu" aria-expanded="true">
                             <li><a href="{{ route('admin.setting.index') }}">System Setting</a></li>
                             <li><a href="{{ route('admin.email.index') }}">Email Setting</a></li>
                         </ul>
                     </li>
+
                 </ul>
             </li>
         </ul>

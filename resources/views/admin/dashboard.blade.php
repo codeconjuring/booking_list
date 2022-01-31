@@ -102,12 +102,12 @@
         </div>
 
         @php
-            $bootstrap_colors=['dark','success','info','warning','primary','danger'];
+            $bootstrap_colors=['sky-blue','tia','brown','red','sky-blue',''];
         @endphp
 
         @foreach ($form_builder_name_with_counts as $key=>$form_builder_count)
 
-            <div class="ic-dashboard-card-items box tia bg-gradient-{{ $bootstrap_colors[$loop->iteration]??'primary' }}">
+            <div class="ic-dashboard-card-items box {{ $bootstrap_colors[$loop->iteration]??'brown' }}">
                 <img src="{{ asset('dashboard/update_assets/images/purple/purple-1.png') }}" class="first-img" alt="">
                 <img src="{{ asset('dashboard/update_assets/images/purple/purple-2.png') }}" class="second-img" alt="">
                 <img src="{{ asset('dashboard/update_assets/images/purple/purlple-3.png') }}" class="third-img" alt="">
@@ -310,7 +310,7 @@ if ($("#column_chart_datalabel").length > 0) {
         name: "Total",
         data: [
             @foreach($totale_title_language_counts as $key=>$totale_title_language_count)
-            "{{ $totale_title_language_count->total }}",
+            "{{ $totale_title_language_counts[$key] }}",
             @endforeach
             ],
       },
@@ -342,7 +342,7 @@ if ($("#column_chart_datalabel").length > 0) {
     xaxis: {
       categories: [
         @foreach($totale_title_language_counts as $key=>$totale_title_language_count)
-        "{{ $totale_title_language_count->language }}",
+        "{{ $key }}",
         @endforeach
         ],
     },
@@ -358,44 +358,7 @@ if ($("#column_chart_datalabel").length > 0) {
 
 
 
-  var data = {
-    labels: [
-        @foreach($totale_title_language_counts as $key=>$totale_title_language_count)
-        "{{ $totale_title_language_count->language }}",
-        @endforeach
-    ],
-    datasets: [{
-      label: '',
-      data: [
-        @foreach($totale_title_language_counts as $key=>$totale_title_language_count)
-                "{{ $totale_title_language_count->total }}",
-        @endforeach
-    ],
 
-      borderWidth: 1,
-      fill: false
-    }]
-  };
-
-
-  var options = {
-    scales: {
-      yAxes: [{
-        ticks: {
-          beginAtZero: true
-        }
-      }]
-    },
-    legend: {
-      display: false
-    },
-    elements: {
-      point: {
-        radius: 0
-      }
-    }
-
-  };
 
 
 

@@ -121,94 +121,93 @@
             </div>
 
         @endforeach
-
-
     </div>
 
 
-    {{-- <div class="row mt-5">
-
-    <div class="col-lg-4 grid-margin stretch-card">
-        <div class="card">
-          <div class="card-body">
-            <h3 class="card-title text-center" style="font-size: 2.125rem">Books per language</h3>
-            <hr>
-            <div class="row">
-                <div class="col-md-12">
-                    <select name="" id="" onchange="selectLanguage($(this).val())" class="form-control mt-5 select2">
-                        <option value="">Select Language</option>
-                        @foreach ($languages as $key=>$language)
-                        <option value="{{ $language->language }}">{{ strtoupper($language->language) }}</option>
-                        @endforeach
-                    </select>
+    <section class="cc-mt-80">
+        <div class="ic-pie-chart-heads">
+            <div class="card">
+                <div class="card-body p-2">
+                <div id="doughunt"></div>
+                <ul class="ic-doughunt-text">
+                    <li>
+                        <span>Todo</span><span class="ic-red">35%</span>
+                    </li>
+                    <li>
+                        <span>Progress</span><span class="ic-orange">35%</span>
+                    </li>
+                    <li>
+                        <span>Done</span><span class="ic-green">35%</span>
+                    </li>
+                </ul>
                 </div>
-
-                <div class="col-md-12 text-center">
-                    <h1 style="font-size: 100px;" id="NumberOfBook">0</h1>
-                </div>
-
             </div>
-          </div>
+            <div class="card">
+                <div class="card-body p-2">
+                <div id="doughunt1"></div>
+                <ul class="ic-doughunt-text">
+                    <li>
+                        <span>Todo</span><span class="ic-red">35%</span>
+                    </li>
+                    <li>
+                        <span>Progress</span><span class="ic-orange">35%</span>
+                    </li>
+                    <li>
+                        <span>Done</span><span class="ic-green">35%</span>
+                    </li>
+                </ul>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-body p-2">
+                <div id="doughunt2"></div>
+                <ul class="ic-doughunt-text">
+                    <li>
+                        <span>Todo</span><span class="ic-red">35%</span>
+                    </li>
+                    <li>
+                        <span>Progress</span><span class="ic-orange">35%</span>
+                    </li>
+                    <li>
+                        <span>Done</span><span class="ic-green">35%</span>
+                    </li>
+                </ul>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-body p-2">
+                <div id="doughunt3"></div>
+                <ul class="ic-doughunt-text">
+                    <li>
+                        <span>Todo</span><span class="ic-red">35%</span>
+                    </li>
+                    <li>
+                        <span>Progress</span><span class="ic-orange">35%</span>
+                    </li>
+                    <li>
+                        <span>Done</span><span class="ic-green">35%</span>
+                    </li>
+                </ul>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-body p-2">
+                <div id="doughunt4"></div>
+                <ul class="ic-doughunt-text">
+                    <li>
+                        <span>Todo</span><span class="ic-red">35%</span>
+                    </li>
+                    <li>
+                        <span>Progress</span><span class="ic-orange">35%</span>
+                    </li>
+                    <li>
+                        <span>Done</span><span class="ic-green">35%</span>
+                    </li>
+                </ul>
+                </div>
+            </div>
         </div>
-      </div>
-
-
-
-      <div class="col-lg-4 grid-margin stretch-card">
-        <div class="card">
-          <div class="card-body">
-            <h3 class="card-title text-center" style="font-size: 2.125rem">Titles per series</h3>
-            <hr>
-            <div class="row">
-                <div class="col-md-12">
-                    <select name="" id="" onchange="selectSeries($(this).val())" class="form-control mt-5 select2">
-                        <option value="">Select Series</option>
-                        @foreach ($series as $key=>$serie)
-                        <option value="{{ $serie->id }}">{{ $serie->name }}</option>
-                        @endforeach
-                    </select>
-                </div>
-                <div class="col-md-12 text-center">
-                    <h1 style="font-size: 100px;" id="SeriesCount">0</h1>
-                </div>
-
-            </div>
-          </div>
-        </div>
-      </div>
-
-
-
-
-      <div class="col-lg-4 grid-margin stretch-card">
-        <div class="card">
-          <div class="card-body">
-            <h6 class="card-title text-center" style="font-size: 1.85rem;">Books Per Format</h6>
-            <hr>
-            <div class="col-md-12">
-                <select name="" id="" onchange="selectStatusLanguage($(this).val())" class="form-control mt-5 select2">
-                    <option value="">Select Language</option>
-                    @foreach ($languages as $key=>$language)
-                        <option value="{{ $language->language }}">{{ strtoupper($language->language) }}</option>
-                    @endforeach
-                </select>
-
-            </div>
-
-            <div class="row">
-                <div class="col-md-12 text-center">
-                    <div id="languageTable"></div>
-                </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-    </div> --}}
-
-
-
-
+    </section>
     <section class="cc-mt-80">
         <div class="row">
             <div class="col-lg-6">
@@ -266,16 +265,244 @@
     <script src="assets/libs/datatables.net-bs4/js/dataTables.bootstrap4.min.js"></script>
     <!-- Buttons examples -->
     <script src="https://cdn.datatables.net/buttons/2.2.2/js/dataTables.buttons.min.js"></script>
+
+    <!-- chart js -->
+    <script src="https://code.highcharts.com/highcharts.js"></script>
+<script src="https://code.highcharts.com/modules/variable-pie.js"></script>
+<script src="https://code.highcharts.com/modules/exporting.js"></script>
+<script src="https://code.highcharts.com/modules/export-data.js"></script>
+<script src="https://code.highcharts.com/modules/accessibility.js"></script>
 @endsection
 
 @section('script')
 
 <script>
 $(function () {
-
     $(document).ready(function() {
         $('.select2').select2();
     });
+
+if ($('#doughunt').length > 0) {
+       Highcharts.setOptions({
+        colors: ['#FF3F24', '#FE852D', '#54D352']
+        });
+        Highcharts.chart('doughunt', {
+        chart: {
+            height: 200,
+            type: 'variablepie'
+        },
+        title: {
+                verticalAlign: 'middle',
+            floating: true,
+            text: 'eBook'
+        },
+    exporting: { enabled: false },
+    tooltip: {
+        headerFormat: '',
+    },
+    plotOptions: {
+        pie: {
+            innerSize: '90%'
+        }
+        },
+    series: [{
+        minPointSize: 10,
+        innerSize: '60%',
+        zMin: 0,
+        name: 'countries',
+        data: [{
+        name: '35%',
+        y: 505370,
+        z: 92.9
+        }, {
+        name: '30%',
+        y: 551500,
+        z: 118.7
+        }, {
+        name: '35%',
+        y: 312685,
+        z: 124.6
+        }]
+    }]
+});
+}
+if ($('#doughunt1').length > 0) {
+       Highcharts.setOptions({
+        colors: ['#FF3F24', '#FE852D', '#54D352']
+        });
+        Highcharts.chart('doughunt1', {
+        chart: {
+            height: 200,
+            type: 'variablepie'
+        },
+        title: {
+                verticalAlign: 'middle',
+            floating: true,
+            text: 'POD1'
+        },
+    exporting: { enabled: false },
+    tooltip: {
+        headerFormat: '',
+    },
+    plotOptions: {
+        pie: {
+            innerSize: '90%'
+        }
+        },
+    series: [{
+        minPointSize: 10,
+        innerSize: '60%',
+        zMin: 0,
+        name: 'countries',
+        data: [{
+        name: '35%',
+        y: 505370,
+        z: 92.9
+        }, {
+        name: '30%',
+        y: 551500,
+        z: 118.7
+        }, {
+        name: '35%',
+        y: 312685,
+        z: 124.6
+        }]
+    }]
+});
+}
+if ($('#doughunt2').length > 0) {
+       Highcharts.setOptions({
+        colors: ['#FF3F24', '#FE852D', '#54D352']
+        });
+        Highcharts.chart('doughunt2', {
+        chart: {
+            height: 200,
+            type: 'variablepie'
+        },
+        title: {
+                verticalAlign: 'middle',
+            floating: true,
+            text: 'Audio'
+        },
+    exporting: { enabled: false },
+    tooltip: {
+        headerFormat: '',
+    },
+    plotOptions: {
+        pie: {
+            innerSize: '90%'
+        }
+        },
+    series: [{
+        minPointSize: 10,
+        innerSize: '60%',
+        zMin: 0,
+        name: 'countries',
+        data: [{
+        name: '35%',
+        y: 505370,
+        z: 92.9
+        }, {
+        name: '30%',
+        y: 551500,
+        z: 118.7
+        }, {
+        name: '35%',
+        y: 312685,
+        z: 124.6
+        }]
+    }]
+});
+}
+if ($('#doughunt3').length > 0) {
+       Highcharts.setOptions({
+        colors: ['#FF3F24', '#FE852D', '#54D352']
+        });
+        Highcharts.chart('doughunt3', {
+        chart: {
+            height: 200,
+            type: 'variablepie'
+        },
+        title: {
+                verticalAlign: 'middle',
+            floating: true,
+            text: 'POD2'
+        },
+    exporting: { enabled: false },
+    tooltip: {
+        headerFormat: '',
+    },
+    plotOptions: {
+        pie: {
+            innerSize: '90%'
+        }
+        },
+    series: [{
+        minPointSize: 10,
+        innerSize: '60%',
+        zMin: 0,
+        name: 'countries',
+        data: [{
+        name: '35%',
+        y: 505370,
+        z: 92.9
+        }, {
+        name: '30%',
+        y: 551500,
+        z: 118.7
+        }, {
+        name: '35%',
+        y: 312685,
+        z: 124.6
+        }]
+    }]
+});
+}
+if ($('#doughunt4').length > 0) {
+       Highcharts.setOptions({
+        colors: ['#FF3F24', '#FE852D', '#54D352']
+        });
+        Highcharts.chart('doughunt4', {
+        chart: {
+            height: 200,
+            type: 'variablepie'
+        },
+        title: {
+                verticalAlign: 'middle',
+            floating: true,
+            text: 'GFP'
+        },
+    exporting: { enabled: false },
+    tooltip: {
+        headerFormat: '',
+    },
+    plotOptions: {
+        pie: {
+            innerSize: '90%'
+        }
+        },
+    series: [{
+        minPointSize: 10,
+        innerSize: '60%',
+        zMin: 0,
+        name: 'countries',
+        data: [{
+        name: '35%',
+        y: 505370,
+        z: 92.9
+        }, {
+        name: '30%',
+        y: 551500,
+        z: 118.7
+        }, {
+        name: '35%',
+        y: 312685,
+        z: 124.6
+        }]
+    }]
+});
+}
+
 
 if ($("#column_chart_datalabel").length > 0) {
   var options = {
@@ -347,17 +574,12 @@ if ($("#column_chart_datalabel").length > 0) {
         ],
     },
   };
-
   var chart = new ApexCharts(
     document.querySelector("#column_chart_datalabel"),
     options
   );
-
   chart.render();
 }
-
-
-
   var data = {
     labels: [
         @foreach($totale_title_language_counts as $key=>$totale_title_language_count)
@@ -371,13 +593,10 @@ if ($("#column_chart_datalabel").length > 0) {
                 "{{ $totale_title_language_count->total }}",
         @endforeach
     ],
-
       borderWidth: 1,
       fill: false
     }]
   };
-
-
   var options = {
     scales: {
       yAxes: [{
@@ -394,12 +613,7 @@ if ($("#column_chart_datalabel").length > 0) {
         radius: 0
       }
     }
-
   };
-
-
-
-
   // Get context with jQuery - using jQuery's .get() method.
   if ($("#barChart").length) {
     var barChartCanvas = $("#barChart").get(0).getContext("2d");
@@ -410,10 +624,7 @@ if ($("#column_chart_datalabel").length > 0) {
       options: options
     });
   }
-
-
 });
-
 // Select Language
 function selectLanguage(val)
 {
@@ -429,7 +640,6 @@ function selectLanguage(val)
                     $('#NumberOfBook').html(0);
                     toastr["error"]("Not Found ! ! !");
                 }
-
             },
             error:function(error){
                 toastr["error"](error);
@@ -439,7 +649,6 @@ function selectLanguage(val)
         toastr["error"]("Please Select Language");
     }
 }
-
 // Slelect Series
 function selectSeries(val)
 {
@@ -449,15 +658,12 @@ function selectSeries(val)
             method:"GET",
             data:{'service_id':val},
             success:function(response){
-
-
                 if(response.series_count){
                     $('#SeriesCount').html(response.series_count);
                 }else{
                     $('#SeriesCount').html(0);
                     toastr["error"]("Not Found ! ! !");
                 }
-
             },
             error:function(error){
                 toastr["error"](error);
@@ -467,7 +673,6 @@ function selectSeries(val)
         toastr["error"]("Please Select Service");
     }
 }
-
 // Select language
 function selectStatusLanguage(val){
     if(val){
@@ -487,7 +692,6 @@ function selectStatusLanguage(val){
         });
     }
 }
-
 // After page loading
 setTimeout(() => {
     $.ajax({
@@ -498,7 +702,6 @@ setTimeout(() => {
             console.log(response);
             $('#tableLanguage').html(" ");
             $('#tableLanguage').html(response.table);
-
             $('#dataTable').dataTable({
                 language: {
                     paginate: {
@@ -509,7 +712,6 @@ setTimeout(() => {
                     search: '<i class="fas fa-search"></i>',
                 },
                 });
-
             $(".dataTable").wrap('<div class="table-responsive"><div>');
         },
         error:function(error){
@@ -517,14 +719,8 @@ setTimeout(() => {
         }
     });
 }, 5000);
-
 // Doughnut Chart
-
-
-
-
 // Show tooltips always even the stats are zero
-
 Chart.pluginService.register({
   beforeRender: function(chart) {
     if (chart.config.options.showAllTooltips) {
@@ -542,7 +738,6 @@ Chart.pluginService.register({
           }, chart));
         });
       });
-
       // turn off normal tooltips
       chart.options.tooltips.enabled = false;
     }
@@ -555,7 +750,6 @@ Chart.pluginService.register({
           return;
         chart.allTooltipsOnce = true;
       }
-
       // turn on tooltips
       chart.options.tooltips.enabled = true;
       Chart.helpers.each(chart.pluginTooltips, function(tooltip) {
@@ -569,15 +763,10 @@ Chart.pluginService.register({
     }
   }
 });
-
-
-
 @php
     $status=App\Models\Status::pluck('color','status')->toArray();
 @endphp
-
 @foreach ($coughnut_charts as $key=>$col)
-
 @php
     $column_number=count($col);
     $total=0;
@@ -585,21 +774,16 @@ Chart.pluginService.register({
     $key=str_replace("-","_",$key);
     $key=str_replace(" ","_",$key);
 @endphp
-
 var doughnutPieData{{ $key }} = {
     datasets: [{
       label: "",
       data: [
           @foreach($col as $c=>$co)
-
             @php
                 $total+=$co;
-
             @endphp
           @endforeach
-
           @foreach($col as $c=>$co)
-
             @php
                 if($co>0)
                 {
@@ -608,16 +792,13 @@ var doughnutPieData{{ $key }} = {
                     $percentages=0;
                 }
             @endphp
-
             {{ number_format($percentages,2) }},
           @endforeach
-
         ],
       backgroundColor: [
         @foreach($col as $c=>$co)
             "{{ $status[$c] }}",
         @endforeach
-
       ],
       borderColor: [
         @foreach($col as $c=>$co)
@@ -625,16 +806,13 @@ var doughnutPieData{{ $key }} = {
         @endforeach
       ],
     }],
-
     // These labels appear in the legend and in the tooltips when hovering different arcs
     labels: [
         @foreach($col as $c=>$co)
             "{{ $c }}",
         @endforeach
     ],
-
   };
-
   var doughnutPieOptions{{ $key }} = {
     responsive: true,
     animation: {
@@ -642,11 +820,8 @@ var doughnutPieData{{ $key }} = {
       animateRotate: true
     }
   };
-
 if ($("#doughnutChart{{ $key }}").length) {
-
     var doughnutChartCanvas{{ $key }} = $("#doughnutChart{{ $key }}").get(0).getContext("2d");
-
     var doughnutChart = new Chart(doughnutChartCanvas{{ $key }}, {
       type: 'line',
       data: doughnutPieData{{ $key }},
@@ -663,25 +838,12 @@ if ($("#doughnutChart{{ $key }}").length) {
                 }
             }
         }
-
     });
   }
-
 @endforeach
-
-
-
-
-
 //   Lanugae Seppdo Meter
 $("#languageCount").speedometer({divFact:10,eventListenerType:'click'});
 $("#languageCount").click();
-
-
-
-
-
-
 </script>
 
 @endsection

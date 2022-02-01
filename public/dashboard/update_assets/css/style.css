@@ -737,7 +737,7 @@ body[data-sidebar-size="sm"] {
   body[data-sidebar-size="sm"] .logo span.logo-sm {
     display: block; }
   body[data-sidebar-size="sm"] .vertical-menu {
-    position: absolute;
+    position: fixed;
     width: 80px !important;
     z-index: 5; }
     body[data-sidebar-size="sm"] .vertical-menu .simplebar-content-wrapper {
@@ -1820,7 +1820,7 @@ body[data-sidebar-size="sm"] {
   body[data-sidebar-size="sm"] .logo span.logo-sm {
     display: block; }
   body[data-sidebar-size="sm"] .vertical-menu {
-    position: absolute;
+    position: fixed;
     width: 80px !important;
     z-index: 5; }
     body[data-sidebar-size="sm"] .vertical-menu .simplebar-content-wrapper {
@@ -6256,5 +6256,55 @@ table.dataTable > thead .sorting_desc_disabled::after {
       top: 50%;
       right: -22px;
       transform: translateY(-50%); }
+
+.highcharts-title {
+  font-size: 24px;
+  line-height: 36px;
+  color: #000; }
+
+.ic-doughunt-text {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  grid-gap: 10px;
+  margin-top: 20px;
+  padding-left: 0; }
+  .ic-doughunt-text li {
+    list-style: none; }
+    .ic-doughunt-text li span {
+      font-weight: 500;
+      font-size: 14px;
+      line-height: 16px;
+      color: #5B6572; }
+      .ic-doughunt-text li span:not(:last-child) {
+        margin-right: 8px; }
+    .ic-doughunt-text li .ic-red {
+      color: #FF452B; }
+    .ic-doughunt-text li .ic-orange {
+      color: #FF8932; }
+    .ic-doughunt-text li .ic-green {
+      color: #56D353; }
+
+.ic-pie-chart-heads {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  grid-gap: 30px; }
+  .ic-pie-chart-heads .card {
+    margin-top: 0; }
+  @media (max-width: 1800px) {
+    .ic-pie-chart-heads {
+      grid-gap: 20px; } }
+  @media (max-width: 1700px) {
+    .ic-pie-chart-heads {
+      grid-template-columns: repeat(4, 1fr); } }
+  @media (max-width: 1440px) {
+    .ic-pie-chart-heads {
+      grid-template-columns: repeat(3, 1fr); } }
+  @media (max-width: 1199px) {
+    .ic-pie-chart-heads {
+      grid-template-columns: repeat(2, 1fr); } }
+  @media (max-width: 650px) {
+    .ic-pie-chart-heads {
+      grid-template-columns: repeat(1, 1fr); } }
 
 /*# sourceMappingURL=style.css.map */

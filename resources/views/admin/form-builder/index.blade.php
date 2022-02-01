@@ -27,6 +27,7 @@
         <div class="col-lg-12">
             <div class="card">
                 <div class="card-body">
+                    <div class="table-responsive">
                     <table cellpadding="2" class="cc-datatable table nowrap w-100 " id="myTable">
                         <thead>
                             <tr>
@@ -78,6 +79,7 @@
 
                         </tbody>
                     </table>
+                    </div>
                 </div>
             </div>
         </div>

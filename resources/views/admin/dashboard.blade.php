@@ -124,6 +124,32 @@
     </div>
 
 
+
+    <section class="cc-mt-80">
+        <div class="row">
+            <div class="col-lg-6">
+                <div class="card">
+                    <div class="card-header">
+                        <h4>Top 10 languges by titles published</h4>
+                    </div>
+                    <div class="card-body pt-0 ps-0 pe-0">
+                        <div id="column_chart_datalabel" class="apex-charts" dir="ltr"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="card">
+                    <div class="card-header">
+                        <h4>Parcent Titles Status per Series</h4>
+                    </div>
+                    <div class="card-body pt-0 ps-0 pe-0">
+                        <div id="bar_chart_datalabel" class="apex-charts" dir="ltr"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
     <section class="cc-mt-80">
         <div class="ic-pie-chart-heads">
             <div class="card">
@@ -204,30 +230,6 @@
                         <span>Done</span><span class="ic-green">35%</span>
                     </li>
                 </ul>
-                </div>
-            </div>
-        </div>
-    </section>
-    <section class="cc-mt-80">
-        <div class="row">
-            <div class="col-lg-6">
-                <div class="card">
-                    <div class="card-header">
-                        <h4>Top 10 languges by titles published</h4>
-                    </div>
-                    <div class="card-body pt-0 ps-0 pe-0">
-                        <div id="column_chart_datalabel" class="apex-charts" dir="ltr"></div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-6">
-                <div class="card">
-                    <div class="card-header">
-                        <h4>Parcent Titles Status per Series</h4>
-                    </div>
-                    <div class="card-body pt-0 ps-0 pe-0">
-                        <div id="bar_chart_datalabel" class="apex-charts" dir="ltr"></div>
-                    </div>
                 </div>
             </div>
         </div>
@@ -355,7 +357,7 @@ if ($('#doughunt1').length > 0) {
         zMin: 0,
         name: 'countries',
         data: [{
-        name: '35%',
+        name: '38%',
         y: 505370,
         z: 92.9
         }, {
@@ -582,12 +584,12 @@ if ($("#column_chart_datalabel").length > 0) {
 }
   var data = {
     labels: [
-       
+
     ],
     datasets: [{
       label: '',
       data: [
-      
+
     ],
       borderWidth: 1,
       fill: false
@@ -621,7 +623,7 @@ if ($("#column_chart_datalabel").length > 0) {
       options: options
     });
   }
-  
+
 });
 // Select Language
 function selectLanguage(val)

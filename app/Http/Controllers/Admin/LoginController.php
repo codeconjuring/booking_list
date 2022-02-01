@@ -170,7 +170,42 @@ class LoginController extends Controller
                         }
                     }
                 }
-                $table = "<table id='dataTable' cellpadding='2' class='cc-datatable table nowrap w-100'><thead><tr><th class='text-center'>#</th>";
+
+                // $status_done_id = '';
+                // foreach ($status_map as $status_id => $status_name) {
+
+                //     if ($status_name == "Done" || $status_name == "done") {
+                //         $status_done_id = $status_id;
+                //         break;
+                //     }
+
+                // }
+
+                // $ebook_id = '';
+                // foreach ($column_map as $col_id => $col_name) {
+
+                //     if (strtolower($col_name) == "ebook") {
+                //         $ebook_id = $col_id;
+                //         break;
+                //     }
+                // }
+
+                // $temp_array = [];
+                // foreach ($lanwise_count as $lan => $column_id) {
+
+                //     $temp_array[$lan] = $column_id[$ebook_id][$status_done_id];
+
+                //     // dd($column_id[$ebook_id][$status_done_id]);
+                // }
+
+                // arsort($temp_array);
+                // foreach ($temp_array as $lan => $count) {
+
+                //     $temp_array[$lan] = $lanwise_count[$lan];
+                // }
+                // $lanwise_count = $temp_array;
+
+                $table = "<table id='dataTable' cellpadding='2' class='cc-datatable dataTable table nowrap w-100'><thead><tr><th class='text-center'>#</th>";
                 foreach ($column as $col) {
                     $table .= "<th class='text-center'>" . $col->label . "</th>";
                 }
@@ -188,7 +223,9 @@ class LoginController extends Controller
                     }
                     $table .= "</tr>";
                 }
+
                 $table .= "</tbody></table>";
+
                 return response()->json(['table' => $table]);
             }
 

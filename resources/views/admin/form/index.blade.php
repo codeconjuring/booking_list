@@ -448,10 +448,10 @@
 
     $('.dataTable').wrap('<div class="table-responsive"></div>');
 
-    $("div.toolbar").html('<b class="float-right mt-1">Download As: &nbsp; </b>');
+    // $("div.toolbar").html('<b class="float-right mt-1">Download As: &nbsp; </b>');
 
-    table.buttons().container().appendTo($('#printbar'));
-    table.buttons().container().appendTo('#datatable-buttons_wrapper .col-md-6:eq(0)');
+    // table.buttons().container().appendTo($('#printbar'));
+    // table.buttons().container().appendTo('#datatable-buttons_wrapper .col-md-6:eq(0)');
 
 
 });

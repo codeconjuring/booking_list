@@ -7,6 +7,7 @@
 <link href="{{ asset('dashboard/update_assets/libs/datatables.net-buttons-bs4/css/buttons.bootstrap4.min.css') }}" rel="stylesheet" type="text/css" />
 @endsection
 
+
 @section('content')
 
 <div class="page-content">
@@ -330,15 +331,16 @@ if ($('#doughunt').length > 0) {
 }
 if ($('#doughunt1').length > 0) {
        Highcharts.setOptions({
-        colors: ['#FF3F24', '#FE852D', '#54D352']
+            colors: ['#FF3F24', '#FE852D', '#54D352']
         });
+
         Highcharts.chart('doughunt1', {
         chart: {
             height: 200,
             type: 'variablepie'
         },
         title: {
-                verticalAlign: 'middle',
+            verticalAlign: 'middle',
             floating: true,
             text: 'POD1'
         },
@@ -351,13 +353,13 @@ if ($('#doughunt1').length > 0) {
             innerSize: '90%'
         }
         },
-    series: [{
+        series: [{
         minPointSize: 10,
         innerSize: '60%',
         zMin: 0,
         name: 'countries',
         data: [{
-        name: '38%',
+        name: '35%',
         y: 505370,
         z: 92.9
         }, {
@@ -703,6 +705,8 @@ setTimeout(() => {
             $('#tableLanguage').html(" ");
             $('#tableLanguage').html(response.table);
             $('#dataTable').dataTable({
+                aaSorting: [],
+                bSort: false,
                 language: {
                     paginate: {
                     next: '<i class="icon-right-arrow"></i>',
@@ -713,6 +717,8 @@ setTimeout(() => {
                 },
                 });
             $(".dataTable").wrap('<div class="table-responsive"><div>');
+
+            // $('#dataTable th').unbind('click.DT');
         },
         error:function(error){
             toastr["error"](error);

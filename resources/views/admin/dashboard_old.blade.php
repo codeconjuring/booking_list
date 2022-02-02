@@ -228,44 +228,7 @@ $(function () {
         $('.select2').select2();
     });
 
-  var data = {
-    labels: [
-        @foreach($totale_title_language_counts as $key=>$totale_title_language_count)
-        "{{ $totale_title_language_count->language }}",
-        @endforeach
-    ],
-    datasets: [{
-      label: '',
-      data: [
-        @foreach($totale_title_language_counts as $key=>$totale_title_language_count)
-                "{{ $totale_title_language_count->total }}",
-        @endforeach
-    ],
 
-      borderWidth: 1,
-      fill: false
-    }]
-  };
-
-
-  var options = {
-    scales: {
-      yAxes: [{
-        ticks: {
-          beginAtZero: true
-        }
-      }]
-    },
-    legend: {
-      display: false
-    },
-    elements: {
-      point: {
-        radius: 0
-      }
-    }
-
-  };
 
 
 
@@ -458,7 +421,12 @@ var doughnutPieData{{ $key }} = {
           @foreach($col as $c=>$co)
 
             @php
-                $percentages=($co/$total)*100;
+                if($co==0){
+                    $percentages=0;
+                }else{
+                    $percentages=($co/$total)*100;
+                }
+
             @endphp
 
             {{ number_format($percentages,2) }},

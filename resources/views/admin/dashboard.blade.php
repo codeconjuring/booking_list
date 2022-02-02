@@ -153,86 +153,49 @@
 
     <section class="cc-mt-80">
         <div class="ic-pie-chart-heads">
-            <div class="card">
-                <div class="card-body p-2">
-                <div id="doughunt"></div>
-                <ul class="ic-doughunt-text">
-                    <li>
-                        <span>Todo</span><span class="ic-red">35%</span>
-                    </li>
-                    <li>
-                        <span>Progress</span><span class="ic-orange">35%</span>
-                    </li>
-                    <li>
-                        <span>Done</span><span class="ic-green">35%</span>
-                    </li>
-                </ul>
-                </div>
-            </div>
-            <div class="card">
-                <div class="card-body p-2">
-                <div id="doughunt1"></div>
-                <ul class="ic-doughunt-text">
-                    <li>
-                        <span>Todo</span><span class="ic-red">35%</span>
-                    </li>
-                    <li>
-                        <span>Progress</span><span class="ic-orange">35%</span>
-                    </li>
-                    <li>
-                        <span>Done</span><span class="ic-green">35%</span>
-                    </li>
-                </ul>
-                </div>
-            </div>
-            <div class="card">
-                <div class="card-body p-2">
-                <div id="doughunt2"></div>
-                <ul class="ic-doughunt-text">
-                    <li>
-                        <span>Todo</span><span class="ic-red">35%</span>
-                    </li>
-                    <li>
-                        <span>Progress</span><span class="ic-orange">35%</span>
-                    </li>
-                    <li>
-                        <span>Done</span><span class="ic-green">35%</span>
-                    </li>
-                </ul>
-                </div>
-            </div>
-            <div class="card">
-                <div class="card-body p-2">
-                <div id="doughunt3"></div>
-                <ul class="ic-doughunt-text">
-                    <li>
-                        <span>Todo</span><span class="ic-red">35%</span>
-                    </li>
-                    <li>
-                        <span>Progress</span><span class="ic-orange">35%</span>
-                    </li>
-                    <li>
-                        <span>Done</span><span class="ic-green">35%</span>
-                    </li>
-                </ul>
-                </div>
-            </div>
-            <div class="card">
-                <div class="card-body p-2">
-                <div id="doughunt4"></div>
-                <ul class="ic-doughunt-text">
-                    <li>
-                        <span>Todo</span><span class="ic-red">35%</span>
-                    </li>
-                    <li>
-                        <span>Progress</span><span class="ic-orange">35%</span>
-                    </li>
-                    <li>
-                        <span>Done</span><span class="ic-green">35%</span>
-                    </li>
-                </ul>
-                </div>
-            </div>
+            @foreach ($coughnut_charts as $builder=>$status)
+            @php
+                $column_number=count($status);
+                $total=0;
+                $percentages=0;
+                $builder=str_replace("-","_",$builder);
+                $builder=str_replace(" ","_",$builder);
+            @endphp
+
+                @foreach($status as $s=>$value)
+
+                @php
+                    $total+=$value;
+
+                @endphp
+
+                @endforeach
+
+                    <div class="card">
+                        <div class="card-body p-2">
+                        <div id="doughunt-{{ $builder }}"></div>
+                        <ul class="ic-doughunt-text">
+                            @foreach ($status as $s=>$value)
+
+                            @php
+                                if($value==0){
+                                    $percentages=0;
+                                }else{
+                                    $percentages=($value/$total)*100;
+                                }
+
+                            @endphp
+
+                            <li>
+                                <span>{{ $s }}</span><span class="ic-red">{{ number_format($percentages,2) }}%</span>
+                            </li>
+                            @endforeach
+                        </ul>
+                        </div>
+                    </div>
+
+
+            @endforeach
         </div>
     </section>
 
@@ -257,7 +220,10 @@
 </div>
 
 
+
+
 @endsection
+
 
 
 @section('js')
@@ -285,56 +251,29 @@ $(function () {
         $('.select2').select2();
     });
 
-if ($('#doughunt').length > 0) {
-       Highcharts.setOptions({
-        colors: ['#FF3F24', '#FE852D', '#54D352']
-        });
-        Highcharts.chart('doughunt', {
-        chart: {
-            height: 200,
-            type: 'variablepie'
-        },
-        title: {
-                verticalAlign: 'middle',
-            floating: true,
-            text: 'eBook'
-        },
-    exporting: { enabled: false },
-    tooltip: {
-        headerFormat: '',
-    },
-    plotOptions: {
-        pie: {
-            innerSize: '90%'
-        }
-        },
-    series: [{
-        minPointSize: 10,
-        innerSize: '60%',
-        zMin: 0,
-        name: 'countries',
-        data: [{
-        name: '35%',
-        y: 505370,
-        z: 92.9
-        }, {
-        name: '30%',
-        y: 551500,
-        z: 118.7
-        }, {
-        name: '35%',
-        y: 312685,
-        z: 124.6
-        }]
-    }]
-});
-}
-if ($('#doughunt1').length > 0) {
-       Highcharts.setOptions({
-            colors: ['#FF3F24', '#FE852D', '#54D352']
-        });
 
-        Highcharts.chart('doughunt1', {
+
+    @foreach ($coughnut_charts as $builder=>$status)
+    @php
+        $column_number=count($status);
+        $total=0;
+        $percentages=0;
+        $builder=str_replace("-","_",$builder);
+        $builder=str_replace(" ","_",$builder);
+    @endphp
+
+        @foreach($status as $s=>$value)
+
+        @php
+            $total+=$value;
+
+        @endphp
+
+        @endforeach
+
+       Highcharts.setOptions({
+        });
+        Highcharts.chart('doughunt-{{ $builder }}', {
         chart: {
             height: 200,
             type: 'variablepie'
@@ -342,51 +281,7 @@ if ($('#doughunt1').length > 0) {
         title: {
             verticalAlign: 'middle',
             floating: true,
-            text: 'POD1'
-        },
-    exporting: { enabled: false },
-    tooltip: {
-        headerFormat: '',
-    },
-    plotOptions: {
-        pie: {
-            innerSize: '90%'
-        }
-        },
-        series: [{
-        minPointSize: 10,
-        innerSize: '60%',
-        zMin: 0,
-        name: 'countries',
-        data: [{
-        name: '35%',
-        y: 505370,
-        z: 92.9
-        }, {
-        name: '30%',
-        y: 551500,
-        z: 118.7
-        }, {
-        name: '35%',
-        y: 312685,
-        z: 124.6
-        }]
-    }]
-});
-}
-if ($('#doughunt2').length > 0) {
-       Highcharts.setOptions({
-        colors: ['#FF3F24', '#FE852D', '#54D352']
-        });
-        Highcharts.chart('doughunt2', {
-        chart: {
-            height: 200,
-            type: 'variablepie'
-        },
-        title: {
-                verticalAlign: 'middle',
-            floating: true,
-            text: 'Audio'
+            text:'{{ $builder }}'
         },
     exporting: { enabled: false },
     tooltip: {
@@ -401,111 +296,45 @@ if ($('#doughunt2').length > 0) {
         minPointSize: 10,
         innerSize: '60%',
         zMin: 0,
-        name: 'countries',
-        data: [{
-        name: '35%',
-        y: 505370,
-        z: 92.9
-        }, {
-        name: '30%',
-        y: 551500,
-        z: 118.7
-        }, {
-        name: '35%',
-        y: 312685,
-        z: 124.6
-        }]
+        name: '{{ $builder }}',
+        data: [
+            @php
+                $colors=['#FF3F24', '#FE852D', '#54D352','#5dfdad','#99cadb','#d94c12','#168b64','#ffa500','#9beb34','#1ebbd7'];
+                $color_count=0;
+            @endphp
+            @foreach ($status as $s=>$value)
+
+            @php
+                if($value==0){
+                    $percentages=0;
+                }else{
+                    $percentages=($value/$total)*100;
+                }
+
+            @endphp
+
+
+            {
+                name: '{{ number_format($percentages,2) }}%',
+                y: {{ number_format($percentages,2) }},
+                z: {{ number_format($percentages,2) }},
+                color: '{{ $colors[$color_count] }}'
+            },
+
+            @php
+                $color_count+=1;
+            @endphp
+
+            @endforeach
+
+      ]
     }]
 });
-}
-if ($('#doughunt3').length > 0) {
-       Highcharts.setOptions({
-        colors: ['#FF3F24', '#FE852D', '#54D352']
-        });
-        Highcharts.chart('doughunt3', {
-        chart: {
-            height: 200,
-            type: 'variablepie'
-        },
-        title: {
-                verticalAlign: 'middle',
-            floating: true,
-            text: 'POD2'
-        },
-    exporting: { enabled: false },
-    tooltip: {
-        headerFormat: '',
-    },
-    plotOptions: {
-        pie: {
-            innerSize: '90%'
-        }
-        },
-    series: [{
-        minPointSize: 10,
-        innerSize: '60%',
-        zMin: 0,
-        name: 'countries',
-        data: [{
-        name: '35%',
-        y: 505370,
-        z: 92.9
-        }, {
-        name: '30%',
-        y: 551500,
-        z: 118.7
-        }, {
-        name: '35%',
-        y: 312685,
-        z: 124.6
-        }]
-    }]
-});
-}
-if ($('#doughunt4').length > 0) {
-       Highcharts.setOptions({
-        colors: ['#FF3F24', '#FE852D', '#54D352']
-        });
-        Highcharts.chart('doughunt4', {
-        chart: {
-            height: 200,
-            type: 'variablepie'
-        },
-        title: {
-                verticalAlign: 'middle',
-            floating: true,
-            text: 'GFP'
-        },
-    exporting: { enabled: false },
-    tooltip: {
-        headerFormat: '',
-    },
-    plotOptions: {
-        pie: {
-            innerSize: '90%'
-        }
-        },
-    series: [{
-        minPointSize: 10,
-        innerSize: '60%',
-        zMin: 0,
-        name: 'countries',
-        data: [{
-        name: '35%',
-        y: 505370,
-        z: 92.9
-        }, {
-        name: '30%',
-        y: 551500,
-        z: 118.7
-        }, {
-        name: '35%',
-        y: 312685,
-        z: 124.6
-        }]
-    }]
-});
-}
+
+
+@endforeach
+
+
 
 
 if ($("#column_chart_datalabel").length > 0) {

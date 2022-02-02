@@ -115,9 +115,10 @@ class AuthorDataTable extends DataTable
                 'width'          => '100px',
             ],
             [
-                'title' => 'Name',
-                'name'  => 'name',
-                'data'  => 'name',
+                'title'     => 'Name',
+                'name'      => 'name',
+                'data'      => 'name',
+                'className' => 'text-left',
             ],
         ];
     }

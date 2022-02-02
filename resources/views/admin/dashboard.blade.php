@@ -275,7 +275,8 @@ $(function () {
         });
         Highcharts.chart('doughunt-{{ $builder }}', {
         chart: {
-            height: 200,
+            height: 400,
+
             type: 'variablepie'
         },
         title: {
@@ -315,7 +316,7 @@ $(function () {
 
 
             {
-                name: '{{ number_format($percentages,2) }}%',
+                name: '{{ number_format($percentages,2) }}% ({{ $s }})',
                 y: {{ number_format($percentages,2) }},
                 z: {{ number_format($percentages,2) }},
                 color: '{{ $colors[$color_count] }}'

@@ -585,7 +585,7 @@ button:focus {
             top: -8px; }
 
 .metismenu {
-  margin: 40px 10px 0 10px; }
+  margin: 40px 0px 0 0px; }
   .metismenu li {
     display: block;
     width: 100%; }
@@ -644,7 +644,9 @@ button:focus {
     transition: transform 0.2s, -webkit-transform 0.2s;
     font-size: 1.1rem; }
   #sidebar-menu ul li {
-    margin-bottom: 10px; }
+    margin-bottom: 10px;
+    padding-right: 10px;
+    padding-left: 10px; }
     #sidebar-menu ul li a {
       display: flex;
       align-items: center;

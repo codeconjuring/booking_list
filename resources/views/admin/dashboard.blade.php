@@ -175,20 +175,29 @@
                         <div class="card-body p-2">
                         <div id="doughunt-{{ $builder }}"></div>
                         <ul class="ic-doughunt-text">
-                            @foreach ($status as $s=>$value)
-
                             @php
-                                if($value==0){
-                                    $percentages=0;
-                                }else{
-                                    $percentages=($value/$total)*100;
-                                }
-
+                                $colors=['#FF3F24', '#FE852D', '#54D352','#5dfdad','#99cadb','#d94c12','#168b64','#ffa500','#9beb34','#1ebbd7'];
+                                $color_count=0;
                             @endphp
+                            @foreach ($status as $s=>$value)
+                                @if(strtolower($s)=='todo' || strtolower($s)=='progress' || strtolower($s)=='done')
+                                    @php
+                                        if($value==0){
+                                            $percentages=0;
+                                        }else{
+                                            $percentages=($value/$total)*100;
+                                        }
 
-                            <li>
-                                <span>{{ $s }}</span><span class="ic-red">{{ number_format($percentages,2) }}%</span>
-                            </li>
+                                    @endphp
+
+                                    <li>
+                                        <span style="color:{{ $colors[$color_count] }}">{{ $s }}</span><span class="">{{ number_format($percentages,2) }}%</span>
+                                    </li>
+
+                                    @php
+                                        $color_count+=1;
+                                    @endphp
+                                @endif
                             @endforeach
                         </ul>
                         </div>
@@ -287,44 +296,59 @@ $(function () {
     exporting: { enabled: false },
     tooltip: {
         headerFormat: '',
+        formatter: function () {
+            console.log(this);
+            return ' <b>' + this.key +'</b>';
+        }
     },
+
     plotOptions: {
         pie: {
             innerSize: '90%'
-        }
+        },
         },
     series: [{
         minPointSize: 10,
         innerSize: '60%',
+        dataLabels: {
+                enabled: false
+            },
         zMin: 0,
         name: '{{ $builder }}',
+
         data: [
             @php
                 $colors=['#FF3F24', '#FE852D', '#54D352','#5dfdad','#99cadb','#d94c12','#168b64','#ffa500','#9beb34','#1ebbd7'];
                 $color_count=0;
             @endphp
             @foreach ($status as $s=>$value)
-
             @php
-                if($value==0){
-                    $percentages=0;
-                }else{
-                    $percentages=($value/$total)*100;
-                }
-
+                $status=strtolower($s);
             @endphp
 
+            @if(strtolower($s)=='todo' || strtolower($s)=='progress' || strtolower($s)=='done')
+                    @php
+                        if($value==0){
+                            $percentages=0;
+                        }else{
+                            $percentages=($value/$total)*100;
+                        }
 
-            {
-                name: '{{ number_format($percentages,2) }}% ({{ $s }})',
-                y: {{ number_format($percentages,2) }},
-                z: {{ number_format($percentages,2) }},
-                color: '{{ $colors[$color_count] }}'
-            },
+                    @endphp
 
-            @php
-                $color_count+=1;
-            @endphp
+
+                    {
+                        name: '{{ $s }}: {{ number_format($percentages,2) }}% ',
+                        y: {{  number_format($percentages,2) }},
+                        z: {{ number_format($percentages,2) }},
+                        color: '{{ $colors[$color_count] }}'
+                    },
+
+                    @php
+                        $color_count+=1;
+                    @endphp
+
+                @endif
 
             @endforeach
 

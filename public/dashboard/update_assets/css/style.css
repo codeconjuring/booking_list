@@ -6270,9 +6270,10 @@ table.dataTable > thead .sorting_desc_disabled::after {
   align-items: center;
   grid-gap: 10px;
   margin-top: 20px;
-  padding-left: 0; }
+  padding-left: 32%; }
   .ic-doughunt-text li {
-    list-style: none; }
+    list-style: none;
+     }
     .ic-doughunt-text li span {
       font-weight: 500;
       font-size: 14px;

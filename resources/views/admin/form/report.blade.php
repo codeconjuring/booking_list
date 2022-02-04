@@ -93,6 +93,10 @@
                                         });
                                     }
 
+                                    if(count($select_ztf)>0){
+                                        $query->whereIn('available',$select_ztf);
+                                    }
+
 
                                     $books=$query->get();
 

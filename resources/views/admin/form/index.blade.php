@@ -58,7 +58,7 @@
                                 @csrf
 
                                 <div class="row">
-                                    <div class="col-md-4">
+                                    <div class="col-md-3">
                                         <label for="">Select Series</label>
                                         <select name="series_ids[]" id="" class="form-control select2" multiple>
                                             <option value="">Select Series</option>
@@ -68,7 +68,7 @@
                                         </select>
                                     </div>
 
-                                    <div class="col-md-4">
+                                    <div class="col-md-3">
                                         <label for="">Select Languages</label>
                                         <select name="language[]" id="" class="form-control select2" multiple>
                                             <option value="">Select Series</option>
@@ -78,12 +78,22 @@
                                         </select>
                                     </div>
 
-                                    <div class="col-md-4">
+                                    <div class="col-md-3">
                                         <label for="">Select Status</label>
                                         <select name="status_ids[]" id="" class="form-control select2" multiple>
                                             <option value="">Select Status</option>
                                             @foreach ($status as $sta)
                                                 <option {{ in_array($sta->id,$select_status)?"selected":"" }} value="{{ $sta->id }}">{{ $sta->status }}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+
+                                    <div class="col-md-3">
+                                        <label for="">ZTF?</label>
+                                        <select name="ztf[]" id="" class="form-control select2" multiple>
+                                            <option value="">Select ZTF</option>
+                                            @foreach ($ztf as $key=>$val)
+                                                <option {{ in_array($key,$select_ztf)?'selected':"" }} value="{{ $key }}">{{ $val }}</option>
                                             @endforeach
                                         </select>
                                     </div>
@@ -130,7 +140,6 @@
                           </tr>
                         </thead>
                         <tbody>
-
                             @php
                                 $book_i=1;
                                 $row_count=0;
@@ -147,11 +156,20 @@
                                 @foreach ($entry as $e)
 
                                     @php
+                                        $query=App\Models\BookList::query();
                                         if(count($select_language)){
-                                            $books=App\Models\BookList::whereIn('language',$select_language)->whereBookId($e->id)->get();
+                                            $query->whereIn('language',$select_language)->whereBookId($e->id);
                                         }else{
-                                            $books=App\Models\BookList::whereBookId($e->id)->get();
+                                            $query->whereBookId($e->id);
                                         }
+
+                                        if(count($select_ztf)>0){
+                                            $query->whereIn('available',$select_ztf);
+                                        }
+
+
+
+                                        $books=$query->get();
 
                                         $entry_count=count($books);
                                         $entry_flag=0;
@@ -347,6 +365,15 @@
                 <select name="status_ids[]" id="" class="form-control select2" multiple>
                     @foreach ($status as $sta)
                         <option value="{{ $sta->id }}">{{ $sta->status }}</option>
+                    @endforeach
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="">ZTF?</label>
+                <select name="ztf[]" id="" class="form-control select2" multiple>
+                    <option value="">Select ZTF</option>
+                    @foreach ($ztf as $key=>$val)
+                        <option {{ in_array($key,$select_ztf)?'selected':"" }} value="{{ $key }}">{{ $val }}</option>
                     @endforeach
                 </select>
             </div>

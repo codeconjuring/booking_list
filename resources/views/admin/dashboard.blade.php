@@ -5,7 +5,15 @@
 <!-- DataTables -->
 <link href="{{ asset('dashboard/update_assets/libs/datatables.net-bs4/css/dataTables.bootstrap4.min.css') }}" rel="stylesheet" type="text/css" />
 <link href="{{ asset('dashboard/update_assets/libs/datatables.net-buttons-bs4/css/buttons.bootstrap4.min.css') }}" rel="stylesheet" type="text/css" />
+
+<style>
+    .highcharts-credits{
+        display: none;
+    }
+</style>
 @endsection
+
+
 
 
 @section('content')
@@ -156,7 +164,7 @@
             @foreach ($coughnut_charts as $builder=>$status)
             @php
                 $column_number=count($status);
-                $total=0;
+
                 $percentages=0;
                 $builder=str_replace("-","_",$builder);
                 $builder=str_replace(" ","_",$builder);
@@ -164,42 +172,44 @@
 
                 @foreach($status as $s=>$value)
 
-                @php
-                    $total+=$value;
 
-                @endphp
 
                 @endforeach
 
                     <div class="card">
                         <div class="card-body p-2">
                         <div id="doughunt-{{ $builder }}"></div>
-                        <ul class="ic-doughunt-text">
-                            @php
-                                $colors=['#FF3F24', '#FE852D', '#54D352','#5dfdad','#99cadb','#d94c12','#168b64','#ffa500','#9beb34','#1ebbd7'];
-                                $color_count=0;
-                            @endphp
-                            @foreach ($status as $s=>$value)
-                                @if(strtolower($s)=='todo' || strtolower($s)=='progress' || strtolower($s)=='done')
+                        <div class="row">
+                            <div class="col-md-12">
+                                <ul class="ic-doughunt-text" style="{{ $builder=='GFP'?'padding-left: 60px':'' }}">
                                     @php
-                                        if($value==0){
-                                            $percentages=0;
-                                        }else{
-                                            $percentages=($value/$total)*100;
-                                        }
-
+                                        $colors=['#FF3F24', '#FE852D', '#54D352','#5dfdad','#99cadb','#d94c12','#168b64','#ffa500','#9beb34','#1ebbd7'];
+                                        $color_count=0;
                                     @endphp
+                                    @foreach ($status as $s=>$value)
+                                        @if($builder!='GFP')
+                                            @if(strtolower($s)=='todo' || strtolower($s)=='progress' || strtolower($s)=='done')
 
-                                    <li>
-                                        <span style="color:{{ $colors[$color_count] }}">{{ $s }}</span><span class="">{{ number_format($percentages,2) }}%</span>
-                                    </li>
+                                                <li>
+                                                    <span style="color:{{ $colors[$color_count] }}">{{ $s }}</span><span class="">{{ number_format($value,2) }}</span>
+                                                </li>
 
-                                    @php
-                                        $color_count+=1;
-                                    @endphp
-                                @endif
-                            @endforeach
-                        </ul>
+
+                                            @endif
+                                        @else
+                                            <li>
+                                                <span style="color:{{ $colors[$color_count] }}">{{ $s }}</span><span class="">{{ number_format($value,2) }}</span>
+                                            </li>
+                                        @endif
+
+                                        @php
+                                            $color_count+=1;
+                                        @endphp
+                                    @endforeach
+                                </ul>
+                            </div>
+                        </div>
+
                         </div>
                     </div>
 
@@ -265,7 +275,6 @@ $(function () {
     @foreach ($coughnut_charts as $builder=>$status)
     @php
         $column_number=count($status);
-        $total=0;
         $percentages=0;
         $builder=str_replace("-","_",$builder);
         $builder=str_replace(" ","_",$builder);
@@ -273,10 +282,7 @@ $(function () {
 
         @foreach($status as $s=>$value)
 
-        @php
-            $total+=$value;
 
-        @endphp
 
         @endforeach
 
@@ -325,31 +331,32 @@ $(function () {
             @php
                 $status=strtolower($s);
             @endphp
+            @if($builder!='GFP')
+                @if(strtolower($s)=='todo' || strtolower($s)=='progress' || strtolower($s)=='done')
 
-            @if(strtolower($s)=='todo' || strtolower($s)=='progress' || strtolower($s)=='done')
-                    @php
-                        if($value==0){
-                            $percentages=0;
-                        }else{
-                            $percentages=($value/$total)*100;
-                        }
-
-                    @endphp
+                        {
+                            name: '{{ $s }}: {{ number_format($value,2) }} ',
+                            y: {{  number_format($value,2) }},
+                            z: {{ number_format($value,2) }},
+                            color: '{{ $colors[$color_count] }}'
+                        },
 
 
-                    {
-                        name: '{{ $s }}: {{ number_format($percentages,2) }}% ',
-                        y: {{  number_format($percentages,2) }},
-                        z: {{ number_format($percentages,2) }},
-                        color: '{{ $colors[$color_count] }}'
-                    },
-
-                    @php
-                        $color_count+=1;
-                    @endphp
 
                 @endif
+            @else
+                {
+                    name: '{{ $s }}: {{ number_format($value,2) }} ',
+                    y: {{  number_format($value,2) }},
+                    z: {{ number_format($value,2) }},
+                    color: '{{ $colors[$color_count] }}'
+                },
 
+
+            @endif
+                        @php
+                            $color_count+=1;
+                        @endphp
             @endforeach
 
       ]

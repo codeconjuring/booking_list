@@ -48,7 +48,9 @@ class FormController extends Controller
         // Tempory Variable
         // $series_name = "";
 
-        $select_status  = isset($request->status_ids) ? $request->status_ids : [];
+        $select_status = isset($request->status_ids) ? $request->status_ids : [];
+        $select_ztf    = isset($request->ztf) ? $request->ztf : [];
+
         $entry_id       = 0;
         $paginate_range = 0;
         $top_scroll     = 0;
@@ -86,7 +88,7 @@ class FormController extends Controller
             $select_language = $request->language;
         }
         $filter_data = 0;
-        if (($request->language) || ($request->series_ids) || ($request->status_ids)) {
+        if (($request->language) || ($request->series_ids) || ($request->status_ids) || ($request->ztf)) {
             $filter_data = 1;
         }
         $select_series = [];
@@ -126,8 +128,9 @@ class FormController extends Controller
         }
 
         $tags = Cat::orderBy('name')->get();
+        $ztf  = BookList::ZTF;
 
-        return view('admin.form.index', compact('page_title', 'form_builder', 'series', 'getSeriyes', 'status', 'status_array', 'row_show', 'languages', 'entry_id', 'paginate_range', 'top_scroll', 'tags', 'select_language', 'filter_data', 'select_series', 'select_status', 'get_all_series'));
+        return view('admin.form.index', compact('page_title', 'form_builder', 'series', 'getSeriyes', 'status', 'status_array', 'row_show', 'languages', 'entry_id', 'paginate_range', 'top_scroll', 'tags', 'select_language', 'filter_data', 'select_series', 'select_status', 'get_all_series', 'ztf', 'select_ztf'));
 
     }
 
@@ -432,6 +435,7 @@ class FormController extends Controller
         $select_tags      = isset($request->tag_ids) ? $request->tag_ids : [];
         $select_status    = isset($request->status_ids) ? $request->status_ids : [];
         $select_languages = isset($request->languages) ? $request->languages : [];
+        $select_ztf       = isset($request->ztf) ? $request->ztf : [];
 
         $form_builder    = FormBuilder::orderBy('order_table', 'asc')->get();
         $series_group_by = BookList::select('category_id')->groupBy('category_id')->orderBy('id', 'DESC')->get();
@@ -521,7 +525,7 @@ class FormController extends Controller
         ];
         $document->autoScriptToLang = true;
         $document->autoLangToFont   = true;
-        $document->WriteHTML(view('admin.form.report', ['page_title' => $page_title, 'form_builder' => $form_builder, 'series' => $series, 'getSeriyes' => $getSeriyes, 'status' => $status, 'status_array' => $status_array, 'selected_row' => $selected_row, 'show_book_list' => $show_book_list, 'pdf_font_size' => $pdf_font_size, 'select_series' => $select_series, 'select_languages' => $select_languages, 'select_tags' => $select_tags, 'select_status' => $select_status, 'today_date' => $today_date, 'filter_select_tag_name' => $filter_select_tag_name]));
+        $document->WriteHTML(view('admin.form.report', ['page_title' => $page_title, 'form_builder' => $form_builder, 'series' => $series, 'getSeriyes' => $getSeriyes, 'status' => $status, 'status_array' => $status_array, 'selected_row' => $selected_row, 'show_book_list' => $show_book_list, 'pdf_font_size' => $pdf_font_size, 'select_series' => $select_series, 'select_languages' => $select_languages, 'select_tags' => $select_tags, 'select_status' => $select_status, 'today_date' => $today_date, 'filter_select_tag_name' => $filter_select_tag_name, 'select_ztf' => $select_ztf]));
         // Save PDF on your public storage
         Storage::disk('public')->put($documentFileName, $document->Output($documentFileName, "S"));
         // Get file back from storage with the give header informations

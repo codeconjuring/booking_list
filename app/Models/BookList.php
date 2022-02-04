@@ -12,6 +12,8 @@ class BookList extends Model
     protected $appends  = ['available_status', 'report_available_status'];
     protected $fillable = ['category_id', 'title', 'available', 'author', 'language', 'content', 'book_id', 'add_another_book_translation'];
 
+    public const ZTF = ['1' => 'Yes', '0' => 'No', '2' => 'Not Available'];
+
     public function serise()
     {
         return $this->belongsTo(Category::class, 'category_id', 'id');

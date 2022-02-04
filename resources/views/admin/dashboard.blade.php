@@ -191,14 +191,14 @@
                                             @if(strtolower($s)=='todo' || strtolower($s)=='progress' || strtolower($s)=='done')
 
                                                 <li>
-                                                    <span style="color:{{ $colors[$color_count] }}">{{ $s }}</span><span class="">{{ number_format($value,2) }}</span>
+                                                    <span style="color:{{ $colors[$color_count] }}">{{ $s }}</span><span class="">{{ number_format($value,1) }}</span>
                                                 </li>
 
 
                                             @endif
                                         @else
                                             <li>
-                                                <span style="color:{{ $colors[$color_count] }}">{{ $s }}</span><span class="">{{ number_format($value,2) }}</span>
+                                                <span style="color:{{ $colors[$color_count] }}">{{ $s }}</span><span class="">{{ number_format($value,1) }}</span>
                                             </li>
                                         @endif
 
@@ -276,13 +276,16 @@ $(function () {
     @php
         $column_number=count($status);
         $percentages=0;
+        $total=0;
         $builder=str_replace("-","_",$builder);
         $builder=str_replace(" ","_",$builder);
     @endphp
 
         @foreach($status as $s=>$value)
 
-
+        @php
+            $total+=$value;
+        @endphp
 
         @endforeach
 
@@ -330,14 +333,19 @@ $(function () {
             @foreach ($status as $s=>$value)
             @php
                 $status=strtolower($s);
+                if($value==0){
+                    $percentages=0;
+                }else{
+                    $percentages=($value/$total)*100;
+                }
             @endphp
             @if($builder!='GFP')
                 @if(strtolower($s)=='todo' || strtolower($s)=='progress' || strtolower($s)=='done')
 
                         {
-                            name: '{{ $s }}: {{ number_format($value,2) }} ',
-                            y: {{  number_format($value,2) }},
-                            z: {{ number_format($value,2) }},
+                            name: '{{ $s }}: {{ number_format($percentages,1) }}%',
+                            y: {{  number_format($percentages,1) }},
+                            z: {{ number_format($percentages,1) }},
                             color: '{{ $colors[$color_count] }}'
                         },
 
@@ -346,9 +354,9 @@ $(function () {
                 @endif
             @else
                 {
-                    name: '{{ $s }}: {{ number_format($value,2) }} ',
-                    y: {{  number_format($value,2) }},
-                    z: {{ number_format($value,2) }},
+                    name: '{{ $s }}: {{ number_format($percentages,1) }}%',
+                    y: {{  number_format($percentages,1) }},
+                    z: {{ number_format($percentages,1) }},
                     color: '{{ $colors[$color_count] }}'
                 },
 

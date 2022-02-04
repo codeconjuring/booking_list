@@ -49,6 +49,7 @@ class HomeController extends Controller
         // $series_name = "";
 
         $select_status  = isset($request->status_ids) ? $request->status_ids : [];
+        $select_ztf     = isset($request->ztf) ? $request->ztf : [];
         $entry_id       = 0;
         $paginate_range = 0;
         $top_scroll     = 0;
@@ -126,8 +127,9 @@ class HomeController extends Controller
         }
 
         $tags = Cat::orderBy('name')->get();
+        $ztf  = BookList::ZTF;
 
-        return view('update_welcome', compact('page_title', 'form_builder', 'series', 'getSeriyes', 'status', 'status_array', 'row_show', 'languages', 'entry_id', 'paginate_range', 'top_scroll', 'tags', 'select_language', 'filter_data', 'select_series', 'select_status', 'get_all_series'));
+        return view('update_welcome', compact('page_title', 'form_builder', 'series', 'getSeriyes', 'status', 'status_array', 'row_show', 'languages', 'entry_id', 'paginate_range', 'top_scroll', 'tags', 'select_language', 'filter_data', 'select_series', 'select_status', 'get_all_series', 'ztf', 'select_ztf'));
 
     }
 

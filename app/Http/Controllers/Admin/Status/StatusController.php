@@ -24,7 +24,7 @@ class StatusController extends Controller
      */
     public function index(StatusDataTable $dataTable)
     {
-        $page_title = "Status List";
+        $page_title = "Book Status list";
         return $dataTable->render('admin.status.index', ['page_title' => $page_title]);
     }
 
@@ -35,7 +35,7 @@ class StatusController extends Controller
      */
     public function create()
     {
-        $page_title = "Crate Status";
+        $page_title = "Create Book Status";
         return view('admin.status.create', compact('page_title'));
     }
 

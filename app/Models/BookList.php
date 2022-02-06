@@ -9,11 +9,43 @@ class BookList extends Model
 {
     use HasFactory;
     protected $casts    = ['content' => 'array'];
-    protected $fillable = ['category_id', 'title', 'language', 'content', 'book_id', 'add_another_book_translation'];
+    protected $appends  = ['available_status', 'report_available_status'];
+    protected $fillable = ['category_id', 'title', 'available', 'author', 'language', 'content', 'book_id', 'add_another_book_translation'];
+
+    public const ZTF = ['1' => 'Yes', '0' => 'No', '2' => 'Not Available'];
 
     public function serise()
     {
         return $this->belongsTo(Category::class, 'category_id', 'id');
+    }
+
+    public function categories()
+    {
+        return $this->hasMany(BookListCategory::class, 'book_list_id', 'id');
+    }
+
+    public function getAvailableStatusAttribute()
+    {
+        $available = $this->available;
+        if ($available == 0) {
+            return '<span class="badge bg-danger">No</span>';
+        } elseif ($available == 1) {
+            return '<span class="badge bg-success">Yes</span>';
+        } else {
+            return '<span class="badge bg-info">N/A</span>';
+        }
+    }
+
+    public function getReportAvailableStatusAttribute()
+    {
+        $available = $this->available;
+        if ($available == 0) {
+            return 'No';
+        } elseif ($available == 1) {
+            return 'Yes';
+        } else {
+            return 'N/A';
+        }
     }
 
 }

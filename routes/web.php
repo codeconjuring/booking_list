@@ -22,9 +22,7 @@ Route::get('/clear', function () {
     return "Cleared!";
 });
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/', 'HomeController@index')->name('index');
 
 Route::get('/login', 'HomeController@login')->name('login');
 Route::post('/login', 'HomeController@attempt')->name('login');
@@ -35,3 +33,7 @@ Route::get('reset/password/show', 'ForgotPassword@viewReset')->name('reset.passw
 Route::post('reset/password/send', 'ForgotPassword@resetPassword')->name('send.reset.password');
 Route::get('set/new/password/{uuid}', 'ForgotPassword@setNewPassword')->name('set.new.password');
 Route::post('set/password/{uuid}', 'ForgotPassword@createNewPassword')->name('set.password');
+
+Route::get('show-more-title', 'HomeController@showMoreTitle')->name('form.show-more-title');
+// Download PDF
+Route::get('form/download', 'HomeController@downloadPdf')->name('form.download');

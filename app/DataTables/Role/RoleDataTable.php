@@ -24,26 +24,29 @@ class RoleDataTable extends DataTable
                 $authUser = Auth::user();
                 $buttons  = '';
                 if ($authUser->can('Edit Administration')) {
-                    $buttons .= '<a class="dropdown-item text-success" href="' . route('admin.role.edit',
+                    $buttons .= '<li><a class="dropdown-item" href="' . route('admin.role.edit',
                         $role->id) . '" title="Edit Category">
                         <i class="fas fa-edit"></i>&nbsp;Edit
-                    </a>';
+                    </a></li>';
                 }
                 if ($authUser->can('Delete Administration')) {
                     $buttons .= '<form action="' . route('admin.role.destroy', $role->id) . '"  id="deleteForm' . $role->id . '" method="post" style="display: none">
                 <input type="hidden" name="_token" value="' . csrf_token() . '">
                 <input type="hidden" name="_method" value="DELETE">
                 </form>
-                <a href="javascript:void(0)" class="dropdown-item text-danger" onclick="makeDeleteRequest(event, ' . $role->id . ')" title="Delete Role"><i class="fas fa-trash"></i>&nbsp;Delete</a>';
+                <li><a href="javascript:void(0)" class="dropdown-item text-danger" onclick="makeDeleteRequest(event, ' . $role->id . ')" title="Delete Role"><i class="fas fa-trash-alt text-danger"></i>&nbsp;Delete</a></li>';
                 }
                 return '<div class="dropdown">
-                    <button class="btn btn-info btn-sm" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        <i class="mdi mdi-dots-vertical"></i>
-                    </button>
-                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                <a class="btn cc-table-action p-0 dropdown-toggle" href="#"
+                    id="dropdownMenuButton" data-toggle="dropdown"
+                    aria-expanded="false">
+                    <i class="fas fa-ellipsis-v"></i>
+                </a>
+
+                <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                         ' . $buttons . '
-                    </div>
-                    </div>';
+                        </ul>
+                        </div>';
             })->addIndexColumn();
     }
 

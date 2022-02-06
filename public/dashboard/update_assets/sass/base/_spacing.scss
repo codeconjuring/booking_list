@@ -1,0 +1,13 @@
+.cc-mt-80 {
+  margin-top: 80px;
+  @media #{$max991} {
+    margin-top: 40px;
+  }
+}
+.ic-pb-20 {
+  padding-bottom: 20px;
+}
+.cc-font-weigth {
+  font-weight: 500;
+  color: $color-dark;
+}

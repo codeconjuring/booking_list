@@ -1,0 +1,89 @@
+/**color Variable**/
+$color-primary: #f7b104;
+$color-dark: #203047;
+$color-gray: #5b6572;
+$color-black: #000000;
+$color-black2: #00242d;
+$color-light: #fff9eb;
+$color-orange: #f2994a;
+$color-green: #33c83b;
+$color-red: #f2391f;
+
+$color-purple: #9170fe;
+$soft-purple: #f6f1ff;
+$color-orange: #fe7f57;
+$soft-orange: #fef1ee;
+$color-blue: #2d8afd;
+$soft-blue: #eaf4fe;
+$color-sky: #53c4ff;
+$soft-sky: #eaf6ff;
+$color-tia: #9eefa4;
+$soft-tia: #f2fff4;
+$color-brown: #ffb26f;
+$soft-brown: #fdf5ef;
+$color-d-red: #ff3c21;
+$soft-d-red: #ffeeef;
+
+$color-sky-blue: #6a9ffd;
+$soft-sky-blue: #f0f6fb;
+
+.text-yellow {
+  color: $color-primary;
+}
+.text-black {
+  color: $color-primary;
+}
+.text-gray {
+  color: $color-gray;
+}
+.text-orange {
+  color: $color-orange;
+}
+.text-red {
+  color: $color-red;
+}
+.text-green {
+  color: $color-green;
+}
+
+.bg-orange {
+  background-color: $color-orange !important;
+  span {
+    color: #fff !important;
+  }
+}
+.bg-red {
+  background-color: $color-red !important;
+  span {
+    color: #fff !important;
+  }
+}
+.bg-green {
+  background-color: $color-green !important;
+  span {
+    color: #fff !important;
+  }
+}
+
+// Media Query Variables
+$min1366: "only screen and (min-width: 1366px)";
+$min1200: "only screen and (min-width: 1200px)";
+$min1025: "only screen and (min-width: 1025px)";
+$min992: "only screen and (min-width: 992px)";
+$min768: "only screen and (min-width: 768px)";
+$min576: "only screen and (min-width: 576px)";
+$max1850: "only screen and (max-width: 1850px)";
+$max1650: "only screen and (max-width: 1650px)";
+$max1440: "only screen and (max-width: 1440px)";
+$max1366: "only screen and (max-width: 1366px)";
+$max1280: "only screen and (max-width: 1280px)";
+$max1199: "only screen and (max-width: 1199.98px)";
+$max1024: "only screen and (max-width: 1024px)";
+$max991: "only screen and (max-width: 991.98px)";
+$max767: "only screen and (max-width: 767.98px)";
+$max640: "only screen and (max-width: 640px)";
+$max575: "only screen and (max-width: 575.98px)";
+$max480: "only screen and (max-width: 480px)";
+$max374: "only screen and (max-width: 374px)";
+$max375: "only screen and (max-width: 375px)";
+$max320: "only screen and (max-width: 320px)";

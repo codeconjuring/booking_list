@@ -1,0 +1,36 @@
+.dt-button{
+    border-radius: 22px;
+    background: none;
+}
+
+.cc-circle-color {
+    padding: 3px;
+    border: 1px solid #828282;
+    display: inline-flex;
+    border-radius: 50%;
+}
+
+
+.cc-circle-color span {
+    width: 30px;
+    height: 30px;
+    display: inline-block;
+    border-radius: 50%;
+}
+
+div.dataTables_wrapper div.dataTables_paginate ul.pagination li a:hover {
+    background-color: #f7b104;
+    color: #fff;
+}
+
+div.dataTables_wrapper div.dataTables_paginate ul.pagination li a {
+    border-radius: 5px !important;
+    border: 1px solid #efefef;
+}
+
+.page-item.active .page-link {
+    z-index: 3;
+    color: #fff;
+    background-color: #F7B104;
+    border-color: #F7B104;
+}

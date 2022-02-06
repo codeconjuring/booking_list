@@ -1,0 +1,107 @@
+.form-control {
+  border: 1px solid #f7b104;
+  box-sizing: border-box;
+  border-radius: 10px;
+  height: 50px;
+  &:focus {
+    box-shadow: none;
+    border: 1px solid #f7b104;
+  }
+}
+.custom-select {
+  &.custom-select-sm {
+    background: #fff9eb;
+    border-radius: 10px;
+    height: 40px;
+    border: 1px solid #fff9eb;
+  }
+}
+
+.custom-switch {
+  cursor: pointer;
+  width: 67px;
+  .custom-control-label {
+    &::before {
+      position: absolute;
+      top: 0;
+      left: -1.5rem;
+      display: block;
+      width: 55px !important;
+      height: 30px;
+      pointer-events: none;
+      content: "";
+      background-color: #fff;
+      border: #f7b104 solid 1px;
+      box-sizing: border-box;
+      border-radius: 20px !important;
+    }
+    &::after {
+      width: 20px !important;
+      height: 20px !important;
+      background-color: $color-primary;
+      border-radius: 50%;
+      top: calc(0.25rem + 1px);
+      left: calc(-1.25rem + 2px);
+    }
+  }
+  .custom-control-input:checked ~ .custom-control-label::after {
+    transform: translateX(1.5rem);
+  }
+}
+.accordion > .card:not(:last-of-type) {
+  border-bottom: 0;
+  border-bottom-right-radius: 10px;
+  border-bottom-left-radius: 10px;
+}
+.accordion {
+  .card {
+    box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.05);
+    border-radius: 10px;
+    margin-bottom: 10px;
+    padding-left: 20px;
+    padding-right: 20px;
+    .card-header {
+      background: #ffffff;
+      border-bottom: 1px solid rgba(247, 178, 4, 0.205);
+      padding-top: 21px;
+      padding-bottom: 21px;
+    }
+  }
+}
+.cc-permission-under {
+  padding: 0 120px;
+  li {
+    &:not(:last-child) {
+      padding-bottom: 15px;
+    }
+  }
+}
+.image-size {
+  color: rgba(235, 87, 87, 0.5);
+}
+
+.cc-circle-color {
+  padding: 3px;
+  border: 1px solid #828282;
+  display: inline-flex;
+  border-radius: 50%;
+  span {
+    width: 30px;
+    height: 30px;
+    display: inline-block;
+    border-radius: 50%;
+    background-color: #828282;
+  }
+  &.purple {
+    border: 1px solid #9b51e0;
+    span {
+      background-color: #9b51e0;
+    }
+  }
+  &.pink {
+    border: 1px solid #f178b6;
+    span {
+      background-color: #f178b6;
+    }
+  }
+}

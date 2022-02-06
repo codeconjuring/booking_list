@@ -1,0 +1,144 @@
+@font-face {
+  font-family: "icomoon";
+  src: url("fonts/icomoon.eot?ynmdu4");
+  src: url("fonts/icomoon.eot?ynmdu4#iefix") format("embedded-opentype"),
+    url("fonts/icomoon.ttf?ynmdu4") format("truetype"),
+    url("fonts/icomoon.woff?ynmdu4") format("woff"),
+    url("fonts/icomoon.svg?ynmdu4#icomoon") format("svg");
+  font-weight: normal;
+  font-style: normal;
+  font-display: block;
+}
+
+[class^="icon-"],
+[class*=" icon-"] {
+  /* use !important to prevent issues with browser extensions that change fonts */
+  font-family: "icomoon" !important;
+  speak: never;
+  font-style: normal;
+  font-weight: normal;
+  font-variant: normal;
+  text-transform: none;
+  line-height: 1;
+
+  /* Better Font Rendering =========== */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.icon-book-open:before {
+  content: "\e91b";
+}
+.icon-book-plus:before {
+  content: "\e91c";
+}
+.icon-dashboard:before {
+  content: "\e91d";
+}
+.icon-reload:before {
+  content: "\e900";
+  color: #000;
+}
+.icon-sysnc:before {
+  content: "\e901";
+  color: #000;
+}
+.icon-mp3:before {
+  content: "\e902";
+  color: #000;
+}
+.icon-epub:before {
+  content: "\e903";
+  color: #000;
+}
+.icon-image:before {
+  content: "\e904";
+  color: #000;
+}
+.icon-play:before {
+  content: "\e905";
+  color: #000;
+}
+.icon-audiobooks:before {
+  content: "\e906";
+  color: #000;
+}
+.icon-Group-7:before {
+  content: "\e907";
+  color: #000;
+}
+.icon-book2:before {
+  content: "\e908";
+  color: #000;
+}
+.icon-sound:before {
+  content: "\e909";
+  color: #000;
+}
+.icon-list:before {
+  content: "\e90a";
+  color: #000;
+}
+.icon-language:before {
+  content: "\e90b";
+  color: #000;
+}
+.icon-books-break:before {
+  content: "\e90c";
+  color: #000;
+}
+.icon-a-books:before {
+  content: "\e90d";
+  color: #000;
+}
+.icon-books:before {
+  content: "\e90e";
+  color: #000;
+}
+.icon-setting:before {
+  content: "\e90f";
+}
+.icon-user:before {
+  content: "\e910";
+  color: #000;
+}
+.icon-book-svgrepo-com-1:before {
+  content: "\e911";
+  color: #000;
+}
+.icon-right-arrow:before {
+  content: "\e912";
+  color: #000;
+}
+.icon-left-arrow:before {
+  content: "\e913";
+  color: #000;
+}
+.icon-filter:before {
+  content: "\e914";
+  color: #000;
+}
+.icon-print:before {
+  content: "\e915";
+  color: #000;
+}
+.icon-pdf:before {
+  content: "\e916";
+  color: #000;
+}
+.icon-execl:before {
+  content: "\e917";
+  color: #000;
+}
+.icon-csv:before {
+  content: "\e918";
+  color: #000;
+}
+.icon-copy:before {
+  content: "\e919";
+  color: #000;
+}
+.icon-download:before {
+  content: "\e91a";
+  color: #000;
+}

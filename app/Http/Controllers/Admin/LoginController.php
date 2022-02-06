@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Models\Book;
 use App\Models\BookList;
 use App\Models\Category;
 use App\Models\FormBuilder;
@@ -31,9 +30,48 @@ class LoginController extends Controller
         $page_title              = "Dashboard";
         $number_of_unique_titles = BookList::whereMonth('created_at', Carbon::now()->month)->select('title', DB::raw('count(*) as total'))->groupBy('title')->get();
         // unique title
-        $total_titles = BookList::distinct('book_id')->count();
-        $total_series = Category::count();
-        $total_books  = BookList::count();
+        $total_titles      = BookList::distinct('book_id')->count();
+        $total_series      = Category::count();
+        $total_books       = BookList::count();
+        $language_count    = BookList::distinct('language')->count();
+        $db_language_count = Language::count();
+        $get_languages     = Language::all();
+
+        $total_title_published = 0;
+        $get_en_book_lists     = BookList::whereLanguage('EN')->get();
+
+        foreach ($get_en_book_lists as $get_en_book_list) {
+
+            foreach ($get_en_book_list->content as $key => $book_content) {
+
+                if ($book_content['type'] == 1) {
+                    $get_status = Status::findOrFail($book_content['text']);
+
+                    if ($get_status && $get_status->status == "Done") {
+                        $total_title_published += 1;
+                        break;
+                    }
+                }
+            }
+        }
+
+        $total_books_published = 0;
+        $get_all_book_lists    = BookList::all();
+
+        foreach ($get_all_book_lists as $get_all_book_list) {
+
+            foreach ($get_all_book_list->content as $key => $book_content) {
+
+                if ($book_content['type'] == 1) {
+                    $get_status = Status::findOrFail($book_content['text']);
+
+                    if ($get_status && $get_status->status == "Done") {
+                        $total_books_published += 1;
+                        break;
+                    }
+                }
+            }
+        }
 
         if ($request->ajax()) {
             if ($request->service_id) {
@@ -41,14 +79,13 @@ class LoginController extends Controller
                 return response()->json(['series_count' => $series_wise_book_count]);
             }
 
-            if ($request->language_id) {
-                // $get_language = Language::findOrFail($request->language_id);
-                // return $get_language->short_hand;
-                $book_language = BookList::whereLanguage(strtoupper($request->language_id))->count();
+            if ($request->language) {
+
+                $book_language = BookList::whereLanguage($request->language)->count();
                 return response()->json(['language_count' => $book_language]);
             }
 
-            if ($request->language) {
+            if ($request->language_table) {
                 $form_builders             = FormBuilder::get();
                 $col_array                 = [];
                 $col_status_array          = [];
@@ -65,7 +102,7 @@ class LoginController extends Controller
                     $col_array[$form_builder->id] = $col_status_array;
                     $col_map[$form_builder->id]   = $form_builder->label;
                 }
-                $book_list_contents = BookList::whereLanguage($request->language)->get('content');
+                $book_list_contents = BookList::whereLanguage($request->language_table)->get('content');
                 foreach ($book_list_contents as $key => $book_list_content) {
 
                     foreach ($book_list_content->content as $s => $single_content) {
@@ -81,19 +118,19 @@ class LoginController extends Controller
                         $col_final_array[$col_map[$c]] = $col_status_map_name_array;
                     }
                 }
-                $table = "<table class='table table-striped table-bordered mt-2'><thead><tr><th>#</th>";foreach ($colum_status_map as $m => $colum_status_ma) {$table .= "<th>" . $colum_status_ma . "</th>";}
+                $table = "<table cellpadding='2' class='cc-datatable table nowrap w-100'><thead><tr class='text-center'><th class='text-center'>#</th>";foreach ($colum_status_map as $m => $colum_status_ma) {$table .= "<th class='text-center'>" . $colum_status_ma . "</th>";}
                 $table .= "</tr></thead>
                     <tbody>
                     ";
                 foreach ($col_final_array as $f => $final) {$table .= "
-                        <tr>
+                        <tr class='text-center'>
                             <th>$f</th>
                             ";
                     foreach ($colum_status_map as $key => $value) {
                         if (array_key_exists($value, $final)) {
-                            $table .= "<td>$final[$value]</td>";
+                            $table .= "<td class='text-center'>$final[$value]</td>";
                         } else {
-                            $table .= "<td>-</td>";
+                            $table .= "<td class='text-center'>-</td>";
                         }
                     }
                     $table .= "</tr>
@@ -132,27 +169,62 @@ class LoginController extends Controller
                         }
                     }
                 }
-                // return $lanwise_count;
-                $table = "<table class='table table-striped table-bordered mt-2'><thead><tr><th>#</th>";
+
+                // $status_done_id = '';
+                // foreach ($status_map as $status_id => $status_name) {
+
+                //     if ($status_name == "Done" || $status_name == "done") {
+                //         $status_done_id = $status_id;
+                //         break;
+                //     }
+
+                // }
+
+                // $ebook_id = '';
+                // foreach ($column_map as $col_id => $col_name) {
+
+                //     if (strtolower($col_name) == "ebook") {
+                //         $ebook_id = $col_id;
+                //         break;
+                //     }
+                // }
+
+                // $temp_array = [];
+                // foreach ($lanwise_count as $lan => $column_id) {
+
+                //     $temp_array[$lan] = $column_id[$ebook_id][$status_done_id];
+
+                //     // dd($column_id[$ebook_id][$status_done_id]);
+                // }
+
+                // arsort($temp_array);
+                // foreach ($temp_array as $lan => $count) {
+
+                //     $temp_array[$lan] = $lanwise_count[$lan];
+                // }
+                // $lanwise_count = $temp_array;
+
+                $table = "<table id='dataTable' cellpadding='2' class='cc-datatable dataTable table nowrap w-100'><thead><tr><th class='text-center'>#</th>";
                 foreach ($column as $col) {
-                    $table .= "<th>" . $col->label . "</th>";
+                    $table .= "<th class='text-center'>" . $col->label . "</th>";
                 }
                 $table .= "</tr></thead><tbody>";
                 foreach ($lanwise_count as $lan => $col) {
-                    $table .= "<tr><td>" . $lan . "</td>";
+                    $table .= "<tr class='text-center'><td class='text-center'>" . $lan . "</td>";
                     foreach ($col as $sts) {
-                        $table .= "<td>";
+                        $table .= "<td class='text-center'>";
                         foreach ($sts as $k => $val) {
-                            if($status_map[$k] == 'Done')
-                            {
-                                $table .= $val . "<br/>";    
+                            if ($status_map[$k] == 'Done') {
+                                $table .= $val . "<br/>";
                             }
                         }
                         $table .= "</td>";
                     }
                     $table .= "</tr>";
                 }
+
                 $table .= "</tbody></table>";
+
                 return response()->json(['table' => $table]);
             }
 
@@ -161,11 +233,84 @@ class LoginController extends Controller
         $coughnut_charts         = $this->getDoughnut();
         $series_wise_title_count = BookList::whereCategoryId(1)->distinct('title')->count();
 
-        $languages = Language::all();
+        $languages = BookList::distinct('language')->get(['language']);
         $series    = Category::all();
 
-        return view('admin.dashboard', compact('page_title', 'total_titles', 'unique_title', 'total_series', 'total_books', 'languages', 'total_series', 'coughnut_charts'));
+        $form_builder_name_with_counts = $this->StatusCount();
 
+        // $totale_title_language_counts = BookList::select('language', DB::raw('count(*) as total'))->groupBy('language')->orderBy('total', 'DESC')->get();
+
+        $language_array = [];
+
+        $totale_title_language_counts = BookList::groupBy('language')->get('language');
+
+        foreach ($totale_title_language_counts as $key => $totale_title_language_count) {
+            $language_array[$totale_title_language_count->language] = 0;
+        }
+
+        foreach ($totale_title_language_counts as $key => $totale_title_language_count) {
+            $count                              = 0;
+            $getSingleLanguageBookFromBookLists = BookList::whereLanguage($totale_title_language_count->language)->get();
+            if (count($getSingleLanguageBookFromBookLists) > 0) {
+                foreach ($getSingleLanguageBookFromBookLists as $key => $getSingleLanguageBookFromBookList) {
+
+                    foreach ($getSingleLanguageBookFromBookList->content as $c => $content) {
+                        if ($content['type'] == 1) {
+                            $getStatus = Status::findOrFail($content['text']);
+                            if ($getStatus && $getStatus->status == "Done") {
+                                $count += 1;
+                                break;
+                            }
+                        }
+                    }
+                }
+            }
+            $language_array[$totale_title_language_count->language] = $count;
+        }
+
+        arsort($language_array);
+
+        $totale_title_language_counts = array_slice($language_array, 0, 10);
+
+        return view('admin.dashboard', compact('page_title', 'number_of_unique_titles', 'total_series', 'total_books', 'languages', 'series', 'total_titles', 'total_books', 'coughnut_charts', 'language_count', 'db_language_count', 'get_languages', 'form_builder_name_with_counts', 'totale_title_language_counts', 'total_title_published', 'total_books_published'));
+
+    }
+
+    public function StatusCount()
+    {
+        try {
+            // Status count
+            $form_builder      = FormBuilder::get(['label'])->toArray();
+            $form_builder_name = [];
+            $done_status_id    = Status::whereStatus('Done')->first(['id']);
+
+            foreach (FormBuilder::whereType(1)->get() as $key => $val) {
+                $form_builder_name[$val->label] = 0;
+            }
+
+            // $book_list
+            if ($done_status_id) {
+                $book_lists = BookList::all();
+                foreach ($book_lists as $b => $book) {
+                    // dd($book->content);
+                    foreach ($book->content as $c => $content) {
+
+                        $form_builder_get = FormBuilder::whereId($c)->first(['label']);
+
+                        if ($form_builder_get) {
+                            if (($content['type'] == 1) && ($content['text'] == $done_status_id->id)) {
+                                $form_builder_name[$form_builder_get->label] += 1;
+                            }
+                        }
+                    }
+                }
+            }
+
+            return $form_builder_name;
+
+        } catch (\Exception $e) {
+            sendFlash($e->getMessage(), 'error');
+        }
     }
 
     public function getDoughnut()

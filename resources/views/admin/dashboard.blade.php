@@ -36,7 +36,7 @@
     <div class="card bg-gradient-success card-img-holder text-white">
         <div class="card-body">
         <img src="{{ asset('dashboard/assets/images/dashboard/circle.svg') }}" class="card-img-absolute" alt="circle-image" />
-        <h3 class="font-weight-normal mb-3">Total Books <i class="mdi mdi-diamond mdi-24px float-right"></i>
+        <h3 class="font-weight-normal mb-3">Total Titles <i class="mdi mdi-diamond mdi-24px float-right"></i>
         </h3>
         <h1 class="mb-5">{{ $book }}</h1>
         </div>
@@ -46,7 +46,7 @@
         <div class="card bg-gradient-danger card-img-holder text-white">
             <div class="card-body">
             <img src="{{ asset('dashboard/assets/images/dashboard/circle.svg') }}" class="card-img-absolute" alt="circle-image" />
-            <h3 class="font-weight-normal mb-3">Number Of Unique Titles <i class="mdi mdi-chart-line mdi-24px float-right"></i>
+            <h3 class="font-weight-normal mb-3">Total Books <i class="mdi mdi-chart-line mdi-24px float-right"></i>
             </h3>
             <h1 class="mb-5">{{ $unique_title }}</h1>
             </div>
@@ -264,7 +264,6 @@ function selectLanguage(val)
                     $('#NumberOfBook').html(0);
                     toastr["error"]("Not Found ! ! !");
                 }
-
             },
             error:function(error){
                 toastr["error"](error);

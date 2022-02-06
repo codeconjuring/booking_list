@@ -31,20 +31,20 @@ class LoginController extends Controller
         $page_title              = "Dashboard";
         $number_of_unique_titles = BookList::whereMonth('created_at', Carbon::now()->month)->select('title', DB::raw('count(*) as total'))->groupBy('title')->get();
         // unique title
-        $unique_title = BookList::distinct('title')->count();
+        $total_titles = BookList::distinct('book_id')->count();
         $total_series = Category::count();
-        $book         = Book::count();
+        $total_books  = BookList::count();
 
         if ($request->ajax()) {
             if ($request->service_id) {
-                $series_wise_book_count = Book::whereCategoryId($request->service_id)->count();
+                $series_wise_book_count = BookList::whereCategoryId($request->service_id)->distinct('book_id')->count();
                 return response()->json(['series_count' => $series_wise_book_count]);
             }
 
             if ($request->language_id) {
-                $get_language = Language::findOrFail($request->language_id);
-
-                $book_language = BookList::whereLanguage(strtoupper($get_language->short_hand))->distinct('title')->count();
+                // $get_language = Language::findOrFail($request->language_id);
+                // return $get_language->short_hand;
+                $book_language = BookList::whereLanguage(strtoupper($request->language_id))->count();
                 return response()->json(['language_count' => $book_language]);
             }
 
@@ -125,15 +125,14 @@ class LoginController extends Controller
                     }
                     $lanwise_count[$lan->language] = $column_count;
                 }
-
                 foreach ($content_rows as $cr) {
                     foreach ($cr->content as $key => $value) {
                         if ($value['type'] == 1) {
-                            $column_count[$key][$value['text']] += 1;
+                            $lanwise_count[$cr->language][$key][$value['text']] += 1;
                         }
                     }
-                    $lanwise_count[$cr->language] = $column_count;
                 }
+                // return $lanwise_count;
                 $table = "<table class='table table-striped table-bordered mt-2'><thead><tr><th>#</th>";
                 foreach ($column as $col) {
                     $table .= "<th>" . $col->label . "</th>";
@@ -144,7 +143,10 @@ class LoginController extends Controller
                     foreach ($col as $sts) {
                         $table .= "<td>";
                         foreach ($sts as $k => $val) {
-                            $table .= $status_map[$k] . " " . $val . "<br/>";
+                            if($status_map[$k] == 'Done')
+                            {
+                                $table .= $val . "<br/>";    
+                            }
                         }
                         $table .= "</td>";
                     }
@@ -162,7 +164,7 @@ class LoginController extends Controller
         $languages = Language::all();
         $series    = Category::all();
 
-        return view('admin.dashboard', compact('page_title', 'number_of_unique_titles', 'unique_title', 'total_series', 'book', 'languages', 'series', 'coughnut_charts'));
+        return view('admin.dashboard', compact('page_title', 'total_titles', 'unique_title', 'total_series', 'total_books', 'languages', 'total_series', 'coughnut_charts'));
 
     }
 

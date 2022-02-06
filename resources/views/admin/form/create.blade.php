@@ -39,8 +39,8 @@
                     <label for="exampleInputUsername1">Language</label><span class="text-danger">*</span>
                     <select name="language" id="" onchange="selectSeries($(this).val(),'language')" class="form-control select2">
                         <option value="">Select Language</option>
-                            @foreach($languages as $key=>$language)
-                                <option value="{{ $language->upper_case }}">{{ $language->upper_case }}</option>
+                            @foreach($languages as $lan)
+                                <option value="{{ $lan->language }}">{{ $lan->language }}</option>
                             @endforeach
                         </select>
 

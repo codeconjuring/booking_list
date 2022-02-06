@@ -77,10 +77,9 @@ class FormController extends Controller
      */
     public function create()
     {
-
         $series       = Category::orderBy('name')->get();
         $page_title   = "Create New Book List";
-        $languages    = Language::all();
+        $languages    = BookList::distinct('language')->get('language');
         $form_builder = FormBuilder::all();
         $statues      = Status::all();
         return view('admin.form.create', compact('page_title', 'series', 'languages', 'form_builder', 'statues'));

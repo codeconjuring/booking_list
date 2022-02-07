@@ -99,6 +99,7 @@
                                     @enderror
                                 </div>
 
+                            @if($book_list->add_another_book_translation == 0)
                                 <div class="form-group">
                                   <label for="exampleInputUsername1">Series Name</label><span class="text-danger">*</span>
 
@@ -113,8 +114,6 @@
                                     <span class="text-danger">{{ $message }}</span>
                                   @enderror
                                 </div>
-
-
                                 <div class="form-group">
                                     <label for="exampleInputUsername1">Tags</label><span class="text-danger">*</span>
                                     <select name="categorys[]" id="" required class="form-control select2" multiple>
@@ -127,7 +126,6 @@
                                         <span class="text-danger">{{ $message }}</span>
                                     @enderror
                                 </div>
-
                                 <div class="form-group">
                                     <label for="exampleInputUsername1">Author</label><span class="text-danger">*</span>
 
@@ -142,6 +140,7 @@
                                       <span class="text-danger">{{ $message }}</span>
                                     @enderror
                                 </div>
+                                @endif
 
                                 <div class="form-group">
                                     <label for="">Title</label>
@@ -191,7 +190,7 @@
                                 </div>
                                 @endforeach
 
-
+                                @if($book_list->add_another_book_translation == 0)
                                 <p class="cc-font-weigth">ZTF?</p>
                                 <div class="cc-check-items">
                                     <div class="form-check">
@@ -221,7 +220,7 @@
                                     @enderror
 
                                 </div>
-
+                                @endif
                                 <div class="mt-4">
                                     <button type="submit" class="btn btn-primary mr-2">Update</button>
                                     <a href="{{ url()->previous() }}" class="btn btn-light">Back</a>

@@ -4,7 +4,7 @@
 
 namespace Composer\Autoload;
 
-class ComposerStaticInitf2c19eb761b8c359a5db5860c96d36cb
+class ComposerStaticInite052f21ab409f2913b94198328d15185
 {
     public static $files = array (
         'ec07570ca5a812141189b1fa81503674' => __DIR__ . '/..' . '/phpunit/phpunit/src/Framework/Assert/Functions.php',
@@ -16,6 +16,8 @@ class ComposerStaticInitf2c19eb761b8c359a5db5860c96d36cb
         'f598d06aa772fa33d905e87be6398fb1' => __DIR__ . '/..' . '/symfony/polyfill-intl-idn/bootstrap.php',
         '320cde22f66dd4f5d3fd621d3e88b98f' => __DIR__ . '/..' . '/symfony/polyfill-ctype/bootstrap.php',
         '0d59ee240a4cd96ddbb4ff164fccea4d' => __DIR__ . '/..' . '/symfony/polyfill-php73/bootstrap.php',
+        '8825ede83f2f289127722d4e842cf7e8' => __DIR__ . '/..' . '/symfony/polyfill-intl-grapheme/bootstrap.php',
+        'b6b991a57620e2fb6b2f66f03fe9ddc2' => __DIR__ . '/..' . '/symfony/string/Resources/functions.php',
         '667aeda72477189d0494fecd327c3641' => __DIR__ . '/..' . '/symfony/var-dumper/Resources/functions/dump.php',
         '7b11c4dc42b3b3023073cb14e519683c' => __DIR__ . '/..' . '/ralouphie/getallheaders/src/getallheaders.php',
         'def43f6c87e4f8dfd0c9e1b1bab14fe8' => __DIR__ . '/..' . '/symfony/polyfill-iconv/bootstrap.php',
@@ -29,15 +31,13 @@ class ComposerStaticInitf2c19eb761b8c359a5db5860c96d36cb
         'a1105708a18b76903365ca1c4aa61b02' => __DIR__ . '/..' . '/symfony/translation/Resources/functions.php',
         '2cffec82183ee1cea088009cef9a6fc3' => __DIR__ . '/..' . '/ezyang/htmlpurifier/library/HTMLPurifier.composer.php',
         'f18cc91337d49233e5754e93f3ed9ec3' => __DIR__ . '/..' . '/laravelcollective/html/src/helpers.php',
-        '538ca81a9a966a6716601ecf48f4eaef' => __DIR__ . '/..' . '/opis/closure/functions.php',
         'e39a8b23c42d4e1452234d762b03835a' => __DIR__ . '/..' . '/ramsey/uuid/src/functions.php',
+        '538ca81a9a966a6716601ecf48f4eaef' => __DIR__ . '/..' . '/opis/closure/functions.php',
         '265b4faa2b3a9766332744949e83bf97' => __DIR__ . '/..' . '/laravel/framework/src/Illuminate/Collections/helpers.php',
         'c7a3c339e7e14b60e06a2d7fcce9476b' => __DIR__ . '/..' . '/laravel/framework/src/Illuminate/Events/functions.php',
         'f0906e6318348a765ffb6eb24e0d0938' => __DIR__ . '/..' . '/laravel/framework/src/Illuminate/Foundation/helpers.php',
         '58571171fd5812e6e447dce228f52f4d' => __DIR__ . '/..' . '/laravel/framework/src/Illuminate/Support/helpers.php',
-        '8825ede83f2f289127722d4e842cf7e8' => __DIR__ . '/..' . '/symfony/polyfill-intl-grapheme/bootstrap.php',
         '9cdd7b9056abc3081735233ba9dd9c7f' => __DIR__ . '/..' . '/facade/flare-client-php/src/helpers.php',
-        'b6b991a57620e2fb6b2f66f03fe9ddc2' => __DIR__ . '/..' . '/symfony/string/Resources/functions.php',
         'ed962a97bd972bc82007176b647d4e36' => __DIR__ . '/..' . '/facade/ignition/src/helpers.php',
         '377b22b161c09ed6e5152de788ca020a' => __DIR__ . '/..' . '/spatie/laravel-permission/src/helpers.php',
         'd21d43db5f6e840ee7b10744ec7fdf66' => __DIR__ . '/../..' . '/app/Helpers/helpers.php',
@@ -759,6 +759,7 @@ class ComposerStaticInitf2c19eb761b8c359a5db5860c96d36cb
         'Carbon\\FactoryImmutable' => __DIR__ . '/..' . '/nesbot/carbon/src/Carbon/FactoryImmutable.php',
         'Carbon\\Language' => __DIR__ . '/..' . '/nesbot/carbon/src/Carbon/Language.php',
         'Carbon\\Laravel\\ServiceProvider' => __DIR__ . '/..' . '/nesbot/carbon/src/Carbon/Laravel/ServiceProvider.php',
+        'Carbon\\PHPStan\\AbstractMacro' => __DIR__ . '/..' . '/nesbot/carbon/src/Carbon/PHPStan/AbstractMacro.php',
         'Carbon\\PHPStan\\Macro' => __DIR__ . '/..' . '/nesbot/carbon/src/Carbon/PHPStan/Macro.php',
         'Carbon\\PHPStan\\MacroExtension' => __DIR__ . '/..' . '/nesbot/carbon/src/Carbon/PHPStan/MacroExtension.php',
         'Carbon\\PHPStan\\MacroScanner' => __DIR__ . '/..' . '/nesbot/carbon/src/Carbon/PHPStan/MacroScanner.php',
@@ -1144,17 +1145,21 @@ class ComposerStaticInitf2c19eb761b8c359a5db5860c96d36cb
         'Faker\\Calculator\\Isbn' => __DIR__ . '/..' . '/fakerphp/faker/src/Faker/Calculator/Isbn.php',
         'Faker\\Calculator\\Luhn' => __DIR__ . '/..' . '/fakerphp/faker/src/Faker/Calculator/Luhn.php',
         'Faker\\Calculator\\TCNo' => __DIR__ . '/..' . '/fakerphp/faker/src/Faker/Calculator/TCNo.php',
+        'Faker\\ChanceGenerator' => __DIR__ . '/..' . '/fakerphp/faker/src/Faker/ChanceGenerator.php',
         'Faker\\Core\\Barcode' => __DIR__ . '/..' . '/fakerphp/faker/src/Faker/Core/Barcode.php',
         'Faker\\Core\\Blood' => __DIR__ . '/..' . '/fakerphp/faker/src/Faker/Core/Blood.php',
+        'Faker\\Core\\Color' => __DIR__ . '/..' . '/fakerphp/faker/src/Faker/Core/Color.php',
         'Faker\\Core\\Coordinates' => __DIR__ . '/..' . '/fakerphp/faker/src/Faker/Core/Coordinates.php',
         'Faker\\Core\\File' => __DIR__ . '/..' . '/fakerphp/faker/src/Faker/Core/File.php',
         'Faker\\Core\\Number' => __DIR__ . '/..' . '/fakerphp/faker/src/Faker/Core/Number.php',
+        'Faker\\Core\\Uuid' => __DIR__ . '/..' . '/fakerphp/faker/src/Faker/Core/Uuid.php',
         'Faker\\Core\\Version' => __DIR__ . '/..' . '/fakerphp/faker/src/Faker/Core/Version.php',
         'Faker\\DefaultGenerator' => __DIR__ . '/..' . '/fakerphp/faker/src/Faker/DefaultGenerator.php',
         'Faker\\Documentor' => __DIR__ . '/..' . '/fakerphp/faker/src/Faker/Documentor.php',
         'Faker\\Extension\\AddressExtension' => __DIR__ . '/..' . '/fakerphp/faker/src/Faker/Extension/AddressExtension.php',
         'Faker\\Extension\\BarcodeExtension' => __DIR__ . '/..' . '/fakerphp/faker/src/Faker/Extension/BarcodeExtension.php',
         'Faker\\Extension\\BloodExtension' => __DIR__ . '/..' . '/fakerphp/faker/src/Faker/Extension/BloodExtension.php',
+        'Faker\\Extension\\ColorExtension' => __DIR__ . '/..' . '/fakerphp/faker/src/Faker/Extension/ColorExtension.php',
         'Faker\\Extension\\CompanyExtension' => __DIR__ . '/..' . '/fakerphp/faker/src/Faker/Extension/CompanyExtension.php',
         'Faker\\Extension\\Container' => __DIR__ . '/..' . '/fakerphp/faker/src/Faker/Extension/Container.php',
         'Faker\\Extension\\ContainerBuilder' => __DIR__ . '/..' . '/fakerphp/faker/src/Faker/Extension/ContainerBuilder.php',
@@ -1170,6 +1175,7 @@ class ComposerStaticInitf2c19eb761b8c359a5db5860c96d36cb
         'Faker\\Extension\\NumberExtension' => __DIR__ . '/..' . '/fakerphp/faker/src/Faker/Extension/NumberExtension.php',
         'Faker\\Extension\\PersonExtension' => __DIR__ . '/..' . '/fakerphp/faker/src/Faker/Extension/PersonExtension.php',
         'Faker\\Extension\\PhoneNumberExtension' => __DIR__ . '/..' . '/fakerphp/faker/src/Faker/Extension/PhoneNumberExtension.php',
+        'Faker\\Extension\\UuidExtension' => __DIR__ . '/..' . '/fakerphp/faker/src/Faker/Extension/UuidExtension.php',
         'Faker\\Extension\\VersionExtension' => __DIR__ . '/..' . '/fakerphp/faker/src/Faker/Extension/VersionExtension.php',
         'Faker\\Factory' => __DIR__ . '/..' . '/fakerphp/faker/src/Faker/Factory.php',
         'Faker\\Generator' => __DIR__ . '/..' . '/fakerphp/faker/src/Faker/Generator.php',
@@ -2366,6 +2372,7 @@ class ComposerStaticInitf2c19eb761b8c359a5db5860c96d36cb
         'Illuminate\\Database\\Eloquent\\Concerns\\QueriesRelationships' => __DIR__ . '/..' . '/laravel/framework/src/Illuminate/Database/Eloquent/Concerns/QueriesRelationships.php',
         'Illuminate\\Database\\Eloquent\\Factories\\BelongsToManyRelationship' => __DIR__ . '/..' . '/laravel/framework/src/Illuminate/Database/Eloquent/Factories/BelongsToManyRelationship.php',
         'Illuminate\\Database\\Eloquent\\Factories\\BelongsToRelationship' => __DIR__ . '/..' . '/laravel/framework/src/Illuminate/Database/Eloquent/Factories/BelongsToRelationship.php',
+        'Illuminate\\Database\\Eloquent\\Factories\\CrossJoinSequence' => __DIR__ . '/..' . '/laravel/framework/src/Illuminate/Database/Eloquent/Factories/CrossJoinSequence.php',
         'Illuminate\\Database\\Eloquent\\Factories\\Factory' => __DIR__ . '/..' . '/laravel/framework/src/Illuminate/Database/Eloquent/Factories/Factory.php',
         'Illuminate\\Database\\Eloquent\\Factories\\HasFactory' => __DIR__ . '/..' . '/laravel/framework/src/Illuminate/Database/Eloquent/Factories/HasFactory.php',
         'Illuminate\\Database\\Eloquent\\Factories\\Relationship' => __DIR__ . '/..' . '/laravel/framework/src/Illuminate/Database/Eloquent/Factories/Relationship.php',
@@ -3246,6 +3253,7 @@ class ComposerStaticInitf2c19eb761b8c359a5db5860c96d36cb
         'Laravel\\Ui\\UiCommand' => __DIR__ . '/..' . '/laravel/ui/src/UiCommand.php',
         'Laravel\\Ui\\UiServiceProvider' => __DIR__ . '/..' . '/laravel/ui/src/UiServiceProvider.php',
         'League\\CommonMark\\CommonMarkConverter' => __DIR__ . '/..' . '/league/commonmark/src/CommonMarkConverter.php',
+        'League\\CommonMark\\ConverterInterface' => __DIR__ . '/..' . '/league/commonmark/src/ConverterInterface.php',
         'League\\CommonMark\\Delimiter\\Delimiter' => __DIR__ . '/..' . '/league/commonmark/src/Delimiter/Delimiter.php',
         'League\\CommonMark\\Delimiter\\DelimiterInterface' => __DIR__ . '/..' . '/league/commonmark/src/Delimiter/DelimiterInterface.php',
         'League\\CommonMark\\Delimiter\\DelimiterParser' => __DIR__ . '/..' . '/league/commonmark/src/Delimiter/DelimiterParser.php',
@@ -3496,6 +3504,7 @@ class ComposerStaticInitf2c19eb761b8c359a5db5860c96d36cb
         'League\\CommonMark\\Renderer\\Block\\DocumentRenderer' => __DIR__ . '/..' . '/league/commonmark/src/Renderer/Block/DocumentRenderer.php',
         'League\\CommonMark\\Renderer\\Block\\ParagraphRenderer' => __DIR__ . '/..' . '/league/commonmark/src/Renderer/Block/ParagraphRenderer.php',
         'League\\CommonMark\\Renderer\\ChildNodeRendererInterface' => __DIR__ . '/..' . '/league/commonmark/src/Renderer/ChildNodeRendererInterface.php',
+        'League\\CommonMark\\Renderer\\HtmlDecorator' => __DIR__ . '/..' . '/league/commonmark/src/Renderer/HtmlDecorator.php',
         'League\\CommonMark\\Renderer\\HtmlRenderer' => __DIR__ . '/..' . '/league/commonmark/src/Renderer/HtmlRenderer.php',
         'League\\CommonMark\\Renderer\\Inline\\NewlineRenderer' => __DIR__ . '/..' . '/league/commonmark/src/Renderer/Inline/NewlineRenderer.php',
         'League\\CommonMark\\Renderer\\Inline\\TextRenderer' => __DIR__ . '/..' . '/league/commonmark/src/Renderer/Inline/TextRenderer.php',
@@ -3512,6 +3521,7 @@ class ComposerStaticInitf2c19eb761b8c359a5db5860c96d36cb
         'League\\CommonMark\\Util\\UrlEncoder' => __DIR__ . '/..' . '/league/commonmark/src/Util/UrlEncoder.php',
         'League\\CommonMark\\Util\\Xml' => __DIR__ . '/..' . '/league/commonmark/src/Util/Xml.php',
         'League\\CommonMark\\Xml\\FallbackNodeXmlRenderer' => __DIR__ . '/..' . '/league/commonmark/src/Xml/FallbackNodeXmlRenderer.php',
+        'League\\CommonMark\\Xml\\MarkdownToXmlConverter' => __DIR__ . '/..' . '/league/commonmark/src/Xml/MarkdownToXmlConverter.php',
         'League\\CommonMark\\Xml\\XmlNodeRendererInterface' => __DIR__ . '/..' . '/league/commonmark/src/Xml/XmlNodeRendererInterface.php',
         'League\\CommonMark\\Xml\\XmlRenderer' => __DIR__ . '/..' . '/league/commonmark/src/Xml/XmlRenderer.php',
         'League\\Config\\Configuration' => __DIR__ . '/..' . '/league/config/src/Configuration.php',
@@ -7135,10 +7145,10 @@ class ComposerStaticInitf2c19eb761b8c359a5db5860c96d36cb
     public static function getInitializer(ClassLoader $loader)
     {
         return \Closure::bind(function () use ($loader) {
-            $loader->prefixLengthsPsr4 = ComposerStaticInitf2c19eb761b8c359a5db5860c96d36cb::$prefixLengthsPsr4;
-            $loader->prefixDirsPsr4 = ComposerStaticInitf2c19eb761b8c359a5db5860c96d36cb::$prefixDirsPsr4;
-            $loader->prefixesPsr0 = ComposerStaticInitf2c19eb761b8c359a5db5860c96d36cb::$prefixesPsr0;
-            $loader->classMap = ComposerStaticInitf2c19eb761b8c359a5db5860c96d36cb::$classMap;
+            $loader->prefixLengthsPsr4 = ComposerStaticInite052f21ab409f2913b94198328d15185::$prefixLengthsPsr4;
+            $loader->prefixDirsPsr4 = ComposerStaticInite052f21ab409f2913b94198328d15185::$prefixDirsPsr4;
+            $loader->prefixesPsr0 = ComposerStaticInite052f21ab409f2913b94198328d15185::$prefixesPsr0;
+            $loader->classMap = ComposerStaticInite052f21ab409f2913b94198328d15185::$classMap;
 
         }, null, ClassLoader::class);
     }

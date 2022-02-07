@@ -149,9 +149,9 @@
             <div class="col-lg-6">
                 <div class="card">
                     <div class="card-header">
-                        <h4>Parcent Titles Status per Series</h4>
+                        <h4>Percent Titles Status per Series</h4>
                     </div>
-                    <div class="card-body pt-0 ps-0 pe-0">
+                    <div class="card-body pt-0 ps-0 pe-0" style="height: 380px; overflow-y: scroll">
                         <div id="bar_chart_datalabel" class="apex-charts" dir="ltr"></div>
                     </div>
                 </div>
@@ -376,7 +376,7 @@ $(function () {
 
 
 
-
+// column_chart_datalabel - starts
 if ($("#column_chart_datalabel").length > 0) {
   var options = {
     chart: {
@@ -453,6 +453,114 @@ if ($("#column_chart_datalabel").length > 0) {
   );
   chart.render();
 }
+// column_chart_datalabel - ends
+
+// bar_chart_datalabel - starts
+if($('#bar_chart_datalabel').length > 0){
+var options = {
+    colors : ['#519EFD', '#f7b104'],
+          series: [{
+          name: 'Done Titles',
+          data: [
+            @foreach($title_percentage_per_series as $title=>$percentage)
+                "{{ round($percentage) }}",
+            @endforeach
+          ]
+        }, {
+          name: 'Not Done',
+          data: [
+            @foreach($title_percentage_per_series as $title=>$percentage)
+                "{{ 100 - round($percentage)}}",
+            @endforeach
+            ]
+        }],
+          chart: {
+          type: 'bar',
+          height: 650,
+          toolbar: {
+            show: !1,
+          },
+          stacked: true,
+          stackType: '100%'
+        },
+        plotOptions: {
+          bar: {
+            borderRadius: 3,
+            horizontal: true,
+            barHeight: '80%',
+            columnWidth: 100,
+          },
+        },
+        stroke: {
+          width:0,
+          colors: ['#fff']
+        },
+        title: {
+          // text: '100% Stacked Bar'
+        },
+        xaxis: { 
+            categories:[ 
+            @foreach($title_percentage_per_series as $title=>$percentage)
+                "{{ $title }}",
+            @endforeach
+            ],
+        },
+        tooltip: {
+          y: {
+            formatter: function (val) {
+              return (Math.round(val*10)/10) + "%"
+            }
+          }
+        },
+        fill: {
+          type: "gradient",
+            gradient: {
+            type: "horizontal",
+            shadeIntensity: 1,
+            opacityFrom: 0.7,
+            opacityTo: 0.9,
+            colorStops: [
+            [
+                {
+                    offset: 0,
+                    color: "#fff",
+                    opacity: 1,
+                },
+                {
+                    offset: 100,
+                    color: "#519EFD",
+                    opacity: 1,
+                },
+            ],
+            [
+                {
+                    offset: 0,
+                    color: "#fff",
+                    opacity: 1,
+                },
+                {
+                    offset: 100,
+                    color: "#f7b104",
+                    opacity: 1,
+                },
+            ]
+        ],
+      },
+        
+        },
+        legend: {
+          position: 'top',
+          horizontalAlign: 'left',
+          offsetX: 20,
+          show:true
+        }
+        };
+
+        var chart = new ApexCharts(document.querySelector("#bar_chart_datalabel"), options);
+        chart.render();
+}
+// bar_chart_datalabel - ends
+
   var data = {
     labels: [
 

@@ -198,11 +198,11 @@
                                                 if(!empty($cat->category)){
                                                     if($tag_count == 2)
                                                     {
-                                                        $more_tags = $categories.'<span class="badge badge-primary mr-1">'.$cat->category->name.'</span>';
+                                                        $more_tags = $categories.'<br/><span class="badge badge-primary mr-1">'.$cat->category->name.'</span>';
                                                     }
                                                     else if($tag_count > 2)
                                                     {
-                                                        $more_tags.='<span class="badge badge-primary mr-1">'.$cat->category->name.'</span>';
+                                                        $more_tags.='<br/><span class="badge badge-primary mr-1">'.$cat->category->name.'</span>';
                                                     }
                                                     else
                                                     {
@@ -322,7 +322,7 @@
                                                     @endphp
                                                     @endif
                                                     @if($translations_count > 1 && $book->add_another_book_translation == 0)
-                                                        <li><a class="dropdown-item text-danger" href="#" onclick="prompt('You need to delete the translations of this title before deleting it!')"><i class="fas fa-trash-alt text-danger"></i> Delete{{ $translations_count }}</a></li>
+                                                        <li><a class="dropdown-item text-danger" href="#" onclick="prompt('You need to delete the translations of this title before deleting it!')"><i class="fas fa-trash-alt text-danger"></i> Delete</a></li>
                                                     @else
                                                         <li><a class="dropdown-item text-danger" href="#" onclick="makeDeleteRequest(this,{{ $book->id }})"><i class="fas fa-trash-alt text-danger"></i> Delete</a></li>
                                                     @endif

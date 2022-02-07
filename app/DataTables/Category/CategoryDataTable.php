@@ -37,7 +37,7 @@ class CategoryDataTable extends DataTable
                 <input type="hidden" name="_method" value="DELETE">
                 </form>';
                     if($books_under_cat_count > 0){
-                        $buttons .= '<li><a href="javascript:void(0)" class="dropdown-item text-danger" onclick="prompt(\'There are book titles under this series which need to be shifted to another series or deleted before this series gets deleted\')" title="Delete Role"><i class="fas fa-trash-alt text-danger"></i>&nbsp;Delete'.$books_under_cat_count.'</a></li>';
+                        $buttons .= '<li><a href="javascript:void(0)" class="dropdown-item text-danger" onclick="prompt(\'There are book titles under this series which need to be shifted to another series or deleted before this series gets deleted\')" title="Delete Role"><i class="fas fa-trash-alt text-danger"></i>&nbsp;Delete</a></li>';
                     }
                     else
                     {

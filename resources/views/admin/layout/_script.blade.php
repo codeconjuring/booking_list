@@ -96,6 +96,27 @@
                 }
             })
     }
+    function prompt(prompt_string)
+    {
+        Swal.fire({
+            title: 'Info',
+            text: prompt_string,
+            icon: 'warning',
+            });
+    }
+    function tag_span(flag, book_id)
+    {
+        if(flag == 0)
+        {
+          $('#spanless'+book_id).addClass('d-none')
+          $('#spanmore'+book_id).removeClass('d-none')
+        }
+        else if(flag == 1)
+        {
+          $('#spanmore'+book_id).addClass('d-none')
+          $('#spanless'+book_id).removeClass('d-none')
+        }
+    }
 
 </script>
 

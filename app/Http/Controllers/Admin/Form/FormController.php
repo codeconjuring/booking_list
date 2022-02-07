@@ -241,18 +241,27 @@ class FormController extends Controller
      */
     public function update(Request $request, $id)
     {
+        $find_book_list = BookList::findOrFail($id);
 
-        $request->validate([
+        if($find_book_list->add_another_book_translation == 0)
+        {
+           $request->validate([
+            'categorys' => 'required',
             'series_id' => 'required',
-            'language'  => 'required',
             'available' => 'required',
             'author'    => 'required',
-        ]);
+           ]); 
+        }
+        $request->validate([
+            'title' => 'required',
+            'content' => 'required',
+            'language'  => 'required',
+           ]); 
 
         DB::beginTransaction();
 
+
         try {
-            $find_book_list = BookList::findOrFail($id);
             $db_content     = [];
             $request_cotent = [];
             $email_flag     = 0;
@@ -278,25 +287,31 @@ class FormController extends Controller
                     $change_value[$key] = $d_contetn;
                 }
             }
+            if($find_book_list->add_another_book_translation == 0)
+            {
+                $book = Book::find($find_book_list->book_id);
+                $book->update(['category_id' => $request->series_id]);
 
-            $bookList = BookList::whereId($id)->update([
+                $books_under_same_book_id = BookList::whereBookId($find_book_list->book_id)->update([
                 'category_id' => $request->series_id,
-                'book_id'     => $find_book_list->book_id,
+                'author'      => $request->author,
+                'available'   => $request->available,
+                ]);
+
+                BookListCategory::whereBookListId($id)->delete();
+
+                foreach ($request->categorys as $key => $category) {
+                    BookListCategory::create([
+                        'book_list_id' => $id,
+                        'cat_id'       => $category,
+                    ]);
+                }
+            }
+            $find_book_list->update([
                 'title'       => $request->title,
                 'language'    => $request->language,
                 'content'     => $request->content,
-                'author'      => $request->author,
-                'available'   => $request->available,
-            ]);
-
-            BookListCategory::whereBookListId($id)->delete();
-
-            foreach ($request->categorys as $key => $category) {
-                BookListCategory::create([
-                    'book_list_id' => $id,
-                    'cat_id'       => $category,
                 ]);
-            }
 
             DB::commit();
             // if ($email_flag == 1) {

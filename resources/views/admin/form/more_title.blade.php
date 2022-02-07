@@ -96,7 +96,7 @@
                         @method('delete')
                 </form>
 
-                <li><a class="dropdown-item text-danger" href="#" nclick="makeDeleteRequest(this,{{ $getBookList->id }})"><i class="fas fa-trash-alt text-danger"></i> Delete</a></li>
+                <li><a class="dropdown-item text-danger" href="#" onclick="makeDeleteRequest(this,{{ $getBookList->id }})"><i class="fas fa-trash-alt text-danger"></i> Delete</a></li>
                 @endcan
             </ul>
         </div>

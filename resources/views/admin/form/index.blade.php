@@ -192,9 +192,23 @@
 
                                         @php
                                             $categories='';
+                                            $more_tags = '';
+                                            $tag_count = 0;
                                             foreach($book->categories as $cat){
                                                 if(!empty($cat->category)){
-                                                    $categories.='<span class="badge badge-primary mr-1">'.$cat->category->name.'</span>';
+                                                    if($tag_count == 2)
+                                                    {
+                                                        $more_tags = $categories.'<span class="badge badge-primary mr-1">'.$cat->category->name.'</span>';
+                                                    }
+                                                    else if($tag_count > 2)
+                                                    {
+                                                        $more_tags.='<span class="badge badge-primary mr-1">'.$cat->category->name.'</span>';
+                                                    }
+                                                    else
+                                                    {
+                                                        $categories.='<span class="badge badge-primary mr-1">'.$cat->category->name.'</span>';
+                                                    }
+                                                    $tag_count += 1;
                                                 }
                                             }
                                         @endphp
@@ -224,7 +238,21 @@
                                             <td class="text-center">{!! $book->available_status!!}</td>
 
 
-                                            <td>{!! $categories !!}</td>
+                                            <td>
+                                                @if($tag_count <= 2)
+                                                    <span>{!! $categories !!}
+                                                    </span>
+                                                @else
+                                                    <span id="spanmore{{$book->id}}">
+                                                        {!! $categories !!}
+                                                        <small><a class="text-dark" onclick="tag_span(1,{{$book->id}})" href="javascript:void(0)">More</a></small>
+                                                    </span>
+                                                    <span class="d-none" id="spanless{{$book->id}}">
+                                                        {!! $more_tags !!}
+                                                        <small><a class="text-dark" onclick="tag_span(0,{{$book->id}})"data-tag-span-id="spanmore{{$book->id}}" href="javascript:void(0)">Less</a></small>
+                                                    </span>
+                                                @endif
+                                            </td>
                                             @if (($main_title_flag==0) && ($filter_data!=1))
                                             <td class="{{ $entry_id==$e->id?'bg-primary':'' }}"><b><a style="text-decoration: none; color:black" data-flag="0" id="mainTitle{{ $e->id }}" onclick="showMoreTitle('{{ $e->id }}','{{ $book_i }}',$(this).attr('data-flag'))" href="javascript:void(0)">{{ $book->title }} ({{ $entry_count }})</a><img width="10%"  class="buffering-img{{ $e->id }} d-none" src="{{ asset('dashboard/assets/images/loading-buffering.gif') }}" alt=""></b></td>
                                             @else
@@ -276,7 +304,7 @@
                                                         <li><a class="dropdown-item {{ $book->add_another_book_translation==1?'d-none':'' }}" href="{{ route('admin.form.add-another-title',['id'=>$book->id]) }}"><i class="mdi mdi-google-translate"></i> Add Translation</a></li>
                                                         @endcan
 
-                                                        @can('Edit Book Management')
+                                                    @can('Edit Book Management')
                                                         <li><a class="dropdown-item" href="{{ route('admin.form.edit',$book->id) }}"><i class="fas fa-edit"></i> Edit</a></li>
                                                         @endcan
 
@@ -285,9 +313,20 @@
                                                                 @csrf
                                                                 @method('delete')
                                                         </form>
-
+                                                    @php
+                                                        $translations_count = 2;
+                                                    @endphp
+                                                    @if($book->add_another_book_translation == 0)
+                                                    @php
+                                                        $translations_count = App\Models\BookList::whereBookId($book->book_id)->count();
+                                                    @endphp
+                                                    @endif
+                                                    @if($translations_count > 1 && $book->add_another_book_translation == 0)
+                                                        <li><a class="dropdown-item text-danger" href="#" onclick="prompt('You need to delete the translations of this title before deleting it!')"><i class="fas fa-trash-alt text-danger"></i> Delete{{ $translations_count }}</a></li>
+                                                    @else
                                                         <li><a class="dropdown-item text-danger" href="#" onclick="makeDeleteRequest(this,{{ $book->id }})"><i class="fas fa-trash-alt text-danger"></i> Delete</a></li>
-                                                        @endcan
+                                                    @endif
+                                                    @endcan
                                                     </ul>
                                                 </div>
 

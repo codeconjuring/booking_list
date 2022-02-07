@@ -3,6 +3,7 @@
 namespace App\DataTables\Category;
 
 use App\Models\Category;
+use App\Models\BookList;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 use PDF;
@@ -22,6 +23,7 @@ class CategoryDataTable extends DataTable
             ->eloquent($query)
             ->addColumn('action', function ($category) {
                 $authUser = Auth::user();
+                $books_under_cat_count = BookList::whereCategoryId($category->id)->count();
                 $buttons  = '';
                 if ($authUser->can('Edit Book Attributes Series')) {
                     $buttons .= '<li><a class="dropdown-item" href="' . route('admin.series.edit',
@@ -33,8 +35,14 @@ class CategoryDataTable extends DataTable
                     $buttons .= '<form action="' . route('admin.series.destroy', $category->id) . '"  id="deleteForm' . $category->id . '" method="post" style="display: none">
                 <input type="hidden" name="_token" value="' . csrf_token() . '">
                 <input type="hidden" name="_method" value="DELETE">
-                </form>
-                <li><a href="javascript:void(0)" class="dropdown-item text-danger" onclick="makeDeleteRequest(event, ' . $category->id . ')" title="Delete Role"><i class="fas fa-trash-alt text-danger"></i>&nbsp;Delete</a></li>';
+                </form>';
+                    if($books_under_cat_count > 0){
+                        $buttons .= '<li><a href="javascript:void(0)" class="dropdown-item text-danger" onclick="prompt(\'There are book titles under this series which need to be shifted to another series or deleted before this series gets deleted\')" title="Delete Role"><i class="fas fa-trash-alt text-danger"></i>&nbsp;Delete'.$books_under_cat_count.'</a></li>';
+                    }
+                    else
+                    {
+                        $buttons .= '<li><a href="javascript:void(0)" class="dropdown-item text-danger" onclick="makeDeleteRequest(event, ' . $category->id . ')" title="Delete Role"><i class="fas fa-trash-alt text-danger"></i>&nbsp;Delete</a></li>';
+                    }
                 }
                 return '<div class="dropdown">
                 <a class="btn cc-table-action p-0 dropdown-toggle" href="#"

@@ -132,8 +132,14 @@
 @section('js')
 <script src="/vendor/laravel-filemanager/js/stand-alone-button.js"></script>
 
+@endsection
+
+@section('script')
+
 <script>
     $('#defaultProfilePicBtn').filemanager('profile');
+    $('#faviconBtn').filemanager('setting');
+    $('#siteLogo').filemanager('setting');
 </script>
 
 @endsection

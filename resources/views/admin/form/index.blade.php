@@ -196,11 +196,11 @@
                                             $tag_count = 0;
                                             foreach($book->categories as $cat){
                                                 if(!empty($cat->category)){
-                                                    if($tag_count == 2)
+                                                    if($tag_count == 1)
                                                     {
                                                         $more_tags = $categories.'<br/><span class="badge badge-primary mr-1">'.$cat->category->name.'</span>';
                                                     }
-                                                    else if($tag_count > 2)
+                                                    else if($tag_count > 1)
                                                     {
                                                         $more_tags.='<br/><span class="badge badge-primary mr-1">'.$cat->category->name.'</span>';
                                                     }
@@ -239,7 +239,7 @@
 
 
                                             <td>
-                                                @if($tag_count <= 2)
+                                                @if($tag_count <= 1)
                                                     <span>{!! $categories !!}
                                                     </span>
                                                 @else

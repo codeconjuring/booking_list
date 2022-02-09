@@ -62,19 +62,7 @@
         toastr["error"]("{{ Session::get('error') }}")
     @endif
 
-    $(()=>{
-        if(localStorage.getItem('sideBar')==1)
-        {
-            console.log('lagbe');
-        }else{
-            console.log('khola');
-        }
-    });
 
-    $('.icon').click(function(){
-        console.log(localStorage.getItem('sideBar'));
-
-    });
 
     $(()=>{
         if(localStorage.getItem('sideBar')==1){

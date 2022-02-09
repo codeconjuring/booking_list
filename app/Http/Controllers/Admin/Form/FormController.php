@@ -445,17 +445,29 @@ class FormController extends Controller
 
     public function downloadPdf(Request $request)
     {
-
         $page_title = "Book lists";
         $today_date = Carbon::parse(date('Y-m-d'))->format('d F Y');
 
+
         $select_series    = isset($request->series) ? $request->series : [];
+        $filter_series_names = Category::pluck('name','id')->toArray();
+
         $select_tags      = isset($request->tag_ids) ? $request->tag_ids : [];
+        $filter_tag_names = Cat::pluck('name','id')->toArray();
+
         $select_status    = isset($request->status_ids) ? $request->status_ids : [];
+        $filter_status_names = Status::pluck('status','id')->toArray();
+
         $select_languages = isset($request->languages) ? $request->languages : [];
+        $filter_lan_names = Language::pluck('short_hand','id')->toArray();
+
         $select_ztf       = isset($request->ztf) ? $request->ztf : [];
+        $filter_ztf_names = ['No','Yes','Not Available'];
 
         $form_builder    = FormBuilder::orderBy('order_table', 'asc')->get();
+        $filter_format_names = FormBuilder::pluck('label','id')->toArray();
+        $select_format = isset($request->select_row) ? $request->select_row : [];
+
         $series_group_by = BookList::select('category_id')->groupBy('category_id')->orderBy('id', 'DESC')->get();
         $series_count    = BookList::select('category_id', DB::raw('count(*) as total'))->groupBy('category_id')->orderBy('id', 'DESC')->get();
         $show_book_list  = $request->show_book_list ?? 0;
@@ -516,21 +528,7 @@ class FormController extends Controller
 
             }
         }
-
-        $filter_select_tag_name = 'Tags:';
-        $count_slect_tag        = count($select_tags);
-        if ($count_slect_tag > 0) {
-            foreach ($select_tags as $key => $filter_select_tag) {
-                $find_cat = Cat::findOrFail($filter_select_tag);
-
-                if ($count_slect_tag == ($key + 1)) {
-                    $filter_select_tag_name .= ' ' . $find_cat->name;
-                } else {
-                    $filter_select_tag_name .= ' ' . $find_cat->name . ', ';
-                }
-
-            }
-        }
+        
         ini_set("pcre.backtrack_limit", "10000000");
         $documentFileName = date("Ymd") . '_' . time() . ".pdf";
         // Create the mPDF document
@@ -543,7 +541,7 @@ class FormController extends Controller
         ];
         $document->autoScriptToLang = true;
         $document->autoLangToFont   = true;
-        $document->WriteHTML(view('admin.form.report', ['page_title' => $page_title, 'form_builder' => $form_builder, 'series' => $series, 'getSeriyes' => $getSeriyes, 'status' => $status, 'status_array' => $status_array, 'selected_row' => $selected_row, 'show_book_list' => $show_book_list, 'pdf_font_size' => $pdf_font_size, 'select_series' => $select_series, 'select_languages' => $select_languages, 'select_tags' => $select_tags, 'select_status' => $select_status, 'today_date' => $today_date, 'filter_select_tag_name' => $filter_select_tag_name, 'select_ztf' => $select_ztf]));
+        $document->WriteHTML(view('admin.form.report', ['page_title' => $page_title, 'form_builder' => $form_builder, 'series' => $series, 'getSeriyes' => $getSeriyes, 'status' => $status, 'status_array' => $status_array, 'selected_row' => $selected_row, 'show_book_list' => $show_book_list, 'pdf_font_size' => $pdf_font_size, 'select_series' => $select_series, 'filter_series_names' => $filter_series_names, 'select_languages' => $select_languages, 'filter_lan_names' => $filter_lan_names, 'select_tags' => $select_tags, 'select_status' => $select_status,'filter_status_names' => $filter_status_names, 'today_date' => $today_date, 'filter_tag_names' => $filter_tag_names, 'select_ztf' => $select_ztf, 'filter_ztf_names' => $filter_ztf_names, 'filter_format_names' => $filter_format_names, 'select_format' => $select_format]));
         // Save PDF on your public storage
         Storage::disk('public')->put($documentFileName, $document->Output($documentFileName, "S"));
         // Get file back from storage with the give header informations

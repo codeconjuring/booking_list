@@ -6310,6 +6310,13 @@ table.dataTable > thead .sorting_desc_disabled::after {
       grid-template-columns: repeat(1, 1fr); } }
 
 .books-tags .table {
-  width: 70%; }
+  width: 50% !important;
+  margin: 0 auto 0 0 !important; }
+  @media only screen and (max-width: 1440px) {
+    .books-tags .table {
+      width: 50%; } }
+  @media only screen and (max-width: 1199.98px) {
+    .books-tags .table {
+      width: 50% !important; } }
 
 /*# sourceMappingURL=style.css.map */

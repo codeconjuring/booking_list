@@ -62,7 +62,7 @@
             <img src="{{ asset('dashboard/update_assets/images/purple/purple-2.png') }}" class="second-img" alt="">
             <img src="{{ asset('dashboard/update_assets/images/purple/purlple-3.png') }}" class="third-img" alt="">
             <div class="icon">
-                <i class="icon-book-open"></i>
+                <i class="icon-books-break"></i>
             </div>
             <div class="ic-card-content">
                 <p>Total Books</p>
@@ -75,7 +75,7 @@
             <img src="{{ asset('dashboard/update_assets/images/purple/purple-2.png') }}" class="second-img" alt="">
             <img src="{{ asset('dashboard/update_assets/images/purple/purlple-3.png') }}" class="third-img" alt="">
             <div class="icon">
-                <i class="icon-book-open"></i>
+            <i class="icon-books"></i>
             </div>
             <div class="ic-card-content">
                 <p>Total Titles Published</p>
@@ -88,7 +88,7 @@
             <img src="{{ asset('dashboard/update_assets/images/purple/purple-2.png') }}" class="second-img" alt="">
             <img src="{{ asset('dashboard/update_assets/images/purple/purlple-3.png') }}" class="third-img" alt="">
             <div class="icon">
-                <i class="icon-book-open"></i>
+                <i class="icon-list"></i>
             </div>
             <div class="ic-card-content">
                 <p>Total Books Published</p>
@@ -96,13 +96,16 @@
             </div>
         </div>
 
+        <!-- <i class="icon-print"></i>
+        <i class="icon-audiobooks"></i>
+        <i class="icon-book2"></i> -->
 
         <div class="ic-dashboard-card-items box sky-blue">
             <img src="{{ asset('dashboard/update_assets/images/purple/purple-1.png') }}" class="first-img" alt="">
             <img src="{{ asset('dashboard/update_assets/images/purple/purple-2.png') }}" class="second-img" alt="">
             <img src="{{ asset('dashboard/update_assets/images/purple/purlple-3.png') }}" class="third-img" alt="">
             <div class="icon">
-                <i class="icon-book-open"></i>
+                <i class="icon-language"></i>
             </div>
             <div class="ic-card-content">
                 <p>Total Language</p>

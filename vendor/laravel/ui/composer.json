@@ -13,11 +13,7 @@
         "php": "^7.3|^8.0",
         "illuminate/console": "^8.42|^9.0",
         "illuminate/filesystem": "^8.42|^9.0",
-<<<<<<< HEAD
-        "illuminate/support": "^8.42|^9.0",
-=======
         "illuminate/support": "^8.82|^9.0",
->>>>>>> e10096cb739d7b8b8acd2b5c95085ad53e862f7f
         "illuminate/validation": "^8.42|^9.0"
     },
     "require-dev": {

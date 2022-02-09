@@ -5,7 +5,7 @@
         'type' => 'project',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
-        'reference' => '0d5ec43aa5708c36c3790e08e0138cf0da7eafc6',
+        'reference' => '1ab358e83c896d9c0fe10bda9ca51c6bef9c70c4',
         'name' => 'laravel/laravel',
         'dev' => true,
     ),
@@ -427,25 +427,16 @@
             'type' => 'project',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
-            'reference' => '0d5ec43aa5708c36c3790e08e0138cf0da7eafc6',
+            'reference' => '1ab358e83c896d9c0fe10bda9ca51c6bef9c70c4',
             'dev_requirement' => false,
         ),
         'laravel/sail' => array(
-<<<<<<< HEAD
-            'pretty_version' => 'v1.13.1',
-            'version' => '1.13.1.0',
-            'type' => 'library',
-            'install_path' => __DIR__ . '/../laravel/sail',
-            'aliases' => array(),
-            'reference' => 'b9749028732eca8080c26d01cd88a2f3549c2e3e',
-=======
             'pretty_version' => 'v1.13.2',
             'version' => '1.13.2.0',
             'type' => 'library',
             'install_path' => __DIR__ . '/../laravel/sail',
             'aliases' => array(),
             'reference' => 'ede5e861549be2c3a8b789cdb34203a5aef5b92a',
->>>>>>> e10096cb739d7b8b8acd2b5c95085ad53e862f7f
             'dev_requirement' => true,
         ),
         'laravel/sanctum' => array(
@@ -476,23 +467,6 @@
             'dev_requirement' => false,
         ),
         'laravel/ui' => array(
-<<<<<<< HEAD
-            'pretty_version' => 'v3.4.2',
-            'version' => '3.4.2.0',
-            'type' => 'library',
-            'install_path' => __DIR__ . '/../laravel/ui',
-            'aliases' => array(),
-            'reference' => 'e01198123f7f4369d13c1f83a897c3f5e97fc9f4',
-            'dev_requirement' => false,
-        ),
-        'laravelcollective/html' => array(
-            'pretty_version' => 'v6.2.1',
-            'version' => '6.2.1.0',
-            'type' => 'library',
-            'install_path' => __DIR__ . '/../laravelcollective/html',
-            'aliases' => array(),
-            'reference' => 'ae15b9c4bf918ec3a78f092b8555551dd693fde3',
-=======
             'pretty_version' => 'v3.4.3',
             'version' => '3.4.3.0',
             'type' => 'library',
@@ -508,7 +482,6 @@
             'install_path' => __DIR__ . '/../laravelcollective/html',
             'aliases' => array(),
             'reference' => '78c3cb516ac9e6d3d76cad9191f81d217302dea6',
->>>>>>> e10096cb739d7b8b8acd2b5c95085ad53e862f7f
             'dev_requirement' => false,
         ),
         'league/commonmark' => array(

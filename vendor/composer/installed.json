@@ -815,12 +815,21 @@
             },
             "installation-source": "dist",
             "autoload": {
+<<<<<<< HEAD
                 "psr-4": {
                     "Facade\\Ignition\\": "src"
                 },
                 "files": [
                     "src/helpers.php"
                 ]
+=======
+                "files": [
+                    "src/helpers.php"
+                ],
+                "psr-4": {
+                    "Facade\\Ignition\\": "src"
+                }
+>>>>>>> e10096cb739d7b8b8acd2b5c95085ad53e862f7f
             },
             "notification-url": "https://packagist.org/downloads/",
             "license": [
@@ -1842,6 +1851,7 @@
         },
         {
             "name": "laravel/sail",
+<<<<<<< HEAD
             "version": "v1.13.1",
             "version_normalized": "1.13.1.0",
             "source": {
@@ -1853,6 +1863,19 @@
                 "type": "zip",
                 "url": "https://api.github.com/repos/laravel/sail/zipball/b9749028732eca8080c26d01cd88a2f3549c2e3e",
                 "reference": "b9749028732eca8080c26d01cd88a2f3549c2e3e",
+=======
+            "version": "v1.13.2",
+            "version_normalized": "1.13.2.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/laravel/sail.git",
+                "reference": "ede5e861549be2c3a8b789cdb34203a5aef5b92a"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/laravel/sail/zipball/ede5e861549be2c3a8b789cdb34203a5aef5b92a",
+                "reference": "ede5e861549be2c3a8b789cdb34203a5aef5b92a",
+>>>>>>> e10096cb739d7b8b8acd2b5c95085ad53e862f7f
                 "shasum": ""
             },
             "require": {
@@ -1861,7 +1884,11 @@
                 "illuminate/support": "^8.0|^9.0",
                 "php": "^7.3|^8.0"
             },
+<<<<<<< HEAD
             "time": "2022-01-20T15:31:25+00:00",
+=======
+            "time": "2022-02-08T14:14:12+00:00",
+>>>>>>> e10096cb739d7b8b8acd2b5c95085ad53e862f7f
             "bin": [
                 "bin/sail"
             ],
@@ -2105,6 +2132,7 @@
         },
         {
             "name": "laravel/ui",
+<<<<<<< HEAD
             "version": "v3.4.2",
             "version_normalized": "3.4.2.0",
             "source": {
@@ -2116,19 +2144,40 @@
                 "type": "zip",
                 "url": "https://api.github.com/repos/laravel/ui/zipball/e01198123f7f4369d13c1f83a897c3f5e97fc9f4",
                 "reference": "e01198123f7f4369d13c1f83a897c3f5e97fc9f4",
+=======
+            "version": "v3.4.3",
+            "version_normalized": "3.4.3.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/laravel/ui.git",
+                "reference": "64a0f43492c00780b2261c56cd7007a4f370d95b"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/laravel/ui/zipball/64a0f43492c00780b2261c56cd7007a4f370d95b",
+                "reference": "64a0f43492c00780b2261c56cd7007a4f370d95b",
+>>>>>>> e10096cb739d7b8b8acd2b5c95085ad53e862f7f
                 "shasum": ""
             },
             "require": {
                 "illuminate/console": "^8.42|^9.0",
                 "illuminate/filesystem": "^8.42|^9.0",
+<<<<<<< HEAD
                 "illuminate/support": "^8.42|^9.0",
+=======
+                "illuminate/support": "^8.82|^9.0",
+>>>>>>> e10096cb739d7b8b8acd2b5c95085ad53e862f7f
                 "illuminate/validation": "^8.42|^9.0",
                 "php": "^7.3|^8.0"
             },
             "require-dev": {
                 "orchestra/testbench": "^6.23|^7.0"
             },
+<<<<<<< HEAD
             "time": "2022-01-25T20:15:56+00:00",
+=======
+            "time": "2022-02-08T14:19:32+00:00",
+>>>>>>> e10096cb739d7b8b8acd2b5c95085ad53e862f7f
             "type": "library",
             "extra": {
                 "branch-alias": {
@@ -2163,12 +2212,17 @@
                 "ui"
             ],
             "support": {
+<<<<<<< HEAD
                 "source": "https://github.com/laravel/ui/tree/v3.4.2"
+=======
+                "source": "https://github.com/laravel/ui/tree/v3.4.3"
+>>>>>>> e10096cb739d7b8b8acd2b5c95085ad53e862f7f
             },
             "install-path": "../laravel/ui"
         },
         {
             "name": "laravelcollective/html",
+<<<<<<< HEAD
             "version": "v6.2.1",
             "version_normalized": "6.2.1.0",
             "source": {
@@ -2196,6 +2250,35 @@
                 "phpunit/phpunit": "~8.5"
             },
             "time": "2020-12-15T20:20:05+00:00",
+=======
+            "version": "v6.3.0",
+            "version_normalized": "6.3.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/LaravelCollective/html.git",
+                "reference": "78c3cb516ac9e6d3d76cad9191f81d217302dea6"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/LaravelCollective/html/zipball/78c3cb516ac9e6d3d76cad9191f81d217302dea6",
+                "reference": "78c3cb516ac9e6d3d76cad9191f81d217302dea6",
+                "shasum": ""
+            },
+            "require": {
+                "illuminate/http": "^6.0|^7.0|^8.0|^9.0",
+                "illuminate/routing": "^6.0|^7.0|^8.0|^9.0",
+                "illuminate/session": "^6.0|^7.0|^8.0|^9.0",
+                "illuminate/support": "^6.0|^7.0|^8.0|^9.0",
+                "illuminate/view": "^6.0|^7.0|^8.0|^9.0",
+                "php": ">=7.2.5"
+            },
+            "require-dev": {
+                "illuminate/database": "^6.0|^7.0|^8.0|^9.0",
+                "mockery/mockery": "~1.0",
+                "phpunit/phpunit": "~8.5|^9.5.10"
+            },
+            "time": "2022-02-08T21:02:54+00:00",
+>>>>>>> e10096cb739d7b8b8acd2b5c95085ad53e862f7f
             "type": "library",
             "extra": {
                 "branch-alias": {
@@ -2213,12 +2296,21 @@
             },
             "installation-source": "dist",
             "autoload": {
+<<<<<<< HEAD
                 "psr-4": {
                     "Collective\\Html\\": "src/"
                 },
                 "files": [
                     "src/helpers.php"
                 ]
+=======
+                "files": [
+                    "src/helpers.php"
+                ],
+                "psr-4": {
+                    "Collective\\Html\\": "src/"
+                }
+>>>>>>> e10096cb739d7b8b8acd2b5c95085ad53e862f7f
             },
             "notification-url": "https://packagist.org/downloads/",
             "license": [

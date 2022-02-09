@@ -11,6 +11,7 @@ class ThrottleLoginsTest extends TestCase
 {
     /**
      * @test
+<<<<<<< HEAD
      * @dataProvider specialCharacterProvider
      */
     public function it_can_replace_special_characters(string $value, string $expected): void
@@ -37,6 +38,8 @@ class ThrottleLoginsTest extends TestCase
 
     /**
      * @test
+=======
+>>>>>>> e10096cb739d7b8b8acd2b5c95085ad53e862f7f
      * @dataProvider emailProvider
      */
     public function it_can_generate_throttle_key(string $email, string $expectedEmail): void

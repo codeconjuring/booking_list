@@ -89,7 +89,11 @@ trait ThrottlesLogins
      */
     protected function throttleKey(Request $request)
     {
+<<<<<<< HEAD
         return $this->removeSpecialCharacters(Str::lower($request->input($this->username())).'|'.$request->ip());
+=======
+        return Str::transliterate(Str::lower($request->input($this->username())).'|'.$request->ip());
+>>>>>>> e10096cb739d7b8b8acd2b5c95085ad53e862f7f
     }
 
     /**
@@ -121,6 +125,7 @@ trait ThrottlesLogins
     {
         return property_exists($this, 'decayMinutes') ? $this->decayMinutes : 1;
     }
+<<<<<<< HEAD
 
     /**
      * Remove special characters that may allow users to bypass rate limiting.
@@ -203,4 +208,6 @@ trait ThrottlesLogins
 
         return strtr($key, $values);
     }
+=======
+>>>>>>> e10096cb739d7b8b8acd2b5c95085ad53e862f7f
 }

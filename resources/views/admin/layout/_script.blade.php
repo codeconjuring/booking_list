@@ -62,6 +62,18 @@
         toastr["error"]("{{ Session::get('error') }}")
     @endif
 
+
+
+    $(()=>{
+        if(localStorage.getItem('sideBar')==1){
+            $('#vertical-menu-btn').click();
+        }
+    });
+
+
+
+
+
     // Sweet alear
     function logout()
     {

@@ -431,12 +431,21 @@
             'dev_requirement' => false,
         ),
         'laravel/sail' => array(
+<<<<<<< HEAD
             'pretty_version' => 'v1.13.1',
             'version' => '1.13.1.0',
             'type' => 'library',
             'install_path' => __DIR__ . '/../laravel/sail',
             'aliases' => array(),
             'reference' => 'b9749028732eca8080c26d01cd88a2f3549c2e3e',
+=======
+            'pretty_version' => 'v1.13.2',
+            'version' => '1.13.2.0',
+            'type' => 'library',
+            'install_path' => __DIR__ . '/../laravel/sail',
+            'aliases' => array(),
+            'reference' => 'ede5e861549be2c3a8b789cdb34203a5aef5b92a',
+>>>>>>> e10096cb739d7b8b8acd2b5c95085ad53e862f7f
             'dev_requirement' => true,
         ),
         'laravel/sanctum' => array(
@@ -467,6 +476,7 @@
             'dev_requirement' => false,
         ),
         'laravel/ui' => array(
+<<<<<<< HEAD
             'pretty_version' => 'v3.4.2',
             'version' => '3.4.2.0',
             'type' => 'library',
@@ -482,6 +492,23 @@
             'install_path' => __DIR__ . '/../laravelcollective/html',
             'aliases' => array(),
             'reference' => 'ae15b9c4bf918ec3a78f092b8555551dd693fde3',
+=======
+            'pretty_version' => 'v3.4.3',
+            'version' => '3.4.3.0',
+            'type' => 'library',
+            'install_path' => __DIR__ . '/../laravel/ui',
+            'aliases' => array(),
+            'reference' => '64a0f43492c00780b2261c56cd7007a4f370d95b',
+            'dev_requirement' => false,
+        ),
+        'laravelcollective/html' => array(
+            'pretty_version' => 'v6.3.0',
+            'version' => '6.3.0.0',
+            'type' => 'library',
+            'install_path' => __DIR__ . '/../laravelcollective/html',
+            'aliases' => array(),
+            'reference' => '78c3cb516ac9e6d3d76cad9191f81d217302dea6',
+>>>>>>> e10096cb739d7b8b8acd2b5c95085ad53e862f7f
             'dev_requirement' => false,
         ),
         'league/commonmark' => array(

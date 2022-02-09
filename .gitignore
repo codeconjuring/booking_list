@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 /node_modules
 /public/hot
 /public/storage
@@ -15,3 +16,6 @@ vendor/
 public/videos
 public/uploads
 error_log
+=======
+/vendor
+>>>>>>> e10096cb739d7b8b8acd2b5c95085ad53e862f7f

@@ -4,7 +4,11 @@
 
 namespace Composer\Autoload;
 
+<<<<<<< HEAD
 class ComposerStaticInit8419d44b28d58a8472d7095d46d5ab86
+=======
+class ComposerStaticInitcbbb6e275daae8788fdbbde1b85c6373
+>>>>>>> e10096cb739d7b8b8acd2b5c95085ad53e862f7f
 {
     public static $files = array (
         '6124b4c8570aa390c21fafd04a26c69f' => __DIR__ . '/..' . '/myclabs/deep-copy/src/DeepCopy/deep_copy.php',
@@ -27,8 +31,13 @@ class ComposerStaticInit8419d44b28d58a8472d7095d46d5ab86
         '801c31d8ed748cfa537fa45402288c95' => __DIR__ . '/..' . '/psy/psysh/src/functions.php',
         '23c18046f52bef3eea034657bafda50f' => __DIR__ . '/..' . '/symfony/polyfill-php81/bootstrap.php',
         'a1105708a18b76903365ca1c4aa61b02' => __DIR__ . '/..' . '/symfony/translation/Resources/functions.php',
+<<<<<<< HEAD
         '538ca81a9a966a6716601ecf48f4eaef' => __DIR__ . '/..' . '/opis/closure/functions.php',
         'e39a8b23c42d4e1452234d762b03835a' => __DIR__ . '/..' . '/ramsey/uuid/src/functions.php',
+=======
+        'e39a8b23c42d4e1452234d762b03835a' => __DIR__ . '/..' . '/ramsey/uuid/src/functions.php',
+        '538ca81a9a966a6716601ecf48f4eaef' => __DIR__ . '/..' . '/opis/closure/functions.php',
+>>>>>>> e10096cb739d7b8b8acd2b5c95085ad53e862f7f
         '2cffec82183ee1cea088009cef9a6fc3' => __DIR__ . '/..' . '/ezyang/htmlpurifier/library/HTMLPurifier.composer.php',
         'f18cc91337d49233e5754e93f3ed9ec3' => __DIR__ . '/..' . '/laravelcollective/html/src/helpers.php',
         '265b4faa2b3a9766332744949e83bf97' => __DIR__ . '/..' . '/laravel/framework/src/Illuminate/Collections/helpers.php',
@@ -7145,10 +7154,17 @@ class ComposerStaticInit8419d44b28d58a8472d7095d46d5ab86
     public static function getInitializer(ClassLoader $loader)
     {
         return \Closure::bind(function () use ($loader) {
+<<<<<<< HEAD
             $loader->prefixLengthsPsr4 = ComposerStaticInit8419d44b28d58a8472d7095d46d5ab86::$prefixLengthsPsr4;
             $loader->prefixDirsPsr4 = ComposerStaticInit8419d44b28d58a8472d7095d46d5ab86::$prefixDirsPsr4;
             $loader->prefixesPsr0 = ComposerStaticInit8419d44b28d58a8472d7095d46d5ab86::$prefixesPsr0;
             $loader->classMap = ComposerStaticInit8419d44b28d58a8472d7095d46d5ab86::$classMap;
+=======
+            $loader->prefixLengthsPsr4 = ComposerStaticInitcbbb6e275daae8788fdbbde1b85c6373::$prefixLengthsPsr4;
+            $loader->prefixDirsPsr4 = ComposerStaticInitcbbb6e275daae8788fdbbde1b85c6373::$prefixDirsPsr4;
+            $loader->prefixesPsr0 = ComposerStaticInitcbbb6e275daae8788fdbbde1b85c6373::$prefixesPsr0;
+            $loader->classMap = ComposerStaticInitcbbb6e275daae8788fdbbde1b85c6373::$classMap;
+>>>>>>> e10096cb739d7b8b8acd2b5c95085ad53e862f7f
 
         }, null, ClassLoader::class);
     }

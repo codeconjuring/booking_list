@@ -31,7 +31,7 @@
 
     </div>
 
-    <div class="row">
+    {{-- <div class="row">
         <div class="col-md-12">
             <div class="card">
                 <div class="card-header">
@@ -111,8 +111,8 @@
 
             </div>
         </div>
-    </div>
-    <br>
+    </div> --}}
+
     <!-- container-fluid -->
 
     <div class="row">
@@ -498,17 +498,7 @@
             },
             'copy',
             'csv',
-            'excel',
-            'print',
-            {
-                extend: 'pdf',
-                text: 'pdf',
-                orientation: 'landscape',
-                pageSize: 'LEGAL',
-                exportOptions: {
-                    columns: [ -1, ':visible' ]
-                }
-            }
+            'excel'
         ]
     });
 

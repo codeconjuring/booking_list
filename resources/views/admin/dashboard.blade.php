@@ -41,7 +41,7 @@
                 <i class="icon-books"></i>
             </div>
             <div class="ic-card-content">
-                <p>Total Series</p>
+                <p>Series</p>
                 <h3>{{ $total_series }}</h3>
             </div>
         </div>
@@ -53,7 +53,7 @@
                 <i class="icon-a-books"></i>
             </div>
             <div class="ic-card-content">
-                <p>Total Titles</p>
+                <p>Titles (all)</p>
                 <h3>{{ $total_titles }}</h3>
             </div>
         </div>
@@ -65,7 +65,7 @@
                 <i class="icon-books-break"></i>
             </div>
             <div class="ic-card-content">
-                <p>Total Books</p>
+                <p>Books (all)</p>
                 <h3>{{ $total_books }}</h3>
             </div>
         </div>
@@ -78,7 +78,7 @@
             <i class="icon-books"></i>
             </div>
             <div class="ic-card-content">
-                <p>Total Titles Published</p>
+                <p>Titles (Published)</p>
                 <h3>{{ $total_title_published }}</h3>
             </div>
         </div>
@@ -91,7 +91,7 @@
                 <i class="icon-list"></i>
             </div>
             <div class="ic-card-content">
-                <p>Total Books Published</p>
+                <p>Books (Published)</p>
                 <h3>{{ $total_books_published }}</h3>
             </div>
         </div>
@@ -108,7 +108,7 @@
                 <i class="icon-language"></i>
             </div>
             <div class="ic-card-content">
-                <p>Total Language</p>
+                <p>Languages</p>
                 <h3>{{ $language_count }}</h3>
             </div>
         </div>
@@ -140,7 +140,20 @@
                     @endif
                 </div>
                 <div class="ic-card-content">
-                    <p>Total {{ $key }}</p>
+                    @if($key == "eBook")
+                        <p>eBooks</p>
+                    @elseif($key == "POD-S")
+                        <p>POD (paperback)</p>
+                    @elseif($key == "Audio")
+                        <p>Audiobooks</p>
+                    @elseif($key == "POD-H")
+                        <p>POD (hardcover)</p>
+                    @elseif($key == "GFP")
+                        <p>{{ $key }}</p>
+                    @else
+                        <p>{{ $key }}</p>
+                    @endif
+
                     <h3>{{ $form_builder_count }}</h3>
                 </div>
             </div>
@@ -514,8 +527,8 @@ var options = {
         title: {
           // text: '100% Stacked Bar'
         },
-        xaxis: { 
-            categories:[ 
+        xaxis: {
+            categories:[
             @foreach($title_percentage_per_series as $title=>$percentage)
                 "{{ $title }}",
             @endforeach
@@ -562,7 +575,7 @@ var options = {
             ]
         ],
       },
-        
+
         },
         legend: {
           position: 'top',

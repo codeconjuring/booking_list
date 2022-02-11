@@ -361,6 +361,10 @@ button:focus {
     .dt-buttons .btn i {
       color: #f7b104 !important;
       margin-right: 8px; }
+    @media only screen and (max-width: 1366px) {
+      .dt-buttons .dt-button,
+      .dt-buttons .btn {
+        font-size: 12px !important; } }
     .dt-buttons .dt-button:hover,
     .dt-buttons .btn:hover {
       background: #f7b104 !important;
@@ -6318,5 +6322,8 @@ table.dataTable > thead .sorting_desc_disabled::after {
   @media only screen and (max-width: 1199.98px) {
     .books-tags .table {
       width: 50% !important; } }
+
+.dt-buttons {
+  margin-bottom: 10px; }
 
 /*# sourceMappingURL=style.css.map */

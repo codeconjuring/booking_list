@@ -26,9 +26,9 @@
     <!-- container-fluid -->
 
     <div class="row">
-        <div class="col-lg-12">
+        <div class="col-xl-8 col-lg-12 col-md-12 col-sm-12">
             <div class="card">
-                <div class="card-body books-tags">
+                <div class="card-body">
                     <div class="table-responsive">
                     {!! $dataTable->table(['class'=>'table table-striped table-bordered nowrap no-footer dtr-inline text-center'], false) !!}
                     </div>

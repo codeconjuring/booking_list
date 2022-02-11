@@ -15,13 +15,13 @@
 
                             <div class="page-title-box d-sm-flex align-items-center justify-content-between">
                                 @if (Settings::get('site_logo'))
-                                <a class="navbar-brand brand-logo" href="{{ route('admin.dashboard') }}"><img width="10%" src="{{ asset(Storage::url(Settings::get('site_logo'))) }}" alt="{{ Settings::get('title') }}" /></a>
+                                <a class="navbar-brand brand-logo" href="{{ route('admin.dashboard') }}"><img src="{{ asset(Storage::url(Settings::get('site_logo'))) }}" alt="{{ Settings::get('title') }}" /></a>
                                 @else
-                                    <a class="navbar-brand brand-logo" href="{{ route('admin.dashboard') }}"><img width="10%" src="{{ asset(config('settings.site_logo')) }}" alt="{{ Settings::get('title') }}" /></a>
+                                    <a class="navbar-brand brand-logo" href="{{ route('admin.dashboard') }}"><img src="{{ asset(config('settings.site_logo')) }}" alt="{{ Settings::get('title') }}" /></a>
                                 @endif
-                                <div class="page-title-right">
+                                <!-- <div class="page-title-right">
                                     <a href="{{ route('login') }}" class="btn btn-primary">System Login</a>
-                                </div>
+                                </div> -->
                             </div>
 
                         </div>
@@ -40,8 +40,12 @@
                                         <li>
                                             <button onclick="downloadReport()" class="btn tb-btn btn-outline-primary"><i class="icon-download"></i>Download Report</button>
                                         </li>
+                                        <li>
+                                        <a href="{{ route('login') }}" class="btn btn-primary">System Login</a>
+                                        </li>
                                     </ul>
                                 </div>
+                                <div class="table-responsive">
                                 <table id="datatable"  class="dataTable table nowrap w-100">
                                     <thead>
                                         <tr>
@@ -223,6 +227,7 @@
                                         @endforeach
                                     </tbody>
                                 </table>
+                                </div>
                             </div>
                         </div>
                     </div>

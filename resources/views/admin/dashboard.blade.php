@@ -810,7 +810,12 @@ var doughnutPieData{{ $key }} = {
           @foreach($col as $c=>$co)
 
             @php
-                $percentages=($co/$total)*100;
+            if($co>0)
+                {
+                    $percentages=($co/$total)*100;
+                }else{
+                    $percentages=0;
+                }
             @endphp
 
             {{ number_format($percentages,2) }},

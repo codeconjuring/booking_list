@@ -31,7 +31,7 @@
 
     </div>
 
-    <div class="row">
+    {{-- <div class="row">
         <div class="col-md-12">
             <div class="card">
                 <div class="card-header">
@@ -111,8 +111,8 @@
 
             </div>
         </div>
-    </div>
-    <br>
+    </div> --}}
+
     <!-- container-fluid -->
 
     <div class="row">
@@ -196,11 +196,11 @@
                                             $tag_count = 0;
                                             foreach($book->categories as $cat){
                                                 if(!empty($cat->category)){
-                                                    if($tag_count == 2)
+                                                    if($tag_count == 1)
                                                     {
                                                         $more_tags = $categories.'<br/><span class="badge badge-primary mr-1">'.$cat->category->name.'</span>';
                                                     }
-                                                    else if($tag_count > 2)
+                                                    else if($tag_count > 1)
                                                     {
                                                         $more_tags.='<br/><span class="badge badge-primary mr-1">'.$cat->category->name.'</span>';
                                                     }
@@ -239,7 +239,7 @@
 
 
                                             <td>
-                                                @if($tag_count <= 2)
+                                                @if($tag_count <= 1)
                                                     <span>{!! $categories !!}
                                                     </span>
                                                 @else
@@ -498,17 +498,7 @@
             },
             'copy',
             'csv',
-            'excel',
-            'print',
-            {
-                extend: 'pdf',
-                text: 'pdf',
-                orientation: 'landscape',
-                pageSize: 'LEGAL',
-                exportOptions: {
-                    columns: [ -1, ':visible' ]
-                }
-            }
+            'excel'
         ]
     });
 

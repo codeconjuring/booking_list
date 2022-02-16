@@ -9,7 +9,7 @@
     <!-- user profile -->
     <div class="cc-cover-main">
         <img class="blur-image" src="https://images.pexels.com/photos/374044/pexels-photo-374044.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260" class="img-fluid" alt="">
-        <div class="container">
+        <div class="container-fluid">
             <div class="ic-inner-cover">
                 <img src="https://images.pexels.com/photos/374044/pexels-photo-374044.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260" class="img-fluid" alt="">
                 <label for="file-cover" class="cc-file-upload">
@@ -17,7 +17,7 @@
                     Edit cover photo
                 </label>
             </div>
-            <div class="cc-user-profile">
+            <!-- <div class="cc-user-profile">
                 <div class="cc-profile-pic">
                     <img src="https://scontent.fdac5-1.fna.fbcdn.net/v/t39.30808-1/s200x200/271055921_1790732484449882_5296291581574084359_n.jpg?_nc_cat=110&ccb=1-5&_nc_sid=7206a8&_nc_ohc=q75sgXclRJEAX_IWpZO&_nc_ht=scontent.fdac5-1.fna&oh=00_AT9hWNbcc2U-kHiAnaS7q_zlxG2vPIbxjdQbhtX8j7R_xw&oe=6211F522" alt="">
                 </div>
@@ -28,20 +28,14 @@
                     <button class="btn btn-primary">Add to stroy</button>
                     <button class="btn btn-primary">Edit profile</button>
                 </div>
-            </div>
-        </div>
-    </div>
-    <!-- user profile -->
-    <div class="content">
-        <div class="page-content">
+            </div> -->
+
+            <div class="content">
+        <div class="page-content pt-0">
             <div class="container-fluid">
-
-
-
                 <!-- start page title -->
-                <div class="row">
+                <div class="row cc-total-datatable-photo">
                     <div class="col-12">
-
                         <div class="page-title-box d-sm-flex align-items-center justify-content-between">
                             @if (Settings::get('site_logo'))
                             <a class="navbar-brand brand-logo" href="{{ route('admin.dashboard') }}"><img src="{{ asset(Storage::url(Settings::get('site_logo'))) }}" alt="{{ Settings::get('title') }}" /></a>
@@ -60,7 +54,7 @@
             </div>
             <!-- container-fluid -->
 
-            <div class="row">
+            <div class="row cc-table-header">
                 <div class="col-lg-12">
                     <div class="card">
                         <div class="card-body">
@@ -261,6 +255,9 @@
         </div>
 
     </div>
+        </div>
+    </div>
+    <!-- user profile -->
 
 </div>
 

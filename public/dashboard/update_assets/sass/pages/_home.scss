@@ -7162,7 +7162,7 @@ table.dataTable {
           height: 100%;
           object-fit: cover;
           object-position: top;
-          border-radius: 0 10px 10px 0;
+          border-radius: 0 0 10px 10px;
       }
   }
 }
@@ -7190,11 +7190,21 @@ table.dataTable {
 }
 .cc-file-upload {
   position: absolute;
-  bottom: 20px;
+  top: 20px;
   right: 20px;
   padding: 7px 15px;
-  background-color: #fff;
+  background-color: $color-primary;
   color: #000;
   border-radius: 3px;
   margin-bottom: 0;
+}
+
+.cc-table-header {
+  position: relative;
+  z-index: 1;
+}
+.cc-total-datatable-photo {
+  position: relative;
+  z-index: 1;
+  margin-top: -160px;
 }

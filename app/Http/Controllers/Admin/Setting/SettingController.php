@@ -66,6 +66,11 @@ class SettingController extends Controller
             if ($request->email_notification) {
                 Settings::set('email_notification', $request->email_notification);
             }
+
+            if ($request->banner_pic) {
+                Settings::set('banner_pic', $request->banner_pic);
+            }
+
             sendFlash('Settings Update Successfully');
             return back();
 

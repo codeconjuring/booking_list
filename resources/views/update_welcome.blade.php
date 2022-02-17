@@ -8,14 +8,27 @@
     <!-- ============================================================== -->
     <!-- user profile -->
     <div class="cc-cover-main">
-        <img class="blur-image" src="https://images.pexels.com/photos/374044/pexels-photo-374044.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260" class="img-fluid" alt="">
+        @if (Settings::get('banner_pic')!=null)
+
+            <img class="blur-image" src="{{ asset(Storage::url(Settings::get('banner_pic'))) }}" class="img-fluid" alt="">
+        @else
+            <img class="blur-image" src="https://images.pexels.com/photos/374044/pexels-photo-374044.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260" class="img-fluid" alt="">
+        @endif
+
         <div class="container-fluid">
             <div class="ic-inner-cover">
-                <img src="https://images.pexels.com/photos/374044/pexels-photo-374044.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260" class="img-fluid" alt="">
-                <label for="file-cover" class="cc-file-upload">
-                    <input type="file" id="file-cover" class="d-none">
-                    Edit cover photo
-                </label>
+                @if (Settings::get('banner_pic')!=null)
+                    <img src="{{ asset(Storage::url(Settings::get('banner_pic'))) }}" class="img-fluid" alt="">
+                @else
+                    <img src="https://images.pexels.com/photos/374044/pexels-photo-374044.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260" class="img-fluid" alt="">
+                @endif
+
+                @if (auth()->check())
+                    <label for="file-cover" class="cc-file-upload">
+                        <a href="{{ route('admin.setting.index') }}" class="text-white">Edit cover photo</a>
+                    </label>
+                @endif
+
             </div>
             <!-- <div class="cc-user-profile">
                 <div class="cc-profile-pic">

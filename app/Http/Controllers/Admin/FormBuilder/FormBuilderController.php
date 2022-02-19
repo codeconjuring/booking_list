@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin\FormBuilder;
 use App\Http\Controllers\Controller;
 use App\Models\BookList;
 use App\Models\FormBuilder;
+use App\Models\Status;
 use Illuminate\Http\Request;
 
 class FormBuilderController extends Controller
@@ -42,7 +43,8 @@ class FormBuilderController extends Controller
     {
 
         $page_title = "Book Format Creator";
-        return view('admin.form-builder.create', compact('page_title'));
+        $status     = Status::orderBy('status')->get();
+        return view('admin.form-builder.create', compact('page_title', 'status'));
     }
 
     /**
@@ -55,14 +57,26 @@ class FormBuilderController extends Controller
     {
 
         $request->validate([
-            'label' => 'required|unique:form_builders,label|regex:(^([a-zA-z _-]+)(\d+)?$)',
-            'type'  => 'required',
+            'label'          => 'required|unique:form_builders,label|regex:(^([a-zA-z _-]+)(\d+)?$)',
+            'default_status' => 'required',
+            'type'           => 'required',
         ]);
 
+        $status = Status::whereStatus($request->default_status)->whereStatus(strtolower($request->default_status))->first();
+        if (!$status) {
+
+            $status = Status::create([
+                'status' => $request->default_status,
+                'color'  => '#c2ffef',
+            ]);
+        }
+
         FormBuilder::create([
-            'label' => $request->label,
-            'type'  => $request->type,
+            'label'             => $request->label,
+            'type'              => $request->type,
+            'default_status_id' => $status->id,
         ]);
+
         sendFlash("Form Builder Create Successfully");
         return redirect()->route('admin.form-builder.index');
     }

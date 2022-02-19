@@ -39,7 +39,24 @@
                                         @error('label')
                                           <span class="text-danger">{{ $message }}</span>
                                         @enderror
-                                      </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="exampleInputUsername1">Default Status</label><span class="text-danger">*</span>
+                                        <div class="position-relative">
+                                            <input type="text" name="default_status" value="{{ old('default_status') }}" list="defautlStatus" class="form-control" placeholder="Default Status" required/>
+                                            <datalist id="defautlStatus">
+                                                @foreach ($status as $key=>$s)
+                                                    <option>{{ $s->status }}</option>
+                                                @endforeach
+                                            </datalist>
+                                        </div>
+
+
+                                        @error('default_status')
+                                          <span class="text-danger">{{ $message }}</span>
+                                        @enderror
+                                    </div>
 
                                       <div class="form-group">
                                           <label for="exampleInputUsername1">Select Type</label><span class="text-danger">*</span>

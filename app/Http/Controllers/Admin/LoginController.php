@@ -270,36 +270,33 @@ class LoginController extends Controller
         arsort($language_array);
 
         $totale_title_language_counts = array_slice($language_array, 0, 10);
-        
+
         //percentage of titles with done status per series - starts
-        $title_percentage_per_series = [];
+        $title_percentage_per_series  = [];
         $series_that_have_titles_list = BookList::select('category_id')->distinct('category_id')->get();
-        $total_series_arr = $series->pluck('name','id');
-        $done_status_id = Status::whereStatus('Done')->first(['id'])->id;
-        foreach($series_that_have_titles_list as $series)
-        {
-            $titles_under_series = BookList::whereCategoryId($series->category_id)->get();
+        $total_series_arr             = $series->pluck('name', 'id');
+        $done_status_id               = Status::whereStatus('Done')->first(['id'])->id;
+        foreach ($series_that_have_titles_list as $series) {
+            $titles_under_series       = BookList::whereCategoryId($series->category_id)->get();
             $total_titles_under_series = sizeof($titles_under_series);
-            $total_done_titles = 0;
-            foreach($titles_under_series as $title)
-            {
+            $total_done_titles         = 0;
+            foreach ($titles_under_series as $title) {
                 $done_flag = 0;
                 foreach ($title->content as $cont) {
-                    if($cont['type'] == 1 and $cont['text'] == $done_status_id)
-                    {
+                    if ($cont['type'] == 1 and $cont['text'] == $done_status_id) {
                         $done_flag = 1;
                         break;
                     }
                 }
-                if($done_flag == 1)
-                {
-                    $total_done_titles += 1;     
+                if ($done_flag == 1) {
+                    $total_done_titles += 1;
                 }
             }
-            $title_percentage_per_series[$total_series_arr[$series->category_id]] = ($total_done_titles/$total_titles_under_series)*100;
+            $title_percentage_per_series[$total_series_arr[$series->category_id]] = ($total_done_titles / $total_titles_under_series) * 100;
         }
+
         //percentage of titles with done status per series - ends
-        return view('admin.dashboard', compact('page_title', 'number_of_unique_titles', 'total_series', 'total_books', 'languages', 'series', 'total_titles', 'total_books', 'coughnut_charts', 'language_count', 'db_language_count', 'get_languages', 'form_builder_name_with_counts', 'totale_title_language_counts', 'total_title_published', 'total_books_published','title_percentage_per_series'));
+        return view('admin.dashboard', compact('page_title', 'number_of_unique_titles', 'total_series', 'total_books', 'languages', 'series', 'total_titles', 'total_books', 'coughnut_charts', 'language_count', 'db_language_count', 'get_languages', 'form_builder_name_with_counts', 'totale_title_language_counts', 'total_title_published', 'total_books_published', 'title_percentage_per_series'));
 
     }
 

@@ -67,7 +67,7 @@ class FormBuilderController extends Controller
 
             $status = Status::create([
                 'status' => $request->default_status,
-                'color'  => '#c2ffef',
+                'color'  => '#fff',
             ]);
         }
 
@@ -100,9 +100,10 @@ class FormBuilderController extends Controller
      */
     public function edit($id)
     {
-        $formBuilder = FormBuilder::findOrFail($id);
         $page_title  = "Book Format Edit";
-        return view('admin.form-builder.edit', compact('page_title', 'formBuilder'));
+        $formBuilder = FormBuilder::with('default_status')->findOrFail($id);
+        $status      = Status::orderBy('status')->get();
+        return view('admin.form-builder.edit', compact('page_title', 'formBuilder', 'status'));
     }
 
     /**
@@ -116,13 +117,24 @@ class FormBuilderController extends Controller
     {
 
         $request->validate([
-            'label' => 'required|regex:(^([a-zA-z _-]+)(\d+)?$)|unique:form_builders,label,' . $id,
-            'type'  => 'required',
+            'label'          => 'required|regex:(^([a-zA-z _-]+)(\d+)?$)|unique:form_builders,label,' . $id,
+            'default_status' => 'required',
+            'type'           => 'required',
         ]);
 
+        $status = Status::whereStatus($request->default_status)->whereStatus(strtolower($request->default_status))->first();
+        if (!$status) {
+
+            $status = Status::create([
+                'status' => $request->default_status,
+                'color'  => '#fff',
+            ]);
+        }
+
         FormBuilder::where(['id' => $id])->update([
-            'label' => $request->label,
-            'type'  => $request->type,
+            'label'             => $request->label,
+            'type'              => $request->type,
+            'default_status_id' => $status->id,
         ]);
 
         sendFlash("Form Builder Update Successfully");

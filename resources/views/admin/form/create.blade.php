@@ -171,7 +171,7 @@
                                         <select name="content[{{ $form_build->id }}][text]" id="" required class="form-control select2">
                                             <option value="">Select Status</option>
                                             @foreach($statues as $k=>$status)
-                                                <option value="{{ $status->id }}">{{ $status->status }}</option>
+                                                <option {{ $form_build->default_status_id==$status->id?'selected':'' }} value="{{ $status->id }}">{{ $status->status }}</option>
                                             @endforeach
                                         </select>
 

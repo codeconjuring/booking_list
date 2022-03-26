@@ -17,134 +17,120 @@
                     Edit cover photo
                 </label>
             </div>
-            <!-- <div class="cc-user-profile">
-                <div class="cc-profile-pic">
-                    <img src="https://scontent.fdac5-1.fna.fbcdn.net/v/t39.30808-1/s200x200/271055921_1790732484449882_5296291581574084359_n.jpg?_nc_cat=110&ccb=1-5&_nc_sid=7206a8&_nc_ohc=q75sgXclRJEAX_IWpZO&_nc_ht=scontent.fdac5-1.fna&oh=00_AT9hWNbcc2U-kHiAnaS7q_zlxG2vPIbxjdQbhtX8j7R_xw&oe=6211F522" alt="">
-                </div>
-                <div class="cc-user-name">
-                    <h3>Mainuddin Sani</h3>
-                </div>
-                <div class="cc-user-profile-buttom mt-auto ml-auto">
-                    <button class="btn btn-primary">Add to stroy</button>
-                    <button class="btn btn-primary">Edit profile</button>
-                </div>
-            </div> -->
 
             <div class="content">
-        <div class="page-content pt-0">
-            <div class="container-fluid">
-                <!-- start page title -->
-                <div class="row cc-total-datatable-photo">
-                    <div class="col-12">
-                        <div class="page-title-box d-sm-flex align-items-center justify-content-between">
-                            @if (Settings::get('site_logo'))
-                            <a class="navbar-brand brand-logo" href="{{ route('admin.dashboard') }}"><img src="{{ asset(Storage::url(Settings::get('site_logo'))) }}" alt="{{ Settings::get('title') }}" /></a>
-                            @else
-                            <a class="navbar-brand brand-logo" href="{{ route('admin.dashboard') }}"><img src="{{ asset(config('settings.site_logo')) }}" alt="{{ Settings::get('title') }}" /></a>
-                            @endif
-                            <!-- <div class="page-title-right">
+                <div class="page-content pt-0">
+                    <div class="container-fluid">
+                        <!-- start page title -->
+                        <div class="row cc-total-datatable-photo">
+                            <div class="col-12">
+                                <div class="page-title-box d-sm-flex align-items-center justify-content-between">
+                                    @if (Settings::get('site_logo'))
+                                    <a class="navbar-brand brand-logo" href="{{ route('admin.dashboard') }}"><img src="{{ asset(Storage::url(Settings::get('site_logo'))) }}" alt="{{ Settings::get('title') }}" /></a>
+                                    @else
+                                    <a class="navbar-brand brand-logo" href="{{ route('admin.dashboard') }}"><img src="{{ asset(config('settings.site_logo')) }}" alt="{{ Settings::get('title') }}" /></a>
+                                    @endif
+                                    <!-- <div class="page-title-right">
                                     <a href="{{ route('login') }}" class="btn btn-primary">System Login</a>
                                 </div> -->
-                        </div>
-
-                    </div>
-                </div>
-                <!-- end page title -->
-
-            </div>
-            <!-- container-fluid -->
-
-            <div class="row cc-table-header">
-                <div class="col-lg-12">
-                    <div class="card">
-                        <div class="card-body">
-                            <div class="cc-table-button-heads align-items-center d-flex justify-content-between">
-                                <ul class="list-unstyled d-flex ic-tables-buttons">
-                                    <li>
-                                        <button onclick="downloadReport()" class="btn tb-btn btn-outline-primary"><i class="icon-download"></i>Download Report</button>
-                                    </li>
-                                    <li>
-                                        <a href="{{ route('login') }}" class="btn btn-primary">System Login</a>
-                                    </li>
-                                </ul>
+                                </div>
                             </div>
-                            <div class="table-responsive">
-                                <table id="datatable" class="dataTable table nowrap w-100">
-                                    <thead>
-                                        <tr>
+                        </div>
+                        <!-- end page title -->
+                    </div>
+                    <!-- container-fluid -->
 
-                                            <th class="text-center d-none">Action</th>
+                    <div class="row cc-table-header">
+                        <div class="col-lg-12">
+                            <div class="card">
+                                <div class="card-body">
+                                    <div class="cc-table-button-heads align-items-center d-flex justify-content-between">
+                                        <ul class="list-unstyled d-flex ic-tables-buttons">
+                                            <li>
+                                                <button onclick="downloadReport()" class="btn tb-btn btn-outline-primary"><i class="icon-download"></i>Download Report</button>
+                                            </li>
+                                            <li>
+                                                <a href="{{ route('login') }}" class="btn btn-primary">System Login</a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                    <div class="table-responsive">
+                                        <table id="datatable" class="dataTable table nowrap w-100">
+                                            <thead>
+                                                <tr>
 
-                                            <th class="text-center"> Series </th>
-                                            <th class="text-center"> No </th>
-                                            <th class="text-center"> Author </th>
-                                            {{-- <th class="text-center"> ZTF?</th> --}}
-                                            {{-- <th class="text-center"> Tags </th> --}}
-                                            <th class="text-center"> Title</th>
-                                            <th class="text-center"> LAN </th>
-                                            @foreach($form_builder as $key=>$form_bui)
-                                            @if ($form_bui->label!='GFP')
-                                            <th class="text-center">{{ $form_bui->label }}</th>
-                                            @endif
-                                            @endforeach
-                                        </tr>
-                                    </thead>
+                                                    <th class="text-center d-none">Action</th>
 
-                                    <tbody>
+                                                    <th class="text-center"> Series </th>
+                                                    <th class="text-center"> No </th>
+                                                    <th class="text-center"> Author </th>
+                                                    {{-- <th class="text-center"> ZTF?</th> --}}
+                                                    {{-- <th class="text-center"> Tags </th> --}}
+                                                    <th class="text-center"> Title</th>
+                                                    <th class="text-center"> LAN </th>
+                                                    @foreach($form_builder as $key=>$form_bui)
+                                                    @if ($form_bui->label!='GFP')
+                                                    <th class="text-center">{{ $form_bui->label }}</th>
+                                                    @endif
+                                                    @endforeach
+                                                </tr>
+                                            </thead>
 
-                                        @php
-                                        $book_i=1;
-                                        $row_count=0;
-                                        @endphp
-                                        @foreach ($getSeriyes as $key=>$getSeriye)
-                                        @php
-                                        $entry=App\Models\Book::whereCategoryId($getSeriye->category_id)->get();
+                                            <tbody>
 
-                                        $series_wise_titles=App\Models\BookList::whereCategoryId($getSeriye->category_id)->get();
-                                        $books_count=count($series_wise_titles);
-                                        $series_flag=0;
+                                                @php
+                                                $book_i=1;
+                                                $row_count=0;
+                                                @endphp
+                                                @foreach ($getSeriyes as $key=>$getSeriye)
+                                                @php
+                                                $entry=App\Models\Book::whereCategoryId($getSeriye->category_id)->get();
 
-                                        @endphp
+                                                $series_wise_titles=App\Models\BookList::whereCategoryId($getSeriye->category_id)->get();
+                                                $books_count=count($series_wise_titles);
+                                                $series_flag=0;
 
-                                        @foreach ($entry as $e)
+                                                @endphp
 
-                                        @php
-                                        $query=App\Models\BookList::query();
-                                        if(count($select_language)){
-                                        $query->whereIn('language',$select_language)->whereBookId($e->id);
-                                        }else{
-                                        $query->whereBookId($e->id);
-                                        }
+                                                @foreach ($entry as $e)
 
-                                        if(count($select_ztf)>0){
-                                        $query->whereIn('available',$select_ztf);
-                                        }
+                                                @php
+                                                $query=App\Models\BookList::query();
+                                                if(count($select_language)){
+                                                $query->whereIn('language',$select_language)->whereBookId($e->id);
+                                                }else{
+                                                $query->whereBookId($e->id);
+                                                }
 
-
-
-                                        $books=$query->get();
+                                                if(count($select_ztf)>0){
+                                                $query->whereIn('available',$select_ztf);
+                                                }
 
 
-                                        $entry_count=count($books);
-                                        $entry_flag=0;
-                                        $main_title_flag=0;
-                                        @endphp
 
-                                        @foreach ($books as $b=>$book)
+                                                $books=$query->get();
 
 
-                                        @if ($filter_data!=1)
-                                        @if (($main_title_flag==1) && ($entry_id!=$e->id))
-                                        @break
-                                        @endif
-                                        @endif
+                                                $entry_count=count($books);
+                                                $entry_flag=0;
+                                                $main_title_flag=0;
+                                                @endphp
+
+                                                @foreach ($books as $b=>$book)
 
 
-                                        @if ($row_show!=0 && $row_count>=$row_show)
-                                        @break
-                                        @endif
+                                                @if ($filter_data!=1)
+                                                @if (($main_title_flag==1) && ($entry_id!=$e->id))
+                                                @break
+                                                @endif
+                                                @endif
 
-                                        {{-- @php
+
+                                                @if ($row_show!=0 && $row_count>=$row_show)
+                                                @break
+                                                @endif
+
+                                                {{-- @php
                                                             $categories='';
                                                             foreach($book->categories as $cat){
                                                                 if(!empty($cat->category)){
@@ -152,109 +138,109 @@
                                                                 }
                                                             }
                                                         @endphp --}}
-                                        <tr class="tableAddTitles{{ $e->id }}">
+                                                <tr class="tableAddTitles{{ $e->id }}">
 
-                                            <td class="text-center d-none">
-                                                <div class="dropdown">
-                                                    <a class="btn cc-table-action p-0 dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
-                                                        <i class="fas fa-ellipsis-v"></i>
-                                                    </a>
+                                                    <td class="text-center d-none">
+                                                        <div class="dropdown">
+                                                            <a class="btn cc-table-action p-0 dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
+                                                                <i class="fas fa-ellipsis-v"></i>
+                                                            </a>
 
-                                                    <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                                                        <li><a class="dropdown-item" href="#"><i class="mdi mdi-google-translate
+                                                            <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                                                                <li><a class="dropdown-item" href="#"><i class="mdi mdi-google-translate
                                                                             "></i> Add Translation</a></li>
-                                                        <li><a class="dropdown-item" href="#"><i class="fas fa-edit
+                                                                <li><a class="dropdown-item" href="#"><i class="fas fa-edit
                                                                             "></i> Edit</a></li>
-                                                        <li><a class="dropdown-item text-danger" href="#"><i class="fas fa-trash-alt text-danger"></i> Delete</a>
-                                                        </li>
-                                                    </ul>
-                                                </div>
-                                            </td>
+                                                                <li><a class="dropdown-item text-danger" href="#"><i class="fas fa-trash-alt text-danger"></i> Delete</a>
+                                                                </li>
+                                                            </ul>
+                                                        </div>
+                                                    </td>
 
-                                            @if ($series_flag==0)
-                                            <td class="text-center">{{ $book->serise->name }}</td>
-                                            @php
-                                            $series_flag=1;
-                                            @endphp
+                                                    @if ($series_flag==0)
+                                                    <td class="text-center">{{ $book->serise->name }}</td>
+                                                    @php
+                                                    $series_flag=1;
+                                                    @endphp
 
-                                            @else
-                                            <td class="text-center"></td>
-                                            @endif
+                                                    @else
+                                                    <td class="text-center"></td>
+                                                    @endif
 
-                                            @if ($entry_flag==0)
-                                            <td class="text-center">{{ $book_i++ }}</td>
-                                            @php
-                                            $entry_flag=1;
-                                            @endphp
-                                            @else
-                                            <td class="text-center"></td>
-                                            @endif
+                                                    @if ($entry_flag==0)
+                                                    <td class="text-center">{{ $book_i++ }}</td>
+                                                    @php
+                                                    $entry_flag=1;
+                                                    @endphp
+                                                    @else
+                                                    <td class="text-center"></td>
+                                                    @endif
 
-                                            <td class="text-center">{{ $book->author }}</td>
+                                                    <td class="text-center">{{ $book->author }}</td>
 
-                                            {{-- <td class="text-center">{!! $book->available_status!!}</td> --}}
+                                                    {{-- <td class="text-center">{!! $book->available_status!!}</td> --}}
 
 
-                                            {{-- <td class="text-center">{!! $categories !!}</td> --}}
-                                            @if (($main_title_flag==0) && ($filter_data!=1))
-                                            <td class="{{ $entry_id==$e->id?'bg-primary':'' }}"><b><a style="text-decoration: none; color:black" data-flag="0" id="mainTitle{{ $e->id }}" onclick="showMoreTitle('{{ $e->id }}','{{ $book_i }}',$(this).attr('data-flag'))" href="javascript:void(0)">{{ $book->title }} ({{ $entry_count }})</a><img width="10%" class="buffering-img{{ $e->id }} d-none" src="{{ asset('dashboard/assets/images/loading-buffering.gif') }}" alt=""></b></td>
-                                            @else
-                                            <td class="{{ $entry_id==$e->id?'bg-primary':'' }}">{{ $book->title }}</td>
-                                            @endif
+                                                    {{-- <td class="text-center">{!! $categories !!}</td> --}}
+                                                    @if (($main_title_flag==0) && ($filter_data!=1))
+                                                    <td class="{{ $entry_id==$e->id?'bg-primary':'' }}"><b><a style="text-decoration: none; color:black" data-flag="0" id="mainTitle{{ $e->id }}" onclick="showMoreTitle('{{ $e->id }}','{{ $book_i }}',$(this).attr('data-flag'))" href="javascript:void(0)">{{ $book->title }} ({{ $entry_count }})</a><img width="10%" class="buffering-img{{ $e->id }} d-none" src="{{ asset('dashboard/assets/images/loading-buffering.gif') }}" alt=""></b></td>
+                                                    @else
+                                                    <td class="{{ $entry_id==$e->id?'bg-primary':'' }}">{{ $book->title }}</td>
+                                                    @endif
 
-                                            <td class="text-center">{{ $book->language }}</td>
-                                            @php
-                                            $count_form_builder=count($form_builder);
-                                            $book_content_count=count($book->content);
-                                            $result=$count_form_builder-$book_content_count;
-                                            @endphp
-                                            @foreach ($form_builder as $form_bui)
-                                            @if ($form_bui->label!='GFP')
-                                            @if (array_key_exists($form_bui->id,$book->content))
-                                            @if ($book->content[$form_bui->id]['type']=="1")
-                                            @php
-                                            $query=App\Models\Status::query();
-                                            if(count($select_status)>0){
-                                            $query->whereIn('id',$select_status)->whereId($book->content[$form_bui->id]['text']);
-                                            }else{
-                                            $query->whereId($book->content[$form_bui->id]['text']);
-                                            }
-                                            $color=$query->first();
-                                            @endphp
+                                                    <td class="text-center">{{ $book->language }}</td>
+                                                    @php
+                                                    $count_form_builder=count($form_builder);
+                                                    $book_content_count=count($book->content);
+                                                    $result=$count_form_builder-$book_content_count;
+                                                    @endphp
+                                                    @foreach ($form_builder as $form_bui)
+                                                    @if ($form_bui->label!='GFP')
+                                                    @if (array_key_exists($form_bui->id,$book->content))
+                                                    @if ($book->content[$form_bui->id]['type']=="1")
+                                                    @php
+                                                    $query=App\Models\Status::query();
+                                                    if(count($select_status)>0){
+                                                    $query->whereIn('id',$select_status)->whereId($book->content[$form_bui->id]['text']);
+                                                    }else{
+                                                    $query->whereId($book->content[$form_bui->id]['text']);
+                                                    }
+                                                    $color=$query->first();
+                                                    @endphp
 
-                                            <td class="text-center" style="background:{{ $color?$color->color:"" }}">{{ $status_array[$book->content[$form_bui->id]['text']]??'-' }}</td>
-                                            @else
-                                            <td class="text-center">{{ $book->content[$form_bui->id]['text']  }} </td>
-                                            @endif
-                                            @else
-                                            <td class="text-center">-</td>
-                                            @endif
-                                            @endif
-                                            @endforeach
-                                        </tr>
-                                        @php
-                                        $row_count+=1;
-                                        @endphp
+                                                    <td class="text-center" style="background:{{ $color?$color->color:"" }}">{{ $status_array[$book->content[$form_bui->id]['text']]??'-' }}</td>
+                                                    @else
+                                                    <td class="text-center">{{ $book->content[$form_bui->id]['text']  }} </td>
+                                                    @endif
+                                                    @else
+                                                    <td class="text-center">-</td>
+                                                    @endif
+                                                    @endif
+                                                    @endforeach
+                                                </tr>
+                                                @php
+                                                $row_count+=1;
+                                                @endphp
 
-                                        @php
-                                        if($main_title_flag==0){
-                                        $main_title_flag=1;
-                                        }
-                                        @endphp
+                                                @php
+                                                if($main_title_flag==0){
+                                                $main_title_flag=1;
+                                                }
+                                                @endphp
 
-                                        @endforeach
-                                        @endforeach
-                                        @endforeach
-                                    </tbody>
-                                </table>
+                                                @endforeach
+                                                @endforeach
+                                                @endforeach
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
-        </div>
 
-    </div>
+            </div>
         </div>
     </div>
     <!-- user profile -->

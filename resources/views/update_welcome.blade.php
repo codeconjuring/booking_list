@@ -210,7 +210,11 @@
 
                                             {{-- <td class="text-center">{!! $categories !!}</td> --}}
                                             @if (($main_title_flag==0) && ($filter_data!=1))
-                                            <td class="{{ $entry_id==$e->id?'bg-primary':'' }}"><b><a style="text-decoration: none; color:black" data-flag="0" id="mainTitle{{ $e->id }}" onclick="showMoreTitle('{{ $e->id }}','{{ $book_i }}',$(this).attr('data-flag'))" href="javascript:void(0)">{{ $book->title }} ({{ $entry_count }})</a><img width="10%" class="buffering-img{{ $e->id }} d-none" src="{{ asset('dashboard/assets/images/loading-buffering.gif') }}" alt=""></b></td>
+                                            <td class="{{ $entry_id==$e->id?'bg-primary':'' }}"><b><a style="text-decoration: none; color:black" href="{{route('get-book-details', ['id' => $book->id])}}">{{ $book->title }}</a><a style="text-decoration: none; color:black" data-flag="0" id="mainTitle{{ $e->id }}" onclick="showMoreTitle('{{ $e->id }}','{{ $book_i }}',$(this).attr('data-flag'))" href="javascript:void(0)"> (<span class="text-muted">{{ $entry_count.' Translations' }}</span>)
+                                            @if($book->links)
+                                                <a class="fas fa-external-link-alt" href="{{ $book->links }}" target="_blank" title="{{ $book->links }}"></a>
+                                            @endif
+                                            </a><img width="10%" class="buffering-img{{ $e->id }} d-none" src="{{ asset('dashboard/assets/images/loading-buffering.gif') }}" alt=""></b></td>
                                             @else
                                             <td class="{{ $entry_id==$e->id?'bg-primary':'' }}">{{ $book->title }}</td>
                                             @endif

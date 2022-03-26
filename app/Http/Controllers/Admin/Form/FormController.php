@@ -6,6 +6,10 @@ use App\Http\Controllers\Controller;
 use App\Models\Author;
 use App\Models\Book;
 use App\Models\BookList;
+use App\Models\ProofReader;
+use App\Models\Narrator;
+use App\Models\BookInfo;
+use App\Models\BookFormatInfo;
 use App\Models\BookListCategory;
 use App\Models\Cat;
 use App\Models\Category;
@@ -47,7 +51,6 @@ class FormController extends Controller
     {
         // Tempory Variable
         // $series_name = "";
-
         $select_status = isset($request->status_ids) ? $request->status_ids : [];
         $select_ztf    = isset($request->ztf) ? $request->ztf : [];
 
@@ -152,7 +155,9 @@ class FormController extends Controller
         $authors      = Author::orderBy('name')->get();
         $form_builder = FormBuilder::all();
         $statues      = Status::all();
-        return view('admin.form.create', compact('page_title', 'series', 'languages', 'form_builder', 'statues', 'categories', 'authors'));
+        $proofReaders = ProofReader::all();
+        $narrators    = Narrator::all();
+        return view('admin.form.create', compact('page_title', 'series', 'languages', 'form_builder', 'statues', 'categories', 'authors', 'proofReaders', 'narrators'));
     }
 
     /**
@@ -163,6 +168,30 @@ class FormController extends Controller
      */
     public function store(Request $request)
     {
+        $filename = "";
+
+        if($request->hasFile("file"))
+        {
+            $file = $request->file("file");
+            $filename = $file->getClientOriginalName();
+            $extension = $file->getClientOriginalExtension();
+
+            if($request->uploadType == 'cover')
+            {
+                $file->storeAs("covers", $filename, 'public');
+                return $filename;
+            }
+            else if($request->uploadType == 'epub')
+            {
+                $file->storeAs("epubs", $filename, 'public');
+                return $filename;
+            }
+            else if($request->uploadType == 'audio')
+            {
+                $file->storeAs("audios", $filename, 'public');
+                return $filename;
+            }
+        }
 
         $request->validate([
             'series_id' => 'required',
@@ -171,25 +200,86 @@ class FormController extends Controller
             'author'    => 'required',
         ]);
 
-        $book = Book::create([
-            'category_id' => $request->series_id,
-        ]);
-
-        $bookList = BookList::create([
-            'category_id' => $request->series_id,
-            'book_id'     => $book->id,
-            'title'       => $request->title,
-            'language'    => $request->language,
-            'content'     => $request->content,
-            'author'      => $request->author,
-            'available'   => $request->available,
-        ]);
-
-        foreach ($request->categorys as $key => $category) {
-            BookListCategory::create([
-                'book_list_id' => $bookList->id,
-                'cat_id'       => $category,
+        try{
+            $book = Book::create([
+            'category_id'    => $request->series_id,
+            'copyright_year' => $request->copyrightYear,
             ]);
+            try{
+                $bookList = BookList::create([
+                    'category_id' => $request->series_id,
+                    'book_id'     => $book->id,
+                    'title'       => $request->title,
+                    'language'    => $request->language,
+                    'links'       => $request->link,
+                    'content'     => $request->content,
+                    'author'      => $request->author,
+                    'available'   => $request->available,
+                ]);
+                try{
+                    $bookInfo = BookInfo::create([
+                        'book_list_id'    => $bookList->id,
+                        'cover_file_name' => $request->coverFileName,
+                        'epub_file_name'  => $request->epubFileName,
+                        'audio_file_name' => $request->audioFileName,
+                        'narrator_id'     => $request->narratorId,
+                        'proofreader_id'  => $request->proofReaderId,
+                        'pages'           => $request->pages,
+                        'to_read'         => $request->toRead,
+                        'to_listen'       => $request->toListen,
+                        'synopsis'        => $request->synopsis,
+                    ]);
+                    try{
+                        foreach ($request->categorys as $key => $category) {
+                            BookListCategory::create([
+                                'book_list_id' => $bookList->id,
+                                'cat_id'       => $category,
+                            ]);
+                        }
+                        try
+                        {
+                            foreach ($request->formatInfo['modifyYear'] as $format_id => $modifyYear) {
+                                BookFormatInfo::create([
+                                    'book_list_id'      => $bookList->id,
+                                    'form_builder_id'   => $format_id,
+                                    'modification_year' => $modifyYear,
+                                    'price'             => $request->formatInfo['price'][$format_id]
+                                ]);
+                            }
+                        }
+                        catch(\Exception $e)
+                        {
+                            Book::destroy($book->id);
+                            BookList::destroy($bookList->id);
+                            BookInfo::destroy($bookInfo->id);
+                            BookListCategory::destroy($bookList->id);
+                            dd($e->getMessage());
+                        }
+                    }
+                    catch(\Exception $e)
+                    {
+                        Book::destroy($book->id);
+                        BookList::destroy($bookList->id);
+                        BookInfo::destroy($bookInfo->id);
+                        dd($e->getMessage());
+                    }
+                }
+                catch(\Exception $e)
+                {
+                    Book::destroy($book->id);
+                    BookList::destroy($bookList->id);
+                    dd($e->getMessage());
+                }
+            }
+            catch(\Exception $e)
+            {
+                Book::destroy($book->id);
+                dd($e->getMessage());
+            }
+        }
+        catch(\Exception $e)
+        {
+            dd($e->getMessage());
         }
 
         sendFlash("Book list Create Successfully");
@@ -224,12 +314,17 @@ class FormController extends Controller
         $languages          = Language::all();
         $form_builder       = FormBuilder::all();
         $statues            = Status::all();
+        $narrators          = Narrator::all();
+        $proofReaders       = ProofReader::all();
+
+        $book_format_price        = BookFormatInfo::where('book_list_id', $id)->pluck('price', 'form_builder_id')->toArray();
+        $book_format_modify_year  = BookFormatInfo::where('book_list_id', $id)->pluck('modification_year', 'form_builder_id')->toArray();
         $selected_categorys = [];
 
         foreach ($book_list->categories as $key => $cat) {
             array_push($selected_categorys, $cat->cat_id);
         }
-        return view('admin.form.edit', compact('book_list', 'series', 'page_title', 'languages', 'form_builder', 'statues', 'categories', 'selected_categorys', 'authors'));
+        return view('admin.form.edit', compact('book_list', 'series', 'page_title', 'languages', 'form_builder', 'statues', 'categories', 'selected_categorys', 'authors', 'book_format_price', 'book_format_modify_year', 'narrators', 'proofReaders'));
     }
 
     /**
@@ -241,6 +336,30 @@ class FormController extends Controller
      */
     public function update(Request $request, $id)
     {
+        $filename = "";
+
+        if($request->hasFile("file"))
+        {
+            $file = $request->file("file");
+            $filename = $file->getClientOriginalName();
+            $extension = $file->getClientOriginalExtension();
+
+            if($request->uploadType == 'cover')
+            {
+                $file->storeAs('covers', $filename, 'public');
+                return $filename;
+            }
+            else if($request->uploadType == 'epub')
+            {
+                $file->storeAs("epubs", $filename, 'public');
+                return $filename;
+            }
+            else if($request->uploadType == 'audio')
+            {
+                $file->storeAs("audios", $filename, 'public');
+                return $filename;
+            }
+        }
         $find_book_list = BookList::findOrFail($id);
 
         if($find_book_list->add_another_book_translation == 0)
@@ -290,12 +409,15 @@ class FormController extends Controller
             if($find_book_list->add_another_book_translation == 0)
             {
                 $book = Book::find($find_book_list->book_id);
-                $book->update(['category_id' => $request->series_id]);
+                $book->update([
+                    'category_id' => $request->series_id,
+                    'copyright_year'   => $request->copyrightYear
+                ]);
 
                 $books_under_same_book_id = BookList::whereBookId($find_book_list->book_id)->update([
-                'category_id' => $request->series_id,
-                'author'      => $request->author,
-                'available'   => $request->available,
+                'category_id'      => $request->series_id,
+                'author'           => $request->author,
+                'available'        => $request->available
                 ]);
 
                 BookListCategory::whereBookListId($id)->delete();
@@ -310,9 +432,63 @@ class FormController extends Controller
             $find_book_list->update([
                 'title'       => $request->title,
                 'language'    => $request->language,
+                'links'       => $request->link,
                 'content'     => $request->content,
                 ]);
 
+            $book_infos = BookInfo::where('book_list_id', $id)->first();
+            if($book_infos == null)
+            {
+              BookInfo::create([
+                'book_list_id'    => $id,
+                'cover_file_name' => $request->coverFileName,
+                'epub_file_name'  => $request->epubFileName,
+                'audio_file_name' => $request->audioFileName,
+                'narrator_id'     => $request->narratorId,
+                'proofreader_id'  => $request->proofReaderId,
+                'pages'           => $request->pages,
+                'to_read'         => $request->toRead,
+                'to_listen'       => $request->toListen,
+                'synopsis'        => $request->synopsis,
+                ]);
+            }
+            else
+            {
+              $book_infos->update([
+                'cover_file_name' => $request->coverFileName,
+                'epub_file_name'  => $request->epubFileName,
+                'audio_file_name' => $request->audioFileName,
+                'narrator_id'     => $request->narratorId,
+                'proofreader_id'  => $request->proofReaderId,
+                'pages'           => $request->pages,
+                'to_read'         => $request->toRead,
+                'to_listen'       => $request->toListen,
+                'synopsis'        => $request->synopsis,
+                ]);
+            }
+
+            $book_format_info = BookFormatInfo::where('book_list_id', $id)->first();
+            if($book_format_info == null)
+            {
+              foreach ($request->formatInfo['modifyYear'] as $format_id => $modifyYear) {
+                $formatInfo = BookFormatInfo::create([
+                    'book_list_id'      => $id,
+                    'form_builder_id'   => $format_id,
+                    'price'             => $request->formatInfo['price'][$format_id],
+                    'modification_year' => $modifyYear
+                ]);
+              }
+            }
+            else
+            {
+              foreach ($request->formatInfo['modifyYear'] as $format_id => $modifyYear) {
+                $formatInfo = BookFormatInfo::where(['book_list_id' => $id, 'form_builder_id' => $format_id])->update([
+                    'price'             => $request->formatInfo['price'][$format_id],
+                    'modification_year' => $modifyYear
+                ]);
+              }
+            }
+            
             DB::commit();
             // if ($email_flag == 1) {
             //     Mail::to(Settings::get('email_notification'))->send(new StatusChangeNotification($id, $change_value));
@@ -337,8 +513,13 @@ class FormController extends Controller
      */
     public function destroy($id)
     {
+      try{
+        DB::beginTransaction();
 
         $book_list = BookList::findOrFail($id);
+
+        BookInfo::where('book_list_id', $id)->delete();
+        BookFormatInfo::where('book_list_id', $id)->delete();
 
         $book_list_count = BookList::whereBookId($book_list->book_id)->count();
         if ($book_list_count == 1) {
@@ -357,8 +538,17 @@ class FormController extends Controller
         }
 
         $book_list->delete();
+        DB::commit();
+
         sendFlash("Book Delete Successfully");
         return back();
+      }
+      catch(\Exception $e)
+      {
+        DB::rollback();
+        dd($e->getMessage());
+        sendFlash($e->getMessage(), 'error');
+      }
     }
 
     public function addAnotherTitle($id)
@@ -389,10 +579,12 @@ class FormController extends Controller
             }
 
         }
-        $form_builder = FormBuilder::all();
-        $statues      = Status::all();
-        $authors      = BookList::where('author', '!=', null)->distinct('author')->get('author');
-        $categories   = Cat::orderBy('name')->get();
+        $form_builder  = FormBuilder::all();
+        $statues       = Status::all();
+        $authors       = BookList::where('author', '!=', null)->distinct('author')->get('author');
+        $categories    = Cat::orderBy('name')->get();
+        $narrators     = Narrator::all();
+        $proofReaders  = ProofReader::all();
 
         $selected_categorys = [];
 
@@ -400,12 +592,36 @@ class FormController extends Controller
             array_push($selected_categorys, $cat->cat_id);
         }
 
-        return view('admin.form.create_another', compact('series', 'page_title', 'new_languages', 'form_builder', 'statues', 'book', 'authors', 'categories', 'book_list', 'selected_categorys'));
+        return view('admin.form.create_another', compact('series', 'page_title', 'new_languages', 'form_builder', 'statues', 'book', 'authors', 'categories', 'book_list', 'selected_categorys', 'narrators', 'proofReaders'));
     }
 
     public function storeAnotherTitle(Request $request)
     {
+      $filename = "";
 
+        if($request->hasFile("file"))
+        {
+            $file = $request->file("file");
+            $filename = $file->getClientOriginalName();
+            $extension = $file->getClientOriginalExtension();
+
+            if($request->uploadType == 'cover')
+            {
+                $file->storeAs("covers", $filename, 'public');
+                return $filename;
+            }
+            else if($request->uploadType == 'epub')
+            {
+                $file->storeAs("epubs", $filename, 'public');
+                return $filename;
+            }
+            else if($request->uploadType == 'audio')
+            {
+                $file->storeAs("audios", $filename, 'public');
+                return $filename;
+            }
+        }
+        
         $request->validate([
             'book_id'   => 'required',
             'series_id' => 'required',
@@ -413,16 +629,58 @@ class FormController extends Controller
             'language'  => 'required',
         ]);
 
-        $book_list = BookList::create([
+        try{
+          $book_list = BookList::create([
             'category_id'                  => $request->series_id,
             'book_id'                      => $request->book_id,
             'title'                        => $request->title,
             'language'                     => $request->language,
+            'links'                        => $request->link,
             'content'                      => $request->content,
             'author'                       => $request->author,
             'add_another_book_translation' => 1,
             // 'available'                    => $request->available,
-        ]);
+          ]);
+          try{
+            $book_info = BookInfo::create([
+              'book_list_id'    => $book_list->id,
+              'cover_file_name' => $request->coverFileName,
+              'epub_file_name'  => $request->epubFileName,
+              'audio_file_name' => $request->audioFileName,
+              'narrator_id'     => $request->narratorId,
+              'proofreader_id'  => $request->proofReaderId,
+              'pages'           => $request->pages,
+              'to_read'         => $request->toRead,
+              'to_listen'       => $request->toListen,
+              'synopsis'        => $request->synopsis,
+            ]);
+            try{
+              foreach ($request->formatInfo['modifyYear'] as $format_id => $modifyYear) {
+                BookFormatInfo::create([
+                  'book_list_id'      => $book_list->id,
+                  'form_builder_id'   => $format_id,
+                  'modification_year' => $modifyYear,
+                  'price'             => $request->formatInfo['price'][$format_id]
+                ]);
+              }
+            }
+            catch(\Exception $e)
+            {
+              BookList::destroy($book_list->id);
+              BookInfo::destroy($book_info->id);
+              dd($e->getMessage());
+            }
+          }
+          catch(\Exception $e)
+          {
+            BookList::destroy($book_list->id);
+            dd($e->getMessage());
+          }
+        }
+        catch(\Exception $e)
+        {
+
+        }
 
         // foreach ($request->categorys as $key => $category) {
         //     BookListCategory::create([
@@ -572,5 +830,54 @@ class FormController extends Controller
         }
 
         return response()->json(['languages' => $update_language]);
+    }
+    public function getBookDetails(Request $request)
+    {
+        $book = BookList::find($request->id);
+        $language  = Language::where("short_hand",$book->language)->first();
+
+        $main_title    = BookList::where(['book_id' => $book->book_id, 'language' => 'EN'])->first();
+        $author        = $main_title->author;
+        $tags          = BookListCategory::where('book_list_id', $main_title->id)->get();
+
+        $done_status_id     = Status::whereStatus('Done')->first(['id'])->id;
+
+        $formats = []; $gfp_format_id = ''; $audio_format_id = '';
+        foreach($book->content as $key => $content)
+        {
+            $form_builder  = FormBuilder::where('id', $key)->first();
+            if(strtolower($form_builder->label) != 'gfp')
+            {
+                if($content['text'] == $done_status_id)
+                {
+                    $formats[$key] = $form_builder->label;  
+                }
+                if(strtolower($form_builder->label) == 'audio')
+                {
+                    $audio_format_id = $key;
+                }
+            }
+            else{$gfp_format_id = $key;}
+        }
+        
+        $translations_query = BookList::where('book_id',$book->book_id)->get();
+        $translations       = [];
+        foreach($translations_query as $t)
+        {
+            foreach ($t->content as $key => $value) {
+                if($gfp_format_id != $key)
+                {
+                    if($value['text'] == $done_status_id)
+                    {
+                        array_push($translations, $t->language);
+                        break;
+                    }
+                }
+            }
+        }
+
+        $same_series_suggestions = BookList::where([['category_id', '=', $book->category_id], ['language', '=', $book->language],['id', '<>', $book->id]])->inRandomOrder()->get()->take(5);
+        
+        return view('admin.form.details',compact('book','language','translations', 'author', 'tags', 'formats', 'same_series_suggestions', 'audio_format_id'));
     }
 }

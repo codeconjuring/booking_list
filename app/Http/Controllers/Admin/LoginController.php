@@ -275,7 +275,9 @@ class LoginController extends Controller
         $title_percentage_per_series  = [];
         $series_that_have_titles_list = BookList::select('category_id')->distinct('category_id')->get();
         $total_series_arr             = $series->pluck('name', 'id');
+
         $done_status_id               = Status::whereStatus('Done')->first(['id'])->id;
+
         foreach ($series_that_have_titles_list as $series) {
             $titles_under_series       = BookList::whereCategoryId($series->category_id)->get();
             $total_titles_under_series = sizeof($titles_under_series);
@@ -295,8 +297,23 @@ class LoginController extends Controller
             $title_percentage_per_series[$total_series_arr[$series->category_id]] = ($total_done_titles / $total_titles_under_series) * 100;
         }
 
+        $published_by_ztf = BookList::where([['available', 1],['language', 'en']])->get();
+        $total_published_by_ztf = 0;
+
+        foreach($published_by_ztf as $title)
+        {
+            foreach($title->content as $format)
+            {
+                if($format['text'] == $done_status_id)
+                {
+                    $total_published_by_ztf += 1;
+                    break;
+                }
+            }
+        }
+        
         //percentage of titles with done status per series - ends
-        return view('admin.dashboard', compact('page_title', 'number_of_unique_titles', 'total_series', 'total_books', 'languages', 'series', 'total_titles', 'total_books', 'coughnut_charts', 'language_count', 'db_language_count', 'get_languages', 'form_builder_name_with_counts', 'totale_title_language_counts', 'total_title_published', 'total_books_published', 'title_percentage_per_series'));
+        return view('admin.dashboard', compact('page_title', 'number_of_unique_titles', 'total_series', 'total_books', 'languages', 'series', 'total_titles', 'total_books', 'coughnut_charts', 'language_count', 'db_language_count', 'get_languages', 'form_builder_name_with_counts', 'totale_title_language_counts', 'total_title_published', 'total_books_published', 'title_percentage_per_series', 'total_published_by_ztf'));
 
     }
 

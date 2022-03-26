@@ -1,13 +1,6 @@
 @extends('admin.layout._master')
 
-
 @section('css')
-
-
-
-
-
-
 
 @endsection
 
@@ -37,13 +30,15 @@
                     <div class="row">
                         <div class="col-lg-4">
                             <div class="cc-file-card">
-                                <form action="#" class="dropzone">
+                                <form action="{{ route('admin.form.store') }}" class="dropzone" id="coverFormId" method="POST" enctype="multipart/form-data">
+                                    @csrf
                                     <div class="fallback">
-                                        <input name="file" type="file" multiple="multiple">
+                                        <input name="cover" type="file">
                                     </div>
                                     <div class="dz-message needsclick">
                                         <div class="mb-3 mt-3">
                                             <i class="display-4 text-muted text-yellow icon-image"></i>
+                                            
                                         </div>
 
                                         <p> Drop book cover here, or <span class="text-yellow">browse</span>
@@ -52,9 +47,10 @@
                                 </form>
                             </div>
                             <div class="cc-file-card">
-                                <form action="#" class="dropzone">
+                                <form action="{{ route('admin.form.store') }}" class="dropzone" id="epubFormId" enctype="multipart/form-data">
+                                    @csrf
                                     <div class="fallback">
-                                        <input name="file" type="file" multiple="multiple">
+                                        <input name="epub" type="file" multiple="multiple">
                                     </div>
                                     <div class="dz-message needsclick">
                                         <div class="mb-3 mt-3">
@@ -67,9 +63,10 @@
                                 </form>
                             </div>
                             <div class="cc-file-card">
-                                <form action="#" class="dropzone">
+                                <form action="{{ route('admin.form.store') }}" method="POST" class="dropzone" id="audioFormId" enctype="multipart/form-data">
+                                    @csrf
                                     <div class="fallback">
-                                        <input name="file" type="file" multiple="multiple">
+                                        <input name="audio" type="file" multiple="multiple">
                                     </div>
                                     <div class="dz-message needsclick">
                                         <div class="mb-3 mt-3">
@@ -84,17 +81,12 @@
                             </div>
                         </div>
                         <div class="col-lg-8">
-
-                            <form class="forms-sample" action="{{ route('admin.form.store') }}" method="POST">
+                            <form class="forms-sample" action="{{ route('admin.form.store') }}" method="POST" id="mainFormId">
                                 @csrf
-
-
-
-
                                 <div class="form-group">
                                     <label for="exampleInputUsername1">Series Name</label><span class="text-danger">*</span>
 
-                                      <select name="series_id" id="" onchange="selectSeries($(this).val(),'series')" class="form-control select2">
+                                      <select name="series_id" id="bookSeriesId" onchange="selectSeries($(this).val(),'series')" class="form-control select2">
                                               <option value="">Select Series</option>
                                           @foreach($series as $key=>$ser)
                                               <option value="{{ $ser->id }}">{{ $ser->name }}</option>
@@ -104,9 +96,10 @@
                                     @error('series_id')
                                       <span class="text-danger">{{ $message }}</span>
                                     @enderror
+                                    <input type="hidden" id="coverNameInputId" name="coverFileName">
+                                    <input type="hidden" id="epubNameInputId" name="epubFileName">
+                                    <input type="hidden" id="audioNameInputId" name="audioFileName">
                                   </div>
-
-
 
                                 <div class="form-group">
                                     <label for="exampleInputUsername1">Language</label><span class="text-danger">*</span>
@@ -117,6 +110,13 @@
                                             @endforeach
                                         </select>
 
+                                    @error('language')
+                                        <span class="text-danger">{{ $message }}</span>
+                                    @enderror
+                                </div>
+                                <div class="form-group">
+                                    <label for="exampleInputUsername1">Link</label>
+                                    <input type="text" class="form-control" name="link" autocomplete="false">
                                     @error('language')
                                         <span class="text-danger">{{ $message }}</span>
                                     @enderror
@@ -134,36 +134,61 @@
                                         <span class="text-danger">{{ $message }}</span>
                                     @enderror
                                 </div>
+                                <div class="row">
+                                  <div class="col-lg-6">
+                                    <div class="form-group">
+                                      <label for="exampleInputUsername1">Author</label><span class="text-danger">*</span>
 
-                                <div class="form-group">
-                                    <label for="exampleInputUsername1">Author</label><span class="text-danger">*</span>
-
-                                    <select name="author" id="" required class="form-control select2">
+                                      <select name="author" id="" required class="form-control select2">
                                         <option value="">Select Author</option>
                                         @foreach($authors as $author)
                                             <option value="{{ $author->name }}">{{ $author->name }}</option>
                                         @endforeach
-                                    </select>
+                                      </select>
+                                      @error('author')
+                                        <span class="text-danger">{{ $message }}</span>
+                                      @enderror
+                                    </div>
+                                  </div>
+                                  <div class="col-lg-6">
+                                    <div class="form-group">
+                                      <label for="exampleInputUsername1">Copyright Year
+                                      </label>
+                                      <select name="copyrightYear" id="" class="form-control">
+                                            <option value=""></option>
+                                        @for($year = date("Y"); $year>=1900; $year--)
+                                            <option value="{{ $year }}">
+                                              {{ $year }}
+                                            </option>
+                                        @endfor
+                                      </select>
+                                      @error('copyright_year')
+                                        <span class="text-danger">{{ $message }}</span>
+                                      @enderror
+                                    </div>
+                                  </div>
+                                </div>
 
-                                    @error('author')
+                                <div class="form-group">
+                                  <div id="selectOption"></div>
+                                    @error('title')
                                       <span class="text-danger">{{ $message }}</span>
                                     @enderror
                                 </div>
-
-
-
                                 <div class="form-group">
-
-                                    <div id="selectOption"></div>
-
-
-                                    @error('title')
+                                    <label for="exampleInputUsername1">
+                                      Synopsis
+                                    </label>
+                                    <textarea class="form-control" name="synopsis"></textarea>
+                                    @error('synopsis')
                                       <span class="text-danger">{{ $message }}</span>
                                     @enderror
                                 </div>
 
                                 @foreach($form_builder as $key=>$form_build)
-                                <div class="form-group">
+                                <div class="row">
+                                  <div class="col-lg-4">
+                                    <div class="form-group">
                                     <label for="exampleInputUsername1">{{ $form_build->label }}</label><span class="text-danger">*</span>
 
 
@@ -183,46 +208,140 @@
                                         <input type="hidden" name="content[{{ $form_build->id }}][type]" value="0">
 
                                     @endif
+                                    </div>
+                                  </div>
+                                  @if(strtolower($form_build->label) == 'gfp')
+                                  <div class="col-lg-4">
+                                    <div class="form-group">
+                                      <label for="exampleInputUsername1">Proofreader
+                                      </label>
+                                      <select name="proofReaderId" id="" class="form-control select2">
+                                        <option value="">Select Proofreader</option>
+                                        @foreach($proofReaders as $k=>$pr)
+                                          <option value="{{ $pr->id }}">{{ $pr->name }}
+                                          </option>
+                                        @endforeach
+                                      </select>
+                                      <input type="hidden" name="formatInfo[price][{{ $form_build->id }}]">
+                                      @error('language')
+                                        <span class="text-danger">{{ $message }}</span>
+                                      @enderror
+                                    </div>
+                                  </div>
+                                  @else
+                                  <div class="col-lg-4">
+                                    <div class="form-group">
+                                      <label for="exampleInputUsername1">Price
+                                      </label>
+                                      <input type="text" class="form-control" name="formatInfo[price][{{ $form_build->id }}]" autocomplete="false">
+                                      @error('language')
+                                        <span class="text-danger">{{ $message }}</span>
+                                      @enderror
+                                    </div>
+                                  </div>
+                                  @endif
+                                  <div class="col-lg-4">
+                                    <div class="form-group">
+                                      <label for="exampleInputUsername1">Modification Year
+                                      </label>
+                                      <select name="formatInfo[modifyYear][{{ $form_build->id }}]" id="" class="form-control">
+                                        <option value=""></option>
+                                        @for($year = date("Y"); $year>=1900; $year--)
+                                            <option value="{{ $year }}">
+                                              {{ $year }}
+                                            </option>
+                                        @endfor
+                                      </select>
+                                      @error('modify_year')
+                                        <span class="text-danger">{{ $message }}</span>
+                                      @enderror
+                                    </div>
+                                  </div>
                                 </div>
                                 @endforeach
-
-
+                                <div class="row">
+                                  <div class="col-lg-4">
+                                    <div class="form-group">
+                                      <label for="exampleInputUsername1">Pages</label>
+                                      <input type="text" class="form-control" name="pages" autocomplete="false">
+                                      @error('pages')
+                                        <span class="text-danger">{{ $message }}
+                                        </span>
+                                      @enderror
+                                    </div>
+                                  </div>
+                                  <div class="col-lg-4">
+                                    <div class="form-group">
+                                      <label for="exampleInputUsername1">To Read</label>
+                                      <input type="text" class="form-control" name="toRead" autocomplete="false">
+                                      @error('to_read')
+                                        <span class="text-danger">{{ $message }}
+                                        </span>
+                                      @enderror
+                                    </div>
+                                  </div>
+                                  <div class="col-lg-4">
+                                    <div class="form-group">
+                                      <label for="exampleInputUsername1">To Listen</label>
+                                      <input type="text" class="form-control" name="toListen" autocomplete="false">
+                                      @error('to_listen')
+                                        <span class="text-danger">{{ $message }}
+                                        </span>
+                                      @enderror
+                                    </div>
+                                  </div>
+                                </div>
+                                <div class="form-group">
+                                  <label for="exampleInputUsername1">
+                                    Narrated By
+                                  </label>
+                                  <select name="narratorId" class="form-control">
+                                    <option value="">Select Narrator</option>
+                                    @foreach($narrators as $narrator)
+                                      <option value="{{ $narrator->id }}">
+                                        {{ $narrator->name }}
+                                      </option>
+                                    @endforeach
+                                  </select>
+                                  @error('narrator')
+                                    <span class="text-danger">
+                                      {{ $message }}
+                                    </span>
+                                  @enderror
+                                </div>
                                 <p class="cc-font-weigth">ZTF?</p>
                                 <div class="cc-check-items">
-                                    <div class="form-check">
-                                        <input class="form-check-input" checked  name="available" value="0" type="radio" name="flexRadioDefault"
+                                  <div class="form-check">
+                                    <input class="form-check-input" checked  name="available" value="0" type="radio" name="flexRadioDefault"
                                             id="flexRadioDefault1">
-                                        <label class="form-check-label" for="flexRadioDefault1">
-                                            No
-                                        </label>
-                                    </div>
-                                    <div class="form-check">
-                                        <input class="form-check-input" name="available" value="1" type="radio" name="flexRadioDefault"
+                                    <label class="form-check-label" for="flexRadioDefault1">
+                                        No
+                                    </label>
+                                  </div>
+                                  <div class="form-check">
+                                    <input class="form-check-input" name="available" value="1" type="radio" name="flexRadioDefault"
                                             id="flexRadioDefault2">
-                                        <label class="form-check-label" for="flexRadioDefault2">
-                                            Yes
-                                        </label>
-                                    </div>
-                                    <div class="form-check">
-                                        <input class="form-check-input" name="available" value="2" type="radio" name="flexRadioDefault"
+                                    <label class="form-check-label" for="flexRadioDefault2">
+                                      Yes
+                                    </label>
+                                  </div>
+                                  <div class="form-check">
+                                    <input class="form-check-input" name="available" value="2" type="radio" name="flexRadioDefault"
                                             id="flexRadioDefault3">
-                                        <label class="form-check-label" for="flexRadioDefault3">
-                                            Not Available
-                                        </label>
-                                    </div>
-
-                                    @error('available')
-                                      <span class="text-danger">{{ $message }}</span>
-                                    @enderror
-
+                                    <label class="form-check-label" for="flexRadioDefault3">
+                                      Not Available
+                                    </label>
+                                  </div>
+                                  @error('available')
+                                    <span class="text-danger">
+                                      {{ $message }}
+                                    </span>
+                                  @enderror
                                 </div>
-
-
-                                <div class="mt-4">
+                                <div class="mt-4" id="submitId">
                                     <button type="submit" class="btn btn-primary mr-2">Create New</button>
                                     <a href="{{ url()->previous() }}" class="btn btn-light">Back</a>
                                 </div>
-
                               </form>
                         </div>
                     </div>
@@ -339,6 +458,88 @@
 
     }
 
+    var prevCoverFiles = null;
+    var prevEpubFiles = null;
+    var prevAudioFiles = null;
+    
+    Dropzone.options.coverFormId = {
+        maxFiles:1,
+        maxFilesize: 5000,
+        init: function() {
+            this.on("addedfile", function(file){
+                if(prevCoverFiles)
+                {
+                    this.removeFile(prevCoverFiles);
+                }
+                prevCoverFiles = file;
+            });
+            this.on("sending", function(file, xhr, formData){
+                formData.append("uploadType", "cover");
+            });
+        },
+        success:function(file, response)
+        {
+            console.log(response);
+            $("#coverNameInputId").val(response);
+        },
+        error: function(file, message) {
+            console.log(message);
+        }
+    };  
+      
+    Dropzone.options.epubFormId = {
+        maxFiles:1,
+        maxFilesize: 5000,
+        init: function() {
+            this.on("addedfile", function(file){
+                if(prevEpubFiles)
+                {
+                    this.removeFile(prevEpubFiles);
+                }
+                prevEpubFiles = file;
+            });
+            this.on("sending", function(file, xhr, formData){
+                formData.append("uploadType", "epub");
+            });
+        },
+        success:function(file, response)
+        {
+            console.log(response);
+            $("#epubNameInputId").val(response);
+        },
+        error: function(file, message) {
+            console.log(message);
+        }
+    };  
+
+    Dropzone.options.audioFormId = {
+        maxFiles:1,
+        maxFilesize: 5000,
+        init: function() {
+            this.on("addedfile", function(file){
+                if(prevAudioFiles)
+                {
+                    this.removeFile(prevAudioFiles);
+                }
+                prevAudioFiles = file;
+            });
+            this.on("sending", function(file, xhr, formData){
+                formData.append("uploadType", "audio");
+            });
+        },
+        success:function(file, response)
+        {
+            console.log(response);
+            $("#audioNameInputId").val(response);
+        },
+        error: function(file, message) {
+            console.log(message);
+        }
+    };
+
+    $(window).on("beforeunload",function(){
+        confirm("Are you sure?");
+    });
 </script>
 
 @endsection

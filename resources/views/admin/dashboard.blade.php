@@ -93,7 +93,7 @@
             <div class="ic-card-content">
                 <p>Books (Published)</p>
                 {{-- <h3>{{ $total_books_published }}</h3> --}}
-                <h3>{{ array_sum($form_builder_name_with_counts) }}</h3>
+                <h3>{{ array_sum($form_builder_name_with_counts) - $form_builder_name_with_counts['GFP'] }}</h3>
             </div>
         </div>
 
@@ -111,6 +111,19 @@
             <div class="ic-card-content">
                 <p>Languages</p>
                 <h3>{{ $language_count }}</h3>
+            </div>
+        </div>
+
+        <div class="ic-dashboard-card-items box sky-blue">
+            <img src="{{ asset('dashboard/update_assets/images/purple/purple-1.png') }}" class="first-img" alt="">
+            <img src="{{ asset('dashboard/update_assets/images/purple/purple-2.png') }}" class="second-img" alt="">
+            <img src="{{ asset('dashboard/update_assets/images/purple/purlple-3.png') }}" class="third-img" alt="">
+            <div class="icon">
+                <i class="icon-language"></i>
+            </div>
+            <div class="ic-card-content">
+                <p>ZTF? (Published)</p>
+                <h3>{{ $total_published_by_ztf }}</h3>
             </div>
         </div>
 

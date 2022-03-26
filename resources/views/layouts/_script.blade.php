@@ -24,7 +24,7 @@
   <!-- apexcharts -->
   <script src="{{ asset('dashboard/update_assets/libs/apexcharts/apexcharts.min.js') }}"></script>
   <!-- dashboard init -->
+   @yield('js')
   <script src="{{ asset('dashboard/update_assets/js/app.js') }}"></script>
    <!-- Datatable init js -->
    <!--<script src="{{ asset('dashboard/update_assets/js/pages/datatables.init.js') }}"></script>-->
-   @yield('js')

@@ -18,7 +18,6 @@ Route::middleware(['auth'])->group(function () {
     Route::get('form/get-another-lanugage', 'Form\FormController@getAnotherLanguage')->name('form.get-another-lanugage');
 // Show more book title
 
-
 //show book details
     Route::get('form/get-book-details/{id}', 'Form\FormController@getBookDetails')->name('form.get-book-details');
     // Search Text

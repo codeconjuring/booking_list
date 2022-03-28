@@ -49,6 +49,14 @@ class HomeController extends Controller
     {
         // Tempory Variable
         // $series_name = "";
+        if($request->selected_series_id)
+        {
+            $selected_series_id = $request->selected_series_id;  
+        }
+        else
+        {
+            $selected_series_id = Category::first()->id;   
+        }
 
         $select_status  = isset($request->status_ids) ? $request->status_ids : [];
         $select_ztf     = isset($request->ztf) ? $request->ztf : [];
@@ -131,7 +139,13 @@ class HomeController extends Controller
         $tags = Cat::orderBy('name')->get();
         $ztf  = BookList::ZTF;
 
-        return view('update_welcome', compact('page_title', 'form_builder', 'series', 'getSeriyes', 'status', 'status_array', 'row_show', 'languages', 'entry_id', 'paginate_range', 'top_scroll', 'tags', 'select_language', 'filter_data', 'select_series', 'select_status', 'get_all_series', 'ztf', 'select_ztf'));
+        if($request->load_ajax_view == 1)
+        {
+            $html = view('catalogue.new_table', ['selected_series_id' => $selected_series_id,'entry_id' => $entry_id,'row_show' => $row_show,'filter_data' => $filter_data,'get_all_series' => $get_all_series,'form_builder' => $form_builder,'select_ztf' => $select_ztf,'select_status' => $select_status, 'select_language' => $select_language,  'status_array' => $status_array])->render();
+
+            return response()->json(['html' => $html]);
+        }
+        return view('update_welcome', compact('page_title', 'form_builder', 'series', 'selected_series_id', 'getSeriyes', 'status', 'status_array', 'row_show', 'languages', 'entry_id', 'paginate_range', 'top_scroll', 'tags', 'select_language', 'filter_data', 'select_series', 'select_status', 'get_all_series', 'ztf', 'select_ztf'));
 
     }
 

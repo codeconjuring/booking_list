@@ -6,7 +6,7 @@
 
    <div class="cc-cover-main">
       <img class="blur-image" src="https://images.pexels.com/photos/374044/pexels-photo-374044.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260" class="img-fluid" alt="">
-      <div class="container-fluid">
+      <!-- <div class="container-fluid"> -->
          <div class="ic-inner-cover">
             <img src="https://images.pexels.com/photos/374044/pexels-photo-374044.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260" class="img-fluid" alt="">
             <label for="file-cover" class="cc-file-upload">
@@ -18,7 +18,7 @@
          <div class="content">
             <div class="page-content">
                <!-- container-fluid -->
-               <div class="row">
+               <div class="row cc-total-datatable-photo">
                   <div class="col-xxl-12 col-12 m-auto">
                      <a href="{{ url('/') }}" class="ml-4">Home</a> > <a href="{{url()->current()}}">{{ $book->title }}</a>
                      <div class="card">
@@ -320,7 +320,7 @@
                </div>
             </div>
          </div>
-      </div>
+      <!-- </div> -->
    </div>
 
 

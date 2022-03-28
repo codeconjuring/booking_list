@@ -4,10 +4,8 @@ namespace App\DataTables\ProductionHouse;
 
 use App\Models\ProductionHouse;
 use Illuminate\Support\Facades\Auth;
-use Yajra\DataTables\Html\Button;
+use PDF;
 use Yajra\DataTables\Html\Column;
-use Yajra\DataTables\Html\Editor\Editor;
-use Yajra\DataTables\Html\Editor\Fields;
 use Yajra\DataTables\Services\DataTable;
 
 class ProductionHouseDatatable extends DataTable
@@ -25,13 +23,13 @@ class ProductionHouseDatatable extends DataTable
             ->addColumn('action', function ($productionHouse) {
                 $authUser = Auth::user();
                 $buttons  = '';
-                if ($authUser->can('Edit Book Attributes Series')) {
+                if ($authUser->can('Edit CPH')) {
                     $buttons .= '<li><a class="dropdown-item" href="' . route('admin.production-house.edit',
                         $productionHouse->id) . '" title="Edit Category">
                         <i class="fas fa-edit"></i>&nbsp;Edit
                     </a></li>';
                 }
-                if ($authUser->can('Delete Book Attributes Series')) {
+                if ($authUser->can('Delete CPH')) {
                     $buttons .= '<form action="' . route('admin.production-house.destroy', $productionHouse->id) . '"  id="deleteForm' . $productionHouse->id . '" method="post" style="display: none">
                 <input type="hidden" name="_token" value="' . csrf_token() . '">
                 <input type="hidden" name="_method" value="DELETE">
@@ -75,7 +73,7 @@ class ProductionHouseDatatable extends DataTable
             ->minifiedAjax()
             ->addAction(['width' => '100px', 'printable' => false, 'title' => 'Action'])
             ->parameters($this->getBuilderParameters());
-        if (!(Auth::user()->can('Edit Book Attributes Series') || Auth::user()->can('Delete Book Attributes Series'))) {
+        if (!(Auth::user()->can('Delete CPH') || Auth::user()->can('Edit CPH'))) {
             $data = $this->builder()
                 ->columns($this->getColumns())
                 ->minifiedAjax()
@@ -144,7 +142,7 @@ class ProductionHouseDatatable extends DataTable
                 'name'      => 'director',
                 'data'      => 'director',
                 'className' => 'text-left',
-            ]
+            ],
         ];
     }
 
@@ -156,5 +154,19 @@ class ProductionHouseDatatable extends DataTable
     protected function filename()
     {
         return 'ProductionHouse_' . date('YmdHis');
+    }
+
+    /**
+     * @return mixed
+     */
+    public function pdf()
+    {
+        $excel = app('excel');
+        $data  = $this->getDataForExport();
+
+        $pdf = PDF::loadView('vendor.datatables.print', [
+            'data' => $data,
+        ]);
+        return $pdf->download($this->getFilename() . '.pdf');
     }
 }

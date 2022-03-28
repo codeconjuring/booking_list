@@ -61,7 +61,7 @@
                     <span data-key="t-conception">Conception</span>
                 </a>
                 <ul class="sub-menu mm-collapse" aria-expanded="false">
-                  
+
                       <li><a href="{{ route('admin.form.index') }}">Catalogue</a></li>
                       <li><a href="{{ route('admin.form.create') }}">Add New Book</a></li>
                     {{-- <a href="javascript: void(0);" class="has-arrow">
@@ -104,27 +104,35 @@
                     <li><a href="{{ route('admin.narrator.index') }}">Book Narrator</a></li>
                 </ul>
             </li> --}}
+            @canany(['Show Analytics','Add CPH','Edit CPH','Delete CPH','Add Add Report','Edit Add Report','Delete Add Report'])
             <li class = "{{ url()->current() == url('admin/production-department/create') ? "mm-active" : '' }}{{ url()->current() == url('admin/production-house/create') ? "mm-active" : '' }}">
               <a href="javascript: void(0);" class="has-arrow">
                 <i class="fas fa-industry"></i>
                 <span>Production</span>
               </a>
               <ul class="sub-menu" aria-expanded="false">
+                @can('Show Analytics')
                 <li>
                   <a href="{{ route('admin.production.production-dashboard') }}">Analytics
                   </a>
                 </li>
+                @endcan
+                @canany(['Add CPH','Edit CPH','Delete CPH'])
                 <li class="{{ url()->current() == url('admin/production-house/create') ? "mm-active" : '' }}">
                   <a class="{{ url()->current() == url('admin/production-house/create') ? "active" : '' }}" href="{{ route('admin.production-house.index') }}">
                     Add CPH
                   </a>
                 </li>
+                @endcanany
+                @canany(['Add Add Report','Edit Add Report','Delete Add Report'])
                 <li class = "{{ url()->current() == url('admin/production-department/create') ? "mm-active" : '' }}">
                   <a class="{{ url()->current() == url('admin/production-department/create') ? "active" : '' }}" href="{{ route('admin.production-department.index') }}">   Add Report
                   </a>
                 </li>
+                @endcanany
               </ul>
             </li>
+            @endcanany
             <li>
               <a href="javascript: void(0);" class="has-arrow">
                 <i class="fas fa-network-wired"></i>

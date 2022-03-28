@@ -4,11 +4,8 @@ namespace App\DataTables\ProductionDepartment;
 
 use App\Models\ProductionDepartment;
 use Illuminate\Support\Facades\Auth;
-use Yajra\DataTables\Html\Button;
-use Yajra\DataTables\Html\Column;
-use Yajra\DataTables\Html\Editor\Editor;
-use Yajra\DataTables\Html\Editor\Fields;
 use PDF;
+use Yajra\DataTables\Html\Column;
 use Yajra\DataTables\Services\DataTable;
 
 class ProductionDepartmentDatatable extends DataTable
@@ -26,13 +23,13 @@ class ProductionDepartmentDatatable extends DataTable
             ->addColumn('action', function ($productionDept) {
                 $authUser = Auth::user();
                 $buttons  = '';
-                if ($authUser->can('Edit Book Attributes Series')) {
+                if ($authUser->can('Edit Add Report')) {
                     $buttons .= '<li><a class="dropdown-item" href="' . route('admin.production-department.edit',
                         $productionDept->id) . '" title="Edit Category">
                         <i class="fas fa-edit"></i>&nbsp;Edit
                     </a></li>';
                 }
-                if ($authUser->can('Delete Book Attributes Series')) {
+                if ($authUser->can('Delete Add Report')) {
                     $buttons .= '<form action="' . route('admin.production-department.destroy', $productionDept->id) . '"  id="deleteForm' . $productionDept->id . '" method="post" style="display: none">
                 <input type="hidden" name="_token" value="' . csrf_token() . '">
                 <input type="hidden" name="_method" value="DELETE">
@@ -76,7 +73,7 @@ class ProductionDepartmentDatatable extends DataTable
             ->minifiedAjax()
             ->addAction(['width' => '100px', 'printable' => false, 'title' => 'Action'])
             ->parameters($this->getBuilderParameters());
-        if (!(Auth::user()->can('Edit Book Attributes Series') || Auth::user()->can('Delete Book Attributes Series'))) {
+        if (!(Auth::user()->can('Edit Add Report') || Auth::user()->can('Delete Add Report'))) {
             $data = $this->builder()
                 ->columns($this->getColumns())
                 ->minifiedAjax()

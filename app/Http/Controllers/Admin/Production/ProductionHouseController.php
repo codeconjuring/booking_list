@@ -5,13 +5,18 @@ namespace App\Http\Controllers\Admin\Production;
 use App\DataTables\ProductionHouse\ProductionHouseDatatable;
 use App\Http\Controllers\Controller;
 use App\Models\ProductionHouse;
-use App\Models\BookInfo;
 use DB;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 
 class ProductionHouseController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware(['permission:Edit CPH'])->only(['edit']);
+        $this->middleware(['permission:Add CPH'])->only(['create']);
+        $this->middleware(['permission:Delete CPH'])->only(['destroy']);
+    }
     /**
      * Display a listing of the resource.
      *
@@ -46,25 +51,25 @@ class ProductionHouseController extends Controller
     {
         //
         $request->validate([
-            'house'    =>  ['required', Rule::unique('production_houses', 'house')->where(function($query) use ($request){
-                    return $query->where([
-                        ['nation','=', $request->country],
-                        ['state','=', $request->state],
-                        ['city','=', $request->city]
-                    ]);
-                })],
+            'house'    => ['required', Rule::unique('production_houses', 'house')->where(function ($query) use ($request) {
+                return $query->where([
+                    ['nation', '=', $request->country],
+                    ['state', '=', $request->state],
+                    ['city', '=', $request->city],
+                ]);
+            })],
             'director' => 'required',
             'country'  => 'required',
             'state'    => 'required',
-            'city'     => 'required'
+            'city'     => 'required',
         ]);
 
         ProductionHouse::create([
-            'house'     => $request->house,
-            'director'  => $request->director,
-            'nation'    => $request->country,
-            'state'     => $request->state,
-            'city'      => $request->city,
+            'house'    => $request->house,
+            'director' => $request->director,
+            'nation'   => $request->country,
+            'state'    => $request->state,
+            'city'     => $request->city,
         ]);
         sendFlash('Production House Created Successfully');
         return redirect()->route('admin.production-house.index');
@@ -90,7 +95,7 @@ class ProductionHouseController extends Controller
     public function edit($id)
     {
         //
-        $page_title = "Edit Production House";
+        $page_title      = "Edit Production House";
         $productionHouse = ProductionHouse::findOrFail($id);
         return view('admin.production-house.edit', compact('page_title', 'productionHouse'));
     }
@@ -105,32 +110,30 @@ class ProductionHouseController extends Controller
     public function update(Request $request, $id)
     {
         //
-        try{
-        $request->validate([
-            'house'    =>  ['required', Rule::unique('production_houses', 'house')->where(function($query) use ($request){
+        try {
+            $request->validate([
+                'house'    => ['required', Rule::unique('production_houses', 'house')->where(function ($query) use ($request) {
                     return $query->where([
-                        ['nation','=', $request->country],
-                        ['state','=', $request->state],
-                        ['city','=', $request->city]
+                        ['nation', '=', $request->country],
+                        ['state', '=', $request->state],
+                        ['city', '=', $request->city],
                     ]);
                 })->ignore($id, 'id')],
-            'director' => 'required',
-            'country'  => 'required',
-            'state'    => 'required',
-            'city'     => 'required'
-        ]);
-          DB::beginTransaction();
+                'director' => 'required',
+                'country'  => 'required',
+                'state'    => 'required',
+                'city'     => 'required',
+            ]);
+            DB::beginTransaction();
             ProductionHouse::whereId($id)->update([
-            'house'     => $request->house,
-            'director'  => $request->director,
-            'nation'    => $request->country,
-            'state'     => $request->state,
-            'city'      => $request->city,
-          ]);
-          DB::commit();
-        }
-        catch(\Exception $e)
-        {
+                'house'    => $request->house,
+                'director' => $request->director,
+                'nation'   => $request->country,
+                'state'    => $request->state,
+                'city'     => $request->city,
+            ]);
+            DB::commit();
+        } catch (\Exception $e) {
             DB::rollback();
             sendFlash('Something Went Wrong', 'error');
             return redirect()->route('admin.production-house.index');
@@ -148,7 +151,7 @@ class ProductionHouseController extends Controller
     public function destroy($id)
     {
         //
-        $productionHouse    = ProductionHouse::findOrFail($id);
+        $productionHouse = ProductionHouse::findOrFail($id);
 
         if ($productionHouse->delete()) {
             sendFlash('Production house deleted Successfully');

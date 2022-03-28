@@ -8,6 +8,7 @@ use Yajra\DataTables\Html\Button;
 use Yajra\DataTables\Html\Column;
 use Yajra\DataTables\Html\Editor\Editor;
 use Yajra\DataTables\Html\Editor\Fields;
+use PDF;
 use Yajra\DataTables\Services\DataTable;
 
 class ProofReaderDatatable extends DataTable
@@ -131,6 +132,20 @@ class ProofReaderDatatable extends DataTable
      */
     protected function filename()
     {
-        return 'ProofReader/ProofReader_' . date('YmdHis');
+        return 'ProofReader_' . date('YmdHis');
+    }
+
+    /**
+     * @return mixed
+     */
+    public function pdf()
+    {
+        $excel = app('excel');
+        $data  = $this->getDataForExport();
+
+        $pdf = PDF::loadView('vendor.datatables.print', [
+            'data' => $data,
+        ]);
+        return $pdf->download($this->getFilename() . '.pdf');
     }
 }

@@ -2,11 +2,34 @@
 @section('css')
 @endsection
 @section('content')
-<div class="page-content">
+<div id="layout-wrapper">
+
+    <!-- majkhaner page gula bosaben -->
+    <!-- user profile -->
+
+    <div class="cc-cover-main">
+        <img class="blur-image"
+            src="{{ asset(Storage::url(Settings::get('banner_pic'))) }}"
+            class="img-fluid" alt="">
+        <div class="container-fluid">
+            <div class="ic-inner-cover">
+                <img src="{{ asset(Storage::url(Settings::get('banner_pic'))) }}"
+                    class="img-fluid" alt="">
+                @if (auth()->check())
+                    <label for="file-cover" class="cc-file-upload">
+                        <a href="{{ route('admin.setting.index') }}" class="text-white">Edit cover photo</a>
+                    </label>
+                @endif
+            </div>
+
+            <div class="content">
+                <!-- eikhane apnar book details page code gula bosaben -->
+                <!-- code here -->
+                <div class="page-content">
    <!-- container-fluid -->
-   <div class="row">
+   <div class="row cc-total-datatable-photo">
       <div class="col-xxl-12 col-12 m-auto">
-         <a href="{{ url('/') }}" class="ml-4">Home</a> > <a href="{{url()->current()}}">{{ $book->title }}</a>
+         <a href="{{ url('/') }}" class="ml-4">Home</a> > <a href="{{ route('index',['selected_series_id' => $book->serise->id]) }}">{{ $book->serise->name }}</a> >  <a href="{{url()->current()}}" >{{ $book->title }}</a>
          <div class="card">
             <div class="card-body">
                <div class="row">
@@ -201,9 +224,9 @@
                                  $countTags+=1;
                                  @endphp
                                  @if($countTags==$totalTags)
-                                 {{$tag->category->name}}
+                                 {{$tag->category != null ? $tag->category->name : ''}}
                                  @else
-                                 {{$tag->category->name.', '}}
+                                 {{$tag->category != null ? $tag->category->name.', ':''}}
                                  @endif
                                  @endforeach
                                  </span>
@@ -212,7 +235,7 @@
                            <tr>
                               <td><span>Series</span></td>
                               <td><span>:</span></td>
-                              <td><span>{{ $book->serise->name }}</span></td>
+                              <td><span>{{ $book->serise != null ? $book->serise->name : '' }}</span></td>
                            </tr>
                            @if(sizeof($formats) > 0)
                            <tr>
@@ -312,6 +335,13 @@
       </div>
    </div>
 </div>
+            </div>
+        </div>
+    </div>
+
+    
+</div>
+
 @endsection
 @section('js')
 <script src="{{ asset('dashboard/update_assets/js/audio.js') }}"></script>

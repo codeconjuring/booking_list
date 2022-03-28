@@ -8,6 +8,7 @@ use Yajra\DataTables\Html\Button;
 use Yajra\DataTables\Html\Column;
 use Yajra\DataTables\Html\Editor\Editor;
 use Yajra\DataTables\Html\Editor\Fields;
+use PDF;
 use Yajra\DataTables\Services\DataTable;
 
 class ProductionHouseDatatable extends DataTable
@@ -156,5 +157,19 @@ class ProductionHouseDatatable extends DataTable
     protected function filename()
     {
         return 'ProductionHouse_' . date('YmdHis');
+    }
+
+    /**
+     * @return mixed
+     */
+    public function pdf()
+    {
+        $excel = app('excel');
+        $data  = $this->getDataForExport();
+
+        $pdf = PDF::loadView('vendor.datatables.print', [
+            'data' => $data,
+        ]);
+        return $pdf->download($this->getFilename() . '.pdf');
     }
 }

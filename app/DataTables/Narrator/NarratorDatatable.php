@@ -8,6 +8,7 @@ use Yajra\DataTables\Html\Button;
 use Yajra\DataTables\Html\Column;
 use Yajra\DataTables\Html\Editor\Editor;
 use Yajra\DataTables\Html\Editor\Fields;
+use PDF;
 use Yajra\DataTables\Services\DataTable;
 
 class NarratorDatatable extends DataTable
@@ -60,7 +61,7 @@ class NarratorDatatable extends DataTable
      */
     public function query(Narrator $model)
     {
-        return $model->newQuery()->with(['country']);
+        return $model->newQuery()->orderBy('id', 'desc');
     }
 
     /**
@@ -117,25 +118,25 @@ class NarratorDatatable extends DataTable
             ],
             [
                 'title'     => 'Name',
-                'name'      => 'narrator_name',
-                'data'      => 'narrator_name',
+                'name'      => 'name',
+                'data'      => 'name',
                 'className' => 'text-left',
             ],
             [
                 'title'     => 'Nationality',
-                'name'      => 'country_name',
+                'name'      => 'nationality',
                 'data'      => 'country_name',
                 'className' => 'text-left',
             ],
             [
                 'title'     => 'Language',
-                'name'      => 'language_name',
+                'name'      => 'language',
                 'data'      => 'language_name',
                 'className' => 'text-left',
             ],
             [
                 'title'     => 'Narrated',
-                'name'      => 'total_narration',
+                'name'      => 'narrated',
                 'data'      => 'total_narration',
                 'className' => 'text-left',
             ],
@@ -149,6 +150,20 @@ class NarratorDatatable extends DataTable
      */
     protected function filename()
     {
-        return 'Narrator/Narrator_' . date('YmdHis');
+        return 'Narrator_' . date('YmdHis');
+    }
+
+    /**
+     * @return mixed
+     */
+    public function pdf()
+    {
+        $excel = app('excel');
+        $data  = $this->getDataForExport();
+
+        $pdf = PDF::loadView('vendor.datatables.print', [
+            'data' => $data,
+        ]);
+        return $pdf->download($this->getFilename() . '.pdf');
     }
 }

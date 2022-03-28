@@ -104,7 +104,8 @@ class CategoryController extends Controller
     public function destroy($id)
     {
         $category = Cat::whereId($id)->firstOrFail();
-        if ($category->delete()) {
+        $book_list_cat = BookListCategory::where('cat_id',$id)->firstOrFail();
+        if ($category->delete() and $book_list_cat->delete()) {
             sendFlash("Tags Delete Successfully");
             return redirect()->route('admin.category.index');
         } else {

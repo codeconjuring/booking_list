@@ -31,11 +31,16 @@
                     <div class="row">
                         <div class="col-lg-4">
                             <div class="cc-file-card">
-                                <form action="#" class="dropzone">
+                                <form action="{{ route('admin.form.update',$book_list->id) }}" class="dropzone" id="coverFormId" method="POST" enctype="multipart/form-data">
+                                  @csrf
+                                  @method('put')
                                     <div class="fallback">
-                                        <input name="file" type="file" multiple="multiple">
+                                        <input name="cover" type="file" multiple="multiple">
                                     </div>
                                     <div class="dz-message needsclick">
+                                      @if($book_list->bookInfos != null)
+                                        <img width="200px" src="{{ asset('storage/covers/'.$book_list->bookInfos->cover_file_name) }}">
+                                      @endif
                                         <div class="mb-3 mt-3">
                                             <i class="display-4 text-muted text-yellow icon-image"></i>
                                         </div>
@@ -46,11 +51,16 @@
                                 </form>
                             </div>
                             <div class="cc-file-card">
-                                <form action="#" class="dropzone">
+                                <form action="{{ route('admin.form.update',$book_list->id) }}" class="dropzone" id="epubFormId" method="POST" enctype="multipart/form-data">
+                                  @csrf
+                                  @method('put')
                                     <div class="fallback">
-                                        <input name="file" type="file" multiple="multiple">
+                                        <input name="epub" type="file" multiple="multiple">
                                     </div>
                                     <div class="dz-message needsclick">
+                                      @if($book_list->bookInfos != null)
+                                        {{ $book_list->bookInfos->epub_file_name }}
+                                      @endif
                                         <div class="mb-3 mt-3">
                                             <i class="display-4 text-muted text-yellow icon-epub"></i>
                                         </div>
@@ -61,15 +71,19 @@
                                 </form>
                             </div>
                             <div class="cc-file-card">
-                                <form action="#" class="dropzone">
+                                <form action="{{ route('admin.form.update',$book_list->id) }}" class="dropzone" id="audioFormId" method="POST" enctype="multipart/form-data">
+                                  @csrf
+                                  @method('put')
                                     <div class="fallback">
-                                        <input name="file" type="file" multiple="multiple">
+                                        <input name="audio" type="file" multiple="multiple">
                                     </div>
                                     <div class="dz-message needsclick">
+                                      @if($book_list->bookInfos != null)
+                                        {{ $book_list->bookInfos->audio_file_name }}
+                                      @endif
                                         <div class="mb-3 mt-3">
                                             <i class="display-4 text-muted text-yellow icon-mp3"></i>
                                         </div>
-
                                         <p>Upload audio/mp3 file here, or <span
                                                 class="text-yellow">browse</span>
                                         </p>
@@ -92,9 +106,18 @@
                                             @foreach($languages as $key=>$language)
                                                 <option {{ $book_list->language==$language->upper_case?'selected':"" }} value="{{ $language->upper_case }}">{{ $language->upper_case }}</option>
                                             @endforeach
-                                        </select>
+                                    </select>
 
                                     @error('language')
+                                        <span class="text-danger">{{ $message }}</span>
+                                    @enderror
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="exampleInputUsername1">Link</label>
+                                    <input class="form-control" type="text" name="link" value="{{ $book_list->links != null?$book_list->links:'' }}">
+
+                                    @error('link')
                                         <span class="text-danger">{{ $message }}</span>
                                     @enderror
                                 </div>
@@ -126,32 +149,68 @@
                                         <span class="text-danger">{{ $message }}</span>
                                     @enderror
                                 </div>
-                                <div class="form-group">
-                                    <label for="exampleInputUsername1">Author</label><span class="text-danger">*</span>
+                                <div class="row">
+                                  <div class="col-lg-6">
+                                    <div class="form-group">
+                                        <label for="exampleInputUsername1">Author</label><span class="text-danger">*</span>
 
-                                    <select name="author" id="" required class="form-control select2">
-                                        <option value="">Select Author</option>
-                                        @foreach($authors as $author)
-                                            <option {{ $book_list->author==$author->name?"selected":"" }} value="{{ $author->name }}">{{ $author->name }}</option>
-                                        @endforeach
-                                    </select>
+                                        <select name="author" id="" required class="form-control select2">
+                                            <option value="">Select Author</option>
+                                            @foreach($authors as $author)
+                                                <option {{ $book_list->author==$author->name?"selected":"" }} value="{{ $author->name }}">{{ $author->name }}</option>
+                                            @endforeach
+                                        </select>
+                                      @error('author')
+                                        <span class="text-danger">{{ $message }}</span>
+                                      @enderror
+                                    </div>
+                                  </div>
+                                  <div class="col-lg-6">
+                                    <div class="form-group">
+                                        <label for="exampleInputUsername1">    Copyright Year
+                                        </label>
 
-                                    @error('author')
-                                      <span class="text-danger">{{ $message }}</span>
-                                    @enderror
+                                        <select name="copyrightYear" id="" class="form-control select2">
+                                            <option value=""></option>
+                                            @for($year = date("Y"); $year>=1900; $year--)
+                                            <option value="{{ $year }}" {{ $book_list->books->copyright_year == $year ? 'selected':'' }}>
+                                              {{ $year }}
+                                            </option>
+                                        @endfor
+                                        </select>
+                                      @error('author')
+                                        <span class="text-danger">{{ $message }}</span>
+                                      @enderror
+                                    </div>
+                                  </div>
                                 </div>
                                 @endif
 
                                 <div class="form-group">
                                     <label for="">Title</label>
                                     <input type="text" name="title" value="{{ $book_list->title }}" required class="form-control" placeholder="Title">
+                                    <input type="hidden" id="coverNameInputId" name="coverFileName" value="{{ $book_list->bookInfos != null ? $book_list->bookInfos->cover_file_name : '' }}">
+                                    <input type="hidden" id="epubNameInputId" name="epubFileName" value="{{ $book_list->bookInfos != null ? $book_list->bookInfos->epub_file_name : '' }}">
+                                    <input type="hidden" id="audioNameInputId" name="audioFileName" value="{{ $book_list->bookInfos != null ? $book_list->bookInfos->audio_file_name : '' }}">
                                     @error('title')
                                       <span class="text-danger">{{ $message }}</span>
                                     @enderror
                                 </div>
 
-                                @foreach($form_builder as $key=>$form_build)
                                 <div class="form-group">
+                                    <label for="exampleInputUsername1">
+                                      Synopsis
+                                    </label>
+                                    <textarea class="form-control" name="synopsis">{{ $book_list->bookInfos != null ? $book_list->bookInfos->synopsis : '' }}</textarea>
+                                    @error('synopsis')
+                                      <span class="text-danger">{{ $message }}</span>
+                                    @enderror
+                                </div>
+
+                                @foreach($form_builder as $key=>$form_build)
+                                <div class="row">
+                                  <div class="col-lg-4">
+                                    <div class="form-group">
                                     <label for="exampleInputUsername1">{{ $form_build->label }}</label><span class="text-danger">*</span>
 
                                     @if (array_key_exists($form_build->id,$book_list->content))
@@ -186,10 +245,108 @@
                                             <input type="hidden" name="content[{{ $form_build->id }}][type]" value="0">
 
                                         @endif
-                                    @endif
+                                      @endif
+                                    </div>
+                                  </div>
+                                  @if(strtolower($form_build->label) == 'gfp')
+                                  <div class="col-lg-4">
+                                    <div class="form-group">
+                                      <label for="exampleInputUsername1">Proofreader
+                                      </label>
+                                      <select name="proofReaderId" id="" class="form-control select2">
+                                        <option value="">Select Proofreader</option>
+                                        @foreach($proofReaders as $k=>$pr)
+                                          <option value="{{ $pr->id }}" {{ $book_list->bookInfos != null ? $book_list->bookInfos->proofreader_id == $pr->id ? 'selected':'':'' }}>{{ $pr->name }}
+                                          </option>
+                                        @endforeach
+                                      </select>
+                                      <input type="hidden" name="formatInfo[price][{{ $form_build->id }}]">
+                                      @error('language')
+                                        <span class="text-danger">{{ $message }}</span>
+                                      @enderror
+                                    </div>
+                                  </div>
+                                  @else
+                                  <div class="col-lg-4">
+                                    <div class="form-group">
+                                      <label for="exampleInputUsername1">Price
+                                      </label>
+                                      <input type="text" class="form-control" name="formatInfo[price][{{ $form_build->id }}]" autocomplete="false" value="{{ sizeof($book_format_price) > 0 ? $book_format_price[$form_build->id] : '' }}">
+                                      @error('language')
+                                        <span class="text-danger">{{ $message }}</span>
+                                      @enderror
+                                    </div>
+                                  </div>
+                                  @endif
+                                  <div class="col-lg-4">
+                                    <div class="form-group">
+                                      <label for="exampleInputUsername1">Modification Year
+                                      </label>
+                                      <select name="formatInfo[modifyYear][{{ $form_build->id }}]" id="" class="form-control">
+                                            <option value=""></option>
+                                        @for($year = date("Y"); $year>=1900; $year--)
+                                            <option value="{{ $year }}" {{ sizeof($book_format_modify_year) > 0 ? $book_format_modify_year[$form_build->id] == $year ? 'selected':'':'' }}>
+                                              {{ $year }}
+                                            </option>
+                                        @endfor
+                                      </select>
+                                      @error('modify_year')
+                                        <span class="text-danger">{{ $message }}</span>
+                                      @enderror
+                                    </div>
+                                  </div>
                                 </div>
                                 @endforeach
-
+                                <div class="row">
+                                  <div class="col-lg-4">
+                                    <div class="form-group">
+                                      <label for="exampleInputUsername1">Pages</label>
+                                      <input type="text" class="form-control" name="pages" autocomplete="false" value="{{$book_list->bookInfos != null ? $book_list->bookInfos->pages : ''}}">
+                                      @error('pages')
+                                        <span class="text-danger">{{ $message }}
+                                        </span>
+                                      @enderror
+                                    </div>
+                                  </div>
+                                  <div class="col-lg-4">
+                                    <div class="form-group">
+                                      <label for="exampleInputUsername1">To Read</label>
+                                      <input type="text" class="form-control" name="toRead" autocomplete="false" value="{{$book_list->bookInfos != null ? $book_list->bookInfos->to_read : ''}}">
+                                      @error('to_read')
+                                        <span class="text-danger">{{ $message }}
+                                        </span>
+                                      @enderror
+                                    </div>
+                                  </div>
+                                  <div class="col-lg-4">
+                                    <div class="form-group">
+                                      <label for="exampleInputUsername1">To Listen</label>
+                                      <input type="text" class="form-control" name="toListen" autocomplete="false" value="{{$book_list->bookInfos != null ? $book_list->bookInfos->to_listen : ''}}">
+                                      @error('to_listen')
+                                        <span class="text-danger">{{ $message }}
+                                        </span>
+                                      @enderror
+                                    </div>
+                                  </div>
+                                </div>
+                                <div class="form-group">
+                                  <label for="exampleInputUsername1">
+                                    Narrated By
+                                  </label>
+                                  <select name="narratorId" class="form-control">
+                                    <option value="">Select Narrator</option>
+                                    @foreach($narrators as $narrator)
+                                      <option value="{{ $narrator->id }}" {{ $book_list->bookInfos != null ? $book_list->bookInfos->narrators != null ? $book_list->bookInfos->narrators->id == $narrator->id ? 'selected':'':'':'' }}>
+                                        {{ $narrator->name }}
+                                      </option>
+                                    @endforeach
+                                  </select>
+                                  @error('narrator')
+                                    <span class="text-danger">
+                                      {{ $message }}
+                                    </span>
+                                  @enderror
+                                </div>
                                 @if($book_list->add_another_book_translation == 0)
                                 <p class="cc-font-weigth">ZTF?</p>
                                 <div class="cc-check-items">
@@ -345,6 +502,88 @@
 
     }
 
+    var prevCoverFiles = null;
+    var prevEpubFiles = null;
+    var prevAudioFiles = null;
+    
+    Dropzone.options.coverFormId = {
+        maxFiles:1,
+        maxFilesize: 5000,
+        init: function() {
+            this.on("addedfile", function(file){
+                if(prevCoverFiles)
+                {
+                    this.removeFile(prevCoverFiles);
+                }
+                prevCoverFiles = file;
+            });
+            this.on("sending", function(file, xhr, formData){
+                formData.append("uploadType", "cover");
+            });
+        },
+        success:function(file, response)
+        {
+            console.log(response);
+            $("#coverNameInputId").val(response);
+        },
+        error: function(file, message) {
+            console.log(message);
+        }
+    };  
+      
+    Dropzone.options.epubFormId = {
+        maxFiles:1,
+        maxFilesize: 5000,
+        init: function() {
+            this.on("addedfile", function(file){
+                if(prevEpubFiles)
+                {
+                    this.removeFile(prevEpubFiles);
+                }
+                prevEpubFiles = file;
+            });
+            this.on("sending", function(file, xhr, formData){
+                formData.append("uploadType", "epub");
+            });
+        },
+        success:function(file, response)
+        {
+            console.log(response);
+            $("#epubNameInputId").val(response);
+        },
+        error: function(file, message) {
+            console.log(message);
+        }
+    };  
+
+    Dropzone.options.audioFormId = {
+        maxFiles:1,
+        maxFilesize: 5000,
+        init: function() {
+            this.on("addedfile", function(file){
+                if(prevAudioFiles)
+                {
+                    this.removeFile(prevAudioFiles);
+                }
+                prevAudioFiles = file;
+            });
+            this.on("sending", function(file, xhr, formData){
+                formData.append("uploadType", "audio");
+            });
+        },
+        success:function(file, response)
+        {
+            console.log(response);
+            $("#audioNameInputId").val(response);
+        },
+        error: function(file, message) {
+            console.log(message);
+        }
+    };
+
+    $(window).on("beforeunload",function(){
+        confirm("Are you sure?");
+    });
 </script>
 
 @endsection

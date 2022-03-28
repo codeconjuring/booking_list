@@ -12,6 +12,7 @@
 <!-- Bootstrap Css -->
 <link href="{{ asset('dashboard/update_assets/css/bootstrap.min.css') }}" rel="stylesheet" type="text/css" />
 <link href="{{ asset('dashboard/update_assets/icomoon/icon-moons.css') }}" rel="stylesheet" type="text/css" />
+<link href="{{ asset('dashboard/update_assets/css/owl.carousel.min.css') }}" rel="stylesheet" type="text/css" />
 <!-- DataTables -->
 <link href="{{ asset('dashboard/update_assets/libs/datatables.net-bs4/css/dataTables.bootstrap4.min.css') }}" rel="stylesheet" type="text/css" />
 <link href="{{ asset('dashboard/update_assets/libs/datatables.net-buttons-bs4/css/buttons.bootstrap4.min.css') }}" rel="stylesheet" type="text/css" />
@@ -21,6 +22,7 @@
 <!-- Icons Css -->
 <link href="{{ asset('dashboard/update_assets/css/icons.min.css') }}" rel="stylesheet" type="text/css" />
 <!-- App Css-->
+<link href="{{ asset('dashboard/update_assets/css/custome.css') }}" rel="stylesheet" type="text/css" />
 <link href="{{ asset('dashboard/update_assets/css/style.css') }}" rel="stylesheet" type="text/css" />
 
 

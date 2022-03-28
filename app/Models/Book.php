@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Book extends Model
 {
     use HasFactory;
-    protected $fillable = ['category_id'];
+    protected $fillable = ['category_id', 'copyright_year'];
 
     public function serise()
     {

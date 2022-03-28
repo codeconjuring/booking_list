@@ -40,7 +40,6 @@
    <script src="{{ asset('dashboard/update_assets/js/pages/morris.init.js') }}"></script>
    {{-- <script src="{{ asset('dashboard/update_assets/js/pages/apexcharts.init.js') }}"></script> --}}
    <!-- dashboard init -->
-   <script src="{{ asset('dashboard/update_assets/js/app.js') }}"></script>
 
 {{-- CDN --}}
 {{-- Toster Notification --}}
@@ -48,8 +47,8 @@
 {{-- Swtte alert --}}
 <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
-
 @yield('js')
+<script src="{{ asset('dashboard/update_assets/js/app.js') }}"></script>
 
 @yield('script')
 

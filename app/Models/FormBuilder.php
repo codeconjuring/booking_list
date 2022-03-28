@@ -12,5 +12,10 @@ class FormBuilder extends Model
 
     // public const TABLE_STATUS = ['Done', 'Progress', 'ToDo'];
 
-    protected $fillable = ['label', 'type', 'order_table'];
+    protected $fillable = ['label', 'type', 'order_table', 'default_status_id'];
+
+    public function default_status()
+    {
+        return $this->belongsTo(Status::class, 'default_status_id', 'id')->withDefault();
+    }
 }

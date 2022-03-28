@@ -8,14 +8,27 @@
     <!-- ============================================================== -->
     <!-- user profile -->
     <div class="cc-cover-main">
-        <img class="blur-image" src="https://images.pexels.com/photos/374044/pexels-photo-374044.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260" class="img-fluid" alt="">
+        @if (Settings::get('banner_pic')!=null)
+
+            <img class="blur-image" src="{{ asset(Storage::url(Settings::get('banner_pic'))) }}" class="img-fluid" alt="">
+        @else
+            <img class="blur-image" src="https://images.pexels.com/photos/374044/pexels-photo-374044.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260" class="img-fluid" alt="">
+        @endif
+
         <div class="container-fluid">
             <div class="ic-inner-cover">
-                <img src="https://images.pexels.com/photos/374044/pexels-photo-374044.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260" class="img-fluid" alt="">
-                <label for="file-cover" class="cc-file-upload">
-                    <input type="file" id="file-cover" class="d-none">
-                    Edit cover photo
-                </label>
+                @if (Settings::get('banner_pic')!=null)
+                    <img src="{{ asset(Storage::url(Settings::get('banner_pic'))) }}" class="img-fluid" alt="">
+                @else
+                    <img src="https://images.pexels.com/photos/374044/pexels-photo-374044.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260" class="img-fluid" alt="">
+                @endif
+
+                @if (auth()->check())
+                    <label for="file-cover" class="cc-file-upload">
+                        <a href="{{ route('admin.setting.index') }}" class="text-white">Edit cover photo</a>
+                    </label>
+                @endif
+
             </div>
 
             <div class="content">
@@ -151,90 +164,92 @@
                                                                             "></i> Add Translation</a></li>
                                                                 <li><a class="dropdown-item" href="#"><i class="fas fa-edit
                                                                             "></i> Edit</a></li>
-                                                                <li><a class="dropdown-item text-danger" href="#"><i class="fas fa-trash-alt text-danger"></i> Delete</a>
-                                                                </li>
-                                                            </ul>
-                                                        </div>
-                                                    </td>
+                                                        <li><a class="dropdown-item text-danger" href="#"><i class="fas fa-trash-alt text-danger"></i> Delete</a>
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                            </td>
 
-                                                    @if ($series_flag==0)
-                                                    <td class="text-center">{{ $book->serise->name }}</td>
-                                                    @php
-                                                    $series_flag=1;
-                                                    @endphp
+                                            @if ($series_flag==0)
+                                            <td class="text-center">{{ $book->serise->name }}</td>
+                                            @php
+                                            $series_flag=1;
+                                            @endphp
 
-                                                    @else
-                                                    <td class="text-center"></td>
-                                                    @endif
+                                            @else
+                                            <td class="text-center"></td>
+                                            @endif
 
-                                                    @if ($entry_flag==0)
-                                                    <td class="text-center">{{ $book_i++ }}</td>
-                                                    @php
-                                                    $entry_flag=1;
-                                                    @endphp
-                                                    @else
-                                                    <td class="text-center"></td>
-                                                    @endif
+                                            @if ($entry_flag==0)
+                                            <td class="text-center">{{ $book_i++ }}</td>
+                                            @php
+                                            $entry_flag=1;
+                                            @endphp
+                                            @else
+                                            <td class="text-center"></td>
+                                            @endif
 
-                                                    <td class="text-center">{{ $book->author }}</td>
+                                            <td class="text-center">{{ $book->author }}</td>
 
-                                                    {{-- <td class="text-center">{!! $book->available_status!!}</td> --}}
+                                            {{-- <td class="text-center">{!! $book->available_status!!}</td> --}}
 
 
-                                                    {{-- <td class="text-center">{!! $categories !!}</td> --}}
-                                                    @if (($main_title_flag==0) && ($filter_data!=1))
-                                                    <td class="{{ $entry_id==$e->id?'bg-primary':'' }}"><b><a style="text-decoration: none; color:black" data-flag="0" id="mainTitle{{ $e->id }}" onclick="showMoreTitle('{{ $e->id }}','{{ $book_i }}',$(this).attr('data-flag'))" href="javascript:void(0)">{{ $book->title }} ({{ $entry_count }})</a><img width="10%" class="buffering-img{{ $e->id }} d-none" src="{{ asset('dashboard/assets/images/loading-buffering.gif') }}" alt=""></b></td>
-                                                    @else
-                                                    <td class="{{ $entry_id==$e->id?'bg-primary':'' }}">{{ $book->title }}</td>
-                                                    @endif
+                                            {{-- <td class="text-center">{!! $categories !!}</td> --}}
+                                            @if (($main_title_flag==0) && ($filter_data!=1))
+                                            <td class="{{ $entry_id==$e->id?'bg-primary':'' }}"><b><a style="text-decoration: none; color:black" href="{{route('get-book-details', ['id' => $book->id])}}">{{ $book->title }}</a><a style="text-decoration: none; color:black" data-flag="0" id="mainTitle{{ $e->id }}" onclick="showMoreTitle('{{ $e->id }}','{{ $book_i }}',$(this).attr('data-flag'))" href="javascript:void(0)"> (<span class="text-muted">{{ $entry_count.' Translations' }}</span>)
+                                            @if($book->links)
+                                                <a class="fas fa-external-link-alt" href="{{ $book->links }}" target="_blank" title="{{ $book->links }}"></a>
+                                            @endif
+                                            </a><img width="10%" class="buffering-img{{ $e->id }} d-none" src="{{ asset('dashboard/assets/images/loading-buffering.gif') }}" alt=""></b></td>
+                                            @else
+                                            <td class="{{ $entry_id==$e->id?'bg-primary':'' }}">{{ $book->title }}</td>
+                                            @endif
 
-                                                    <td class="text-center">{{ $book->language }}</td>
-                                                    @php
-                                                    $count_form_builder=count($form_builder);
-                                                    $book_content_count=count($book->content);
-                                                    $result=$count_form_builder-$book_content_count;
-                                                    @endphp
-                                                    @foreach ($form_builder as $form_bui)
-                                                    @if ($form_bui->label!='GFP')
-                                                    @if (array_key_exists($form_bui->id,$book->content))
-                                                    @if ($book->content[$form_bui->id]['type']=="1")
-                                                    @php
-                                                    $query=App\Models\Status::query();
-                                                    if(count($select_status)>0){
-                                                    $query->whereIn('id',$select_status)->whereId($book->content[$form_bui->id]['text']);
-                                                    }else{
-                                                    $query->whereId($book->content[$form_bui->id]['text']);
-                                                    }
-                                                    $color=$query->first();
-                                                    @endphp
+                                            <td class="text-center">{{ $book->language }}</td>
+                                            @php
+                                            $count_form_builder=count($form_builder);
+                                            $book_content_count=count($book->content);
+                                            $result=$count_form_builder-$book_content_count;
+                                            @endphp
+                                            @foreach ($form_builder as $form_bui)
+                                            @if ($form_bui->label!='GFP')
+                                            @if (array_key_exists($form_bui->id,$book->content))
+                                            @if ($book->content[$form_bui->id]['type']=="1")
+                                            @php
+                                            $query=App\Models\Status::query();
+                                            if(count($select_status)>0){
+                                            $query->whereIn('id',$select_status)->whereId($book->content[$form_bui->id]['text']);
+                                            }else{
+                                            $query->whereId($book->content[$form_bui->id]['text']);
+                                            }
+                                            $color=$query->first();
+                                            @endphp
 
-                                                    <td class="text-center" style="background:{{ $color?$color->color:"" }}">{{ $status_array[$book->content[$form_bui->id]['text']]??'-' }}</td>
-                                                    @else
-                                                    <td class="text-center">{{ $book->content[$form_bui->id]['text']  }} </td>
-                                                    @endif
-                                                    @else
-                                                    <td class="text-center">-</td>
-                                                    @endif
-                                                    @endif
-                                                    @endforeach
-                                                </tr>
-                                                @php
-                                                $row_count+=1;
-                                                @endphp
+                                            <td class="text-center" style="background:{{ $color?$color->color:"" }}">{{ $status_array[$book->content[$form_bui->id]['text']]??'-' }}</td>
+                                            @else
+                                            <td class="text-center">{{ $book->content[$form_bui->id]['text']  }} </td>
+                                            @endif
+                                            @else
+                                            <td class="text-center">-</td>
+                                            @endif
+                                            @endif
+                                            @endforeach
+                                        </tr>
+                                        @php
+                                        $row_count+=1;
+                                        @endphp
 
-                                                @php
-                                                if($main_title_flag==0){
-                                                $main_title_flag=1;
-                                                }
-                                                @endphp
+                                        @php
+                                        if($main_title_flag==0){
+                                        $main_title_flag=1;
+                                        }
+                                        @endphp
 
-                                                @endforeach
-                                                @endforeach
-                                                @endforeach
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                </div>
+                                        @endforeach
+                                        @endforeach
+                                        @endforeach
+                                    </tbody>
+                                </table>
                             </div>
                         </div>
                     </div>

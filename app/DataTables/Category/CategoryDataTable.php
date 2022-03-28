@@ -66,7 +66,7 @@ class CategoryDataTable extends DataTable
      */
     public function query(Category $model)
     {
-        return $model->newQuery()->orderBy('id', 'desc');
+        return $model->newQuery()->withCount(['book'])->orderBy('id', 'desc');
     }
 
     /**
@@ -126,6 +126,12 @@ class CategoryDataTable extends DataTable
                 'title'     => 'Name',
                 'name'      => 'name',
                 'data'      => 'name',
+                'className' => 'text-left',
+            ],
+            [
+                'title'     => 'Titles',
+                'name'      => 'titles',
+                'data'      => 'book_count',
                 'className' => 'text-left',
             ],
         ];

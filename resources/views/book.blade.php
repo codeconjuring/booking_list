@@ -3,8 +3,6 @@
     <!-- majkhaner page gula bosaben -->
     <!-- user profile -->
 
-
-    
     <div class="cc-cover-main">
         <img class="blur-image"
             src="https://images.pexels.com/photos/374044/pexels-photo-374044.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260"
@@ -26,4 +24,6 @@
             </div>
         </div>
     </div>
+
+    
 </div>

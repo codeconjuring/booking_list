@@ -9,10 +9,15 @@ class BookList extends Model
 {
     use HasFactory;
     protected $casts    = ['content' => 'array'];
-    protected $appends  = ['available_status', 'report_available_status'];
-    protected $fillable = ['category_id', 'title', 'available', 'author', 'language', 'content', 'book_id', 'add_another_book_translation'];
+    protected $appends  = ['available_status', 'report_available_status', 'serieswise_lan', 'serieslanwise_title', 'titlewise_tags', 'titlewise_author'];
+    protected $fillable = ['category_id', 'title', 'available', 'author', 'language', 'links', 'content', 'book_id', 'add_another_book_translation'];
 
     public const ZTF = ['1' => 'Yes', '0' => 'No', '2' => 'Not Available'];
+
+    public function books()
+    {
+        return $this->belongsTo(Book::class, 'book_id', 'id');
+    }
 
     public function serise()
     {
@@ -24,9 +29,20 @@ class BookList extends Model
         return $this->hasMany(BookListCategory::class, 'book_list_id', 'id');
     }
 
+    public function bookInfos()
+    {
+        return $this->hasOne(BookInfo::class, 'book_list_id', 'id');
+    }
+
+    public function bookFormatInfos()
+    {
+        return $this->hasMany(BookFormatInfo::class, 'book_list_id', 'id');
+    }
+
     public function getAvailableStatusAttribute()
     {
-        $available = $this->available;
+        // $available = $this->available;
+        $available = BookList::where([['book_id', $this->book_id], ['language', 'en']])->first()->available;
         if ($available == 0) {
             return '<span class="badge bg-danger">No</span>';
         } elseif ($available == 1) {
@@ -48,4 +64,29 @@ class BookList extends Model
         }
     }
 
+    public function getSerieswiseLanAttribute()
+    {
+        return $this->select('language')->where('category_id',$this->category_id)->distinct()->get();
+    }
+
+    public function getSerieswiseTitleAttribute()
+    {
+        return $this->where('category_id',$this->category_id)->distinct('book_id')->get(['id','title']);
+    }
+
+    public function getSerieslanwiseTitleAttribute()
+    {
+        return $this->where([['category_id',$this->category_id],['language', $this->language]])->distinct('book_id')->get(['id','title']);
+    }
+
+    public function getTitleWiseTagsAttribute()
+    {
+        $booklist_id = BookList::where([['book_id', $this->book_id],['language', 'en']])->first()->id;
+        return BookListCategory::where('book_list_id', $booklist_id)->get();
+    }
+
+    public function getTitleWiseAuthorAttribute()
+    {
+        return BookList::where([['book_id', $this->book_id],['language', 'en']])->first()->author;
+    }
 }

@@ -32,9 +32,10 @@
                     <div class="row">
                         <div class="col-lg-4">
                             <div class="cc-file-card">
-                                <form action="#" class="dropzone">
+                                <form action="{{ route('admin.add-another-book-list') }}" method="POST" class="dropzone" id="coverFormId" enctype="multipart/form-data">
+                                    @csrf
                                     <div class="fallback">
-                                        <input name="file" type="file" multiple="multiple">
+                                        <input name="cover" type="file" multiple="multiple">
                                     </div>
                                     <div class="dz-message needsclick">
                                         <div class="mb-3 mt-3">
@@ -47,9 +48,10 @@
                                 </form>
                             </div>
                             <div class="cc-file-card">
-                                <form action="#" class="dropzone">
+                                <form action="{{ route('admin.add-another-book-list') }}" method = "POST" class="dropzone" id="epubFormId" enctype="multipart/form-data">
+                                    @csrf
                                     <div class="fallback">
-                                        <input name="file" type="file" multiple="multiple">
+                                        <input name="epub" type="file" multiple="multiple">
                                     </div>
                                     <div class="dz-message needsclick">
                                         <div class="mb-3 mt-3">
@@ -62,9 +64,10 @@
                                 </form>
                             </div>
                             <div class="cc-file-card">
-                                <form action="#" class="dropzone">
+                                <form action="{{ route('admin.add-another-book-list') }}" method="POST" class="dropzone" id="audioFormId" enctype="multipart/form-data">
+                                    @csrf
                                     <div class="fallback">
-                                        <input name="file" type="file" multiple="multiple">
+                                        <input name="audio" type="file" multiple="multiple">
                                     </div>
                                     <div class="dz-message needsclick">
                                         <div class="mb-3 mt-3">
@@ -90,6 +93,9 @@
                                   @error('series_id')
                                     <span class="text-danger">{{ $message }}</span>
                                   @enderror
+                                  <input type="hidden" id="coverNameInputId" name="coverFileName">
+                                  <input type="hidden" id="epubNameInputId" name="epubFileName">
+                                  <input type="hidden" id="audioNameInputId" name="audioFileName">
                                 </div>
 
                                 <div class="form-group">
@@ -115,6 +121,23 @@
                                     @enderror
                                 </div>
 
+                                <div class="form-group">
+                                    <label for="exampleInputUsername1">Link</label>
+                                    <input class="form-control" type="text" name="link">
+
+                                    @error('link')
+                                        <span class="text-danger">{{ $message }}</span>
+                                    @enderror
+                                </div>
+                                <div class="form-group">
+                                    <label for="exampleInputUsername1">
+                                      Synopsis
+                                    </label>
+                                    <textarea class="form-control" name="synopsis"></textarea>
+                                    @error('synopsis')
+                                      <span class="text-danger">{{ $message }}</span>
+                                    @enderror
+                                </div>
                                 {{-- <div class="form-group">
                                     <label for="exampleInputUsername1">Category</label><span class="text-danger">*</span>
                                     <select name="categorys[]" id="" required class="form-control select2" multiple>
@@ -143,7 +166,9 @@
                                 </div> --}}
 
                                 @foreach($form_builder as $key=>$form_build)
-                                <div class="form-group">
+                                <div class="row">
+                                  <div class="col-lg-4">
+                                    <div class="form-group">
                                     <label for="exampleInputUsername1">{{ $form_build->label }}</label><span class="text-danger">*</span>
 
 
@@ -151,7 +176,7 @@
                                         <select name="content[{{ $form_build->id }}][text]" id="" class="form-control select2">
                                             <option value="">Select Status</option>
                                             @foreach($statues as $k=>$status)
-                                                <option value="{{ $status->id }}">{{ $status->status }}</option>
+                                                <option {{ $form_build->default_status_id==$status->id?'selected':'' }} value="{{ $status->id }}">{{ $status->status }}</option>
                                             @endforeach
                                         </select>
 
@@ -163,10 +188,108 @@
                                         <input type="hidden" name="content[{{ $form_build->id }}][type]" value="0">
 
                                     @endif
+                                    </div>
+                                  </div>
+                                  @if(strtolower($form_build->label) == 'gfp')
+                                  <div class="col-lg-4">
+                                    <div class="form-group">
+                                      <label for="exampleInputUsername1">Proofreader
+                                      </label>
+                                      <select name="proofReaderId" id="" class="form-control select2">
+                                        <option value="">Select Proofreader</option>
+                                        @foreach($proofReaders as $k=>$pr)
+                                          <option value="{{ $pr->id }}">{{ $pr->name }}
+                                          </option>
+                                        @endforeach
+                                      </select>
+                                      <input type="hidden" name="formatInfo[price][{{ $form_build->id }}]">
+                                      @error('language')
+                                        <span class="text-danger">{{ $message }}</span>
+                                      @enderror
+                                    </div>
+                                  </div>
+                                  @else
+                                  <div class="col-lg-4">
+                                    <div class="form-group">
+                                      <label for="exampleInputUsername1">Price
+                                      </label>
+                                      <input type="text" class="form-control" name="formatInfo[price][{{ $form_build->id }}]" autocomplete="false">
+                                      @error('language')
+                                        <span class="text-danger">{{ $message }}</span>
+                                      @enderror
+                                    </div>
+                                  </div>
+                                  @endif
+                                  <div class="col-lg-4">
+                                    <div class="form-group">
+                                      <label for="exampleInputUsername1">Modification Year
+                                      </label>
+                                      <select name="formatInfo[modifyYear][{{ $form_build->id }}]" id="" class="form-control">
+                                        @for($year = date("Y"); $year>=1900; $year--)
+                                            <option value="{{ $year }}">
+                                              {{ $year }}
+                                            </option>
+                                        @endfor
+                                      </select>
+                                      @error('modify_year')
+                                        <span class="text-danger">{{ $message }}</span>
+                                      @enderror
+                                    </div>
+                                  </div>
                                 </div>
                                 @endforeach
 
-
+                                <div class="row">
+                                  <div class="col-lg-4">
+                                    <div class="form-group">
+                                      <label for="exampleInputUsername1">Pages</label>
+                                      <input type="text" class="form-control" name="pages" autocomplete="false">
+                                      @error('pages')
+                                        <span class="text-danger">{{ $message }}
+                                        </span>
+                                      @enderror
+                                    </div>
+                                  </div>
+                                  <div class="col-lg-4">
+                                    <div class="form-group">
+                                      <label for="exampleInputUsername1">To Read</label>
+                                      <input type="text" class="form-control" name="toRead" autocomplete="false">
+                                      @error('to_read')
+                                        <span class="text-danger">{{ $message }}
+                                        </span>
+                                      @enderror
+                                    </div>
+                                  </div>
+                                  <div class="col-lg-4">
+                                    <div class="form-group">
+                                      <label for="exampleInputUsername1">To Listen</label>
+                                      <input type="text" class="form-control" name="toListen" autocomplete="false">
+                                      @error('to_listen')
+                                        <span class="text-danger">{{ $message }}
+                                        </span>
+                                      @enderror
+                                    </div>
+                                  </div>
+                                </div>
+                                
+                                <div class="form-group">
+                                  <label for="exampleInputUsername1">
+                                    Narrated By
+                                  </label>
+                                  <select name="narratorId" class="form-control">
+                                    <option value="">Select Narrator</option>
+                                    @foreach($narrators as $narrator)
+                                      <option value="{{ $narrator->id }}">
+                                        {{ $narrator->name }}
+                                      </option>
+                                    @endforeach
+                                  </select>
+                                  @error('narrator')
+                                    <span class="text-danger">
+                                      {{ $message }}
+                                    </span>
+                                  @enderror
+                                </div>
 
                                 <div class="mt-4">
                                     <button type="submit" class="btn btn-primary mr-2">Create New</button>
@@ -291,6 +414,88 @@
 
     }
 
+    var prevCoverFiles = null;
+    var prevEpubFiles = null;
+    var prevAudioFiles = null;
+    
+    Dropzone.options.coverFormId = {
+        maxFiles:1,
+        maxFilesize: 5000,
+        init: function() {
+            this.on("addedfile", function(file){
+                if(prevCoverFiles)
+                {
+                    this.removeFile(prevCoverFiles);
+                }
+                prevCoverFiles = file;
+            });
+            this.on("sending", function(file, xhr, formData){
+                formData.append("uploadType", "cover");
+            });
+        },
+        success:function(file, response)
+        {
+            console.log(response);
+            $("#coverNameInputId").val(response);
+        },
+        error: function(file, message) {
+            console.log(message);
+        }
+    };  
+      
+    Dropzone.options.epubFormId = {
+        maxFiles:1,
+        maxFilesize: 5000,
+        init: function() {
+            this.on("addedfile", function(file){
+                if(prevEpubFiles)
+                {
+                    this.removeFile(prevEpubFiles);
+                }
+                prevEpubFiles = file;
+            });
+            this.on("sending", function(file, xhr, formData){
+                formData.append("uploadType", "epub");
+            });
+        },
+        success:function(file, response)
+        {
+            console.log(response);
+            $("#epubNameInputId").val(response);
+        },
+        error: function(file, message) {
+            console.log(message);
+        }
+    };  
+
+    Dropzone.options.audioFormId = {
+        maxFiles:1,
+        maxFilesize: 5000,
+        init: function() {
+            this.on("addedfile", function(file){
+                if(prevAudioFiles)
+                {
+                    this.removeFile(prevAudioFiles);
+                }
+                prevAudioFiles = file;
+            });
+            this.on("sending", function(file, xhr, formData){
+                formData.append("uploadType", "audio");
+            });
+        },
+        success:function(file, response)
+        {
+            console.log(response);
+            $("#audioNameInputId").val(response);
+        },
+        error: function(file, message) {
+            console.log(message);
+        }
+    };
+
+    $(window).on("beforeunload",function(){
+        confirm("Are you sure?");
+    });
 </script>
 
 @endsection

@@ -112,29 +112,95 @@
                 </div>
             </div>
 
+            <div class="col-lg-6">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-lg-10 m-auto">
 
-            <div class="col-md-6">
+                                <form class="forms-sample" action="{{ route('admin.email.store') }}" method="POST">
+                                    @csrf
+
+                                    <div class="form-group">
+                                            <label for="">Host <span class="error">*</span></label>
+                                            <input type="text" name="contents[host]" class="form-control" placeholder="Enter host here" required value="@if($email_setting){{ $email_setting->contents['host'] }}@endif"/>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label for="">Port <span class="error">*</span></label>
+                                            <input type="text" name="contents[port]" class="form-control" placeholder="Enter port here" required value="@if($email_setting){{ $email_setting->contents['port'] }}@endif"/>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label for="">Encryption</label>
+                                            <input type="text" name="contents[encryption]" class="form-control" placeholder="Enter encryption here" value="@if($email_setting){{ $email_setting->contents['encryption'] }}@endif"/>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label for="">Username <span class="error">*</span></label>
+                                            <input type="text" name="contents[username]" class="form-control" placeholder="Enter username here" required value="@if($email_setting){{ $email_setting->contents['username'] }}@endif"/>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label for="">Password <span class="error">*</span></label>
+                                            <input type="text" name="contents[password]" class="form-control" placeholder="Enter password here" required value="@if($email_setting){{ $email_setting->contents['password'] }}@endif"/>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label for="">Mail From name <span class="error">*</span></label>
+                                            <input type="text" name="contents[from_name]" class="form-control" placeholder="Enter from name here" required value="@if($email_setting){{ $email_setting->contents['from_name'] ?? '' }}@endif"/>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label for="">Mail From address <span class="error">*</span></label>
+                                            <input type="text" name="contents[from_address]" class="form-control" placeholder="Enter from address here" required value="@if($email_setting){{ $email_setting->contents['from_address'] }}@endif"/>
+                                        </div>
+
+
+                                    <button type="submit" class="btn btn-primary mr-2">Update Email Setting</button>
+                                    <a href="{{ url()->previous() }}" class="btn btn-light">Back</a>
+                                  </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="col-md-12">
                 <div class="card">
                   <div class="card-body">
-                    <div class="form-group">
-                        <label for="">Site Logo</label><br>
-                        <img width="50%" src="{{ asset(Storage::url(Settings::get('site_logo'))) }}" alt="">
-                    </div>
+                      <div class="row">
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label for="">Site Logo</label><br>
+                                <img width="50%" src="{{ asset(Storage::url(Settings::get('site_logo'))) }}" alt="">
+                            </div>
+                          </div>
 
-                    <div class="form-group">
-                        <label for="">Favicon</label><br>
-                        <img width="50%" src="{{ asset(Storage::url(Settings::get('favicon'))) }}" alt="">
-                    </div>
+                          <div class="col-md-3">
+                            <div class="form-group">
+                                <label for="">Favicon</label><br>
+                                <img width="50%" src="{{ asset(Storage::url(Settings::get('favicon'))) }}" alt="">
+                            </div>
+                          </div>
 
-                    <div class="form-group">
-                        <label for="">Default profile</label><br>
-                        <img width="50%" src="{{ asset(Storage::url(Settings::get('default_profile'))) }}" alt="">
-                    </div>
+                          <div class="col-md-3">
+                            <div class="form-group">
+                                <label for="">Default profile</label><br>
+                                <img width="50%" src="{{ asset(Storage::url(Settings::get('default_profile'))) }}" alt="">
+                            </div>
+                          </div>
 
-                    <div class="form-group">
-                        <label for="">Preview Home Page Cover Photo</label><br>
-                        <img width="50%" src="{{ asset(Storage::url(Settings::get('banner_pic'))) }}" alt="">
-                    </div>
+                          <div class="col-md-3">
+                            <div class="form-group">
+                                <label for="">Preview Home Page Cover Photo</label><br>
+                                <img width="50%" src="{{ asset(Storage::url(Settings::get('banner_pic'))) }}" alt="">
+                            </div>
+                          </div>
+                      </div>
+
+
 
                   </div>
                 </div>

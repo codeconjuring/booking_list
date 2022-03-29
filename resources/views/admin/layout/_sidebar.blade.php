@@ -236,11 +236,9 @@
                 </a>
                 <ul class="sub-menu" aria-expanded="true">
                     <li>
-                      <li><a href="{{ route('admin.user.index') }}">User Listing</a></li>
-                      <li><a href="{{ route('admin.role.create') }}">Create Role</a></li>
-                      <li><a href="{{ route('admin.role.index') }}">List Roles</a></li>
-                      <li><a href="{{ route('admin.setting.index') }}">System Setting</a></li>
-                      <li><a href="{{ route('admin.email.index') }}">Email Setting</a></li>
+                      <li><a href="{{ route('admin.user.index') }}">User</a></li>
+                      <li><a href="{{ route('admin.role.index') }}">Roles</a></li>
+                      <li><a href="{{ route('admin.setting.index') }}">System</a></li>
                     </li>
                 </ul>
             </li>

@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin\Setting;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Setting\SettingRequest;
 use App\Models\Setting;
+use App\Models\Widget;
 use Illuminate\Http\Request;
 use Robiussani152\Settings\Facades\Settings;
 
@@ -22,8 +23,9 @@ class SettingController extends Controller
      */
     public function index()
     {
-        $page_title = "System Settings";
-        return view('admin.setting.index', compact('page_title'));
+        $page_title    = "System Settings";
+        $email_setting = Widget::where('name', 'email_setting')->first();
+        return view('admin.setting.index', compact('page_title', 'email_setting'));
     }
 
     /**

@@ -296,6 +296,9 @@ if($('.owl-carousel').length > 0){
           },
           1000:{
               items:4
+          },
+          1280:{
+              items:5
           }
       }
     })

@@ -6303,7 +6303,9 @@ table.dataTable > thead .sorting_desc_disabled::after {
   grid-gap: 30px; }
 
 .cc-slider-items img {
-  max-width: 200px;
+  max-width: 100%;
+  object-fit: cover;
+  object-position: center;
   max-height: 225px;
   border-radius: 30px; }
   @media only screen and (max-width: 767.98px) {

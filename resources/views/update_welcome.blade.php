@@ -86,7 +86,7 @@
                                  <thead>
                                     <tr>
                                        <th class="text-center d-none">Action</th>
-                                       <th class="text-center"> Series </th>
+                                       <th class="text-center d-none"> Series </th>
                                        <th class="text-center"> No </th>
                                        <th class="text-center"> Author </th>
                                        {{-- 
@@ -166,12 +166,12 @@
                                           </div>
                                        </td>
                                        @if ($series_flag==0)
-                                       <td class="text-center">{{ $book->serise->name }}</td>
+                                       <td class="text-center d-none">{{ $book->serise->name }}</td>
                                        @php
                                        $series_flag=1;
                                        @endphp
                                        @else
-                                       <td class="text-center"></td>
+                                       <td class="text-center d-none"></td>
                                        @endif
                                        @if ($entry_flag==0)
                                        <td class="text-center">{{ $book_i++ }}</td>

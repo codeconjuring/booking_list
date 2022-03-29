@@ -5,7 +5,7 @@
         <div class="navbar-brand-box">
 
             @if (Settings::get('site_logo'))
-                <a href="{{ route('admin.dashboard') }}" class="logo logo-dark">
+                <a href="{{ route('index') }}" class="logo logo-dark">
                     <span class="logo-sm">
                         <img src="{{ asset('dashboard/update_assets/images/sort-logo.png') }}" alt="{{ Settings::get('title') }}">
                     </span>
@@ -14,7 +14,7 @@
                     </span>
                 </a>
 
-                <a href="{{ route('admin.dashboard') }}" class="logo logo-light">
+                <a href="{{ route('index') }}" class="logo logo-light">
                     <span class="logo-sm">
                         <img src="{{ asset('dashboard/update_assets/images/sort-logo.png') }}" alt="{{ Settings::get('title') }}">
                     </span>
@@ -23,7 +23,7 @@
                     </span>
                 </a>
             @else
-                <a href="{{ route('admin.dashboard') }}" class="logo logo-dark">
+                <a href="{{ route('index') }}" class="logo logo-dark">
                     <span class="logo-sm">
                         <img src="{{ asset('dashboard/update_assets/images/sort-logo.png') }}" alt="{{ Settings::get('title') }}">
                     </span>
@@ -32,7 +32,7 @@
                     </span>
                 </a>
 
-                <a href="{{ route('admin.dashboard') }}" class="logo logo-light">
+                <a href="{{ route('index') }}" class="logo logo-light">
                     <span class="logo-sm">
                         <img src="{{ asset('dashboard/update_assets/images/sort-logo.png') }}" alt="{{ Settings::get('title') }}">
                     </span>

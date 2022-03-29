@@ -175,7 +175,7 @@ class HomeController extends Controller
     {
         auth()->logout();
         sendFlash("Successfully Logout");
-        return redirect(route('login'));
+        return redirect(route('index'));
     }
 
     public function getBookDetails(Request $request)

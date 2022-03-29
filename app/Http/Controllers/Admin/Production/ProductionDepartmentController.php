@@ -227,6 +227,7 @@ class ProductionDepartmentController extends Controller
      */
     public function getSeriesWiseLanTitle(Request $request)
     {
+        try{
         if ($request->lan_flag > 0) {
             $languages = BookList::select('language')->where('category_id', $request->series_id)->distinct()->get();
 
@@ -235,9 +236,16 @@ class ProductionDepartmentController extends Controller
             }
 
             return response()->json(['languages' => $languages, 'titles' => $titles, 'input_field' => $request->input_field, 'lan_flag' => $request->lan_flag]);
-        } else if ($request->title_flag > 0) {
+            }
+
+         else if ($request->title_flag > 0) {
             $titles = BookList::where([['category_id', $request->series_id], ['language', $request->lan]])->get();
             return response()->json(['titles' => $titles, 'input_field' => $request->input_field, 'lan_flag' => $request->lan_flag]);
+          }
+        }
+        catch(\Exception $e)
+        {
+          return response()->json(['error' => $e->getLine()]);
         }
     }
 }

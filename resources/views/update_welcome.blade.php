@@ -45,9 +45,9 @@
                      <div class="col-12">
                         <div class="page-title-box d-sm-flex align-items-center justify-content-between">
                            @if (Settings::get('site_logo'))
-                           <a class="navbar-brand brand-logo" href="{{ route('admin.dashboard') }}"><img src="{{ asset(Storage::url(Settings::get('site_logo'))) }}" alt="{{ Settings::get('title') }}" /></a>
+                           <a class="navbar-brand brand-logo" href="{{ route('index') }}"><img src="{{ asset(Storage::url(Settings::get('site_logo'))) }}" alt="{{ Settings::get('title') }}" /></a>
                            @else
-                           <a class="navbar-brand brand-logo" href="{{ route('admin.dashboard') }}"><img src="{{ asset(config('settings.site_logo')) }}" alt="{{ Settings::get('title') }}" /></a>
+                           <a class="navbar-brand brand-logo" href="{{ route('index') }}"><img src="{{ asset(config('settings.site_logo')) }}" alt="{{ Settings::get('title') }}" /></a>
                            @endif
                            <!-- <div class="page-title-right">
                               <a href="{{ route('login') }}" class="btn btn-primary">System Login</a>

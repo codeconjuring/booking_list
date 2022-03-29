@@ -1,7 +1,7 @@
 @foreach ($getBookLists as $key=>$getBookList)
 <tr class="subTitle{{ $getBookList->book_id }}">
    <td class="text-center d-none"></td>
-   <td class="text-center"></td>
+   <td class="text-center d-none"></td>
    <td class="text-center"></td>
    <td class="text-center">{{ $getBookList->titlewise_author }}</td>
    <td class="text-center {{ $frontend_request==1?'d-none':"" }}">{!! $getBookList->available_status !!}</td>

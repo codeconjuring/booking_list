@@ -12,8 +12,18 @@
             <div class="page-title-box d-sm-flex align-items-center justify-content-between">
                <h4 class="mb-sm-0 font-size-18">{{ $page_title }}</h4>
                <div class="page-title-right">
-                  <div class="page-title-right">
-                     <a href="{{ route('admin.form.create') }}" class="btn btn-primary"><i data-feather="plus"></i> Create Book</a>
+                  <div class="row">
+                     <div class="col-lg-6">
+                        <select id="series_list_id" class="form-control form-control-sm" onchange="loadSeriesWiseAjaxTable();">
+                           @foreach($get_all_series as $series)
+                              <option value="{{ $series->id }}">{{ $series->name }}
+                              </option>
+                           @endforeach
+                        </select>
+                     </div>
+                     <div class="col-lg-6">
+                        <a href="{{ route('admin.form.create') }}" class="btn btn-primary"><i data-feather="plus"></i> Create Book</a>
+                     </div>
                   </div>
                   {{-- @can('Download Report Book Management')
                   <a href="#" onclick="downloadReport()" class="btn btn-primary"><i class="fas fa-download"></i> &nbsp;Download Report</a>
@@ -96,12 +106,12 @@
    <div class="row">
       <div class="col-lg-12">
          <div class="card">
-            <div class="card-body">
+            <div class="card-body" id="serieswise_table_div">
                <table cellpadding="2" class="cc-datatable table nowrap w-100" id="myTable">
                   <thead>
                      <tr>
                         <th class="text-center d-none">  </th>
-                        <th class="text-center"> Series </th>
+                        <th class="text-center d-none"> Series </th>
                         <th class="text-center"> No </th>
                         <th class="text-center"> Author </th>
                         <th class="text-center"> ZTF?</th>
@@ -121,10 +131,10 @@
                      $book_i=1;
                      $row_count=0;
                      @endphp
-                     @foreach ($getSeriyes as $key=>$getSeriye)
+                     {{-- @foreach ($getSeriyes as $key=>$getSeriye) --}}
                      @php
-                     $entry=App\Models\Book::whereCategoryId($getSeriye->category_id)->get();
-                     $series_wise_titles=App\Models\BookList::whereCategoryId($getSeriye->category_id)->get();
+                     $entry=App\Models\Book::whereCategoryId($selected_series_id)->get();
+                     $series_wise_titles=App\Models\BookList::whereCategoryId($selected_series_id)->get();
                      $books_count=count($series_wise_titles);
                      $series_flag=0;
                      @endphp
@@ -178,12 +188,12 @@
                      <tr class="tableAddTitles{{ $e->id }}">
                         <td class="d-none">-</td>
                         @if ($series_flag==0)
-                        <td class="text-center">{{ $book->serise->name }}</td>
+                        <td class="text-center d-none">{{ $book->serise->name }}</td>
                         @php
                         $series_flag=1;
                         @endphp
                         @else
-                        <td class="text-center"></td>
+                        <td class="text-center d-none"></td>
                         @endif
                         @if ($entry_flag==0)
                         <td class="text-center">{{ $book_i++ }}</td>
@@ -293,7 +303,7 @@
                      @endphp
                      @endforeach
                      @endforeach
-                     @endforeach
+                     {{-- @endforeach --}}
                   </tbody>
                </table>
             </div>
@@ -498,6 +508,46 @@
    {
    console.log('abcd');
    $('.select2').select2();
+   }
+
+   function loadSeriesWiseAjaxTable()
+   {
+      console.log('Series: ' + $('#series_list_id').val());
+      var series_id = $('#series_list_id').val();
+
+      $.ajax({
+         url:"{{ route('admin.form.index') }}",
+         method:"GET",
+         data:{selected_series_id:series_id,load_ajax_view:1},
+         success:function(response)
+         {
+            console.log(response.html);
+            $('#serieswise_table_div').html('');
+            $('#serieswise_table_div').html(response.html);
+            $('#myTable').DataTable({
+               dom: '<"toolbar">lBftip',
+               buttons:
+               [
+   
+                  {
+                     text: 'Download Report',
+                     action: function ( e, dt, node, config ) {
+                              downloadReport()
+                     }
+                  },
+                  {
+                     text: 'Create',
+                     action: function ( e, dt, node, config ) {
+                        window.location ="{{ route('admin.form.create') }}"
+                     }
+                  },
+                  'copy',
+                  'csv',
+                  'excel'
+               ]
+            });
+         }
+      });
    }
 </script>
 @endsection

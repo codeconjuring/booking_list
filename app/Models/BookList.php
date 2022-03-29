@@ -42,7 +42,12 @@ class BookList extends Model
     public function getAvailableStatusAttribute()
     {
         // $available = $this->available;
-        $available = BookList::where([['book_id', $this->book_id], ['language', 'en']])->first()->available;
+        $available = 0;
+        $available_query = BookList::where([['book_id', $this->book_id], ['language', 'en']])->first();
+        if($available_query)
+        {
+            $available = $available_query->available;
+        }
         if ($available == 0) {
             return '<span class="badge bg-danger">No</span>';
         } elseif ($available == 1) {
@@ -81,12 +86,23 @@ class BookList extends Model
 
     public function getTitleWiseTagsAttribute()
     {
-        $booklist_id = BookList::where([['book_id', $this->book_id],['language', 'en']])->first()->id;
+        $booklist_id = 0;
+        $booklist_id_query = BookList::where([['book_id', $this->book_id],['language', 'en']])->first();
+        if($booklist_id_query)
+        {
+            $booklist_id = $booklist_id_query->id;
+        }
         return BookListCategory::where('book_list_id', $booklist_id)->get();
     }
 
     public function getTitleWiseAuthorAttribute()
     {
-        return BookList::where([['book_id', $this->book_id],['language', 'en']])->first()->author;
+        $author = '';
+        $author_query = BookList::where([['book_id', $this->book_id],['language', 'en']])->first();
+        if($author_query)
+        {
+            $author = $author_query->author;
+        }
+        return $author;
     }
 }

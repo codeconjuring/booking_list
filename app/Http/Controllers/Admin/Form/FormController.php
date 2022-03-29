@@ -51,6 +51,15 @@ class FormController extends Controller
     {
         // Tempory Variable
         // $series_name = "";
+        if($request->selected_series_id)
+        {
+            $selected_series_id = $request->selected_series_id;
+        }
+        else
+        {
+            $selected_series_id = Category::first()->id;
+        }
+
         $select_status = isset($request->status_ids) ? $request->status_ids : [];
         $select_ztf    = isset($request->ztf) ? $request->ztf : [];
 
@@ -133,7 +142,13 @@ class FormController extends Controller
         $tags = Cat::orderBy('name')->get();
         $ztf  = BookList::ZTF;
 
-        return view('admin.form.index', compact('page_title', 'form_builder', 'series', 'getSeriyes', 'status', 'status_array', 'row_show', 'languages', 'entry_id', 'paginate_range', 'top_scroll', 'tags', 'select_language', 'filter_data', 'select_series', 'select_status', 'get_all_series', 'ztf', 'select_ztf'));
+        if($request->load_ajax_view == 1)
+        {
+            $ajax_table = view('admin.form.catalogue.new_table',compact('selected_series_id', 'form_builder', 'getSeriyes', 'select_language', 'select_ztf', 'filter_data', 'entry_id', 'row_show', 'select_status', 'status_array'))->render();
+            return response()->json(['html' => $ajax_table]);
+        }
+
+        return view('admin.form.index', compact('selected_series_id', 'page_title', 'form_builder', 'series', 'getSeriyes', 'status', 'status_array', 'row_show', 'languages', 'entry_id', 'paginate_range', 'top_scroll', 'tags', 'select_language', 'filter_data', 'select_series', 'select_status', 'get_all_series', 'ztf', 'select_ztf'));
 
     }
 

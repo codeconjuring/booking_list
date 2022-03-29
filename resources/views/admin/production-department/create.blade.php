@@ -172,7 +172,7 @@
       data: dataToSend,
       success:function(result)
       {
-        console.log("ajax result: "+result.input_field);
+        console.log(result);
         if(result.lan_flag == 1)
         {
           $("#lansId"+result.input_field).html('');

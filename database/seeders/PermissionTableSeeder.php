@@ -18,12 +18,12 @@ class PermissionTableSeeder extends Seeder
         $parentPermissions = [
             'User',
             'Book Attributes',
-
             'Book Management',
-
-
             'Administration',
             'Setings',
+            'Analytics',
+            'CPH',
+            'Add Report',
 
         ];
 
@@ -69,6 +69,19 @@ class PermissionTableSeeder extends Seeder
             'Setings'         => array(
                 0 => 'System Settings',
                 1 => 'Email Settings',
+            ),
+            'Analytics'       => array(
+                0 => 'Show Analytics',
+            ),
+            'CPH'             => array(
+                0 => 'Add CPH',
+                1 => 'Edit CPH',
+                2 => 'Delete CPH',
+            ),
+            'Add Report'      => array(
+                0 => 'Add Add Report',
+                1 => 'Edit Add Report',
+                2 => 'Delete Add Report',
             ),
 
         ];

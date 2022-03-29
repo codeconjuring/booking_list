@@ -12,10 +12,10 @@
         <div class="page-header">
             <h3 class="page-title">
                 @if (Settings::get('site_logo'))
-                    <a class="navbar-brand brand-logo"  href="{{ route('index') }}"><img style="width: 10%" src="{{ asset(Storage::url(Settings::get('site_logo'))) }}" alt="{{ Settings::get('title') }}" /></a>
+                    <a class="navbar-brand brand-logo"  href="{{ route('index') }}"><img src="{{ asset(Storage::url(Settings::get('site_logo'))) }}" alt="{{ Settings::get('title') }}" /></a>
 
                     @else
-                    <a class="navbar-brand brand-logo"  href="{{ route('index') }}"><img style="width: 10%" src="{{ asset(config('settings.site_logo')) }}" alt="{{ Settings::get('title') }}" /></a>
+                    <a class="navbar-brand brand-logo"  href="{{ route('index') }}"><img src="{{ asset(config('settings.site_logo')) }}" alt="{{ Settings::get('title') }}" /></a>
 
                 @endif
             </h3>

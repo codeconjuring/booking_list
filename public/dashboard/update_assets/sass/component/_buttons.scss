@@ -67,6 +67,9 @@ button {
             color: $color-primary !important;
             margin-right: 8px;
         }
+        @media #{$max1366} {
+            font-size: 12px !important;
+        }
         &:hover {
             background: #f7b104 !important;
             color: #fff !important;

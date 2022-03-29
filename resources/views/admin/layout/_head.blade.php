@@ -22,6 +22,7 @@
 <!-- Bootstrap Css -->
 <link href="{{ asset('dashboard/update_assets/css/bootstrap.min.css') }}" rel="stylesheet" type="text/css" />
 <link href="{{ asset('dashboard/update_assets/icomoon/icon-moons.css') }}" rel="stylesheet" type="text/css" />
+<link href="{{ asset('dashboard/update_assets/css/owl.carousel.min.css') }}" rel="stylesheet" type="text/css" />
 <!-- Icons Css -->
 <link href="{{ asset('dashboard/update_assets/css/icons.min.css') }}" rel="stylesheet" type="text/css" />
 
@@ -37,8 +38,8 @@
 <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
 
 <!-- App Css-->
-<link href="{{ asset('dashboard/update_assets/css/style.css') }}" rel="stylesheet" type="text/css" />
 <link href="{{ asset('dashboard/update_assets/css/custome.css') }}" rel="stylesheet" type="text/css" />
+<link href="{{ asset('dashboard/update_assets/css/style.css') }}" rel="stylesheet" type="text/css" />
 
 
 

@@ -90,7 +90,6 @@ class AuthorDataTable extends DataTable
                 ]);
         }
         return $data;
-
     }
 
     /**

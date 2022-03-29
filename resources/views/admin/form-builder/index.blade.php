@@ -24,9 +24,9 @@
     <!-- container-fluid -->
 
     <div class="row">
-        <div class="col-lg-12">
+        <div class="col-xl-8 col-lg-12 col-md-12 col-sm-12">
             <div class="card">
-                <div class="card-body books-tags">
+                <div class="card-body">
                     <div class="table-responsive">
                     <table cellpadding="2" class="cc-datatable table nowrap w-100 " id="myTable">
                         <thead>
@@ -34,6 +34,7 @@
                                 <th class="text-center">Sl</th>
                                 <th class="text-center"> Lebel </th>
                                 <th class="text-center">Type </th>
+                                <th class="text-center">Default Status </th>
                                 @canany(["Edit Book Attributes Format","Delete Book Attributes Format"])
                                 <th class="text-center">Action</th>
                                 @endcanany
@@ -50,6 +51,7 @@
                                     <td class="text-center">{{ $i++ }}</td>
                                     <td class="text-center">{{ $form_builder->label }}</td>
                                     <td class="text-center">{{ $form_builder->type==0?"Text":"Dropdown" }}</td>
+                                    <td class="text-center">{{ isset($form_builder->default_status->status)?$form_builder->default_status->status:'N/A' }}</td>
                                     @canany(["Edit Book Attributes Format","Delete Book Attributes Format"])
                                         <td class="text-center">
                                             <div class="dropdown">

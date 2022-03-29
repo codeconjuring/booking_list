@@ -82,6 +82,10 @@
     i(),
     (e = document.body.getAttribute("data-sidebar-size")),
     n("#vertical-menu-btn").on("click", function (t) {
+
+    //   console.log(localStorage.getItem(sideBar));
+
+
       t.preventDefault(),
         n("body").toggleClass("sidebar-enable"),
         992 <= n(window).width() &&
@@ -97,6 +101,18 @@
             : "sm" == document.body.getAttribute("data-sidebar-size")
             ? document.body.setAttribute("data-sidebar-size", "lg")
             : document.body.setAttribute("data-sidebar-size", "sm"));
+
+            localStorage.removeItem("sideBar");
+
+            if($("body").hasClass("sidebar-enable")){
+                localStorage.setItem('sideBar',1);
+            }else{
+
+                localStorage.setItem('sideBar',0);
+            }
+
+
+
     }),
     n("#sidebar-menu a").each(function () {
       var t = window.location.href.split(/[?#]/)[0];
@@ -286,5 +302,5 @@ if($('.owl-carousel').length > 0){
     $('.owl-prev').html('<i class="fas fa-chevron-left"></i>')
     $('.owl-next').html('<i class="fas fa-chevron-right"></i>')
 }
- 
+
 })(jQuery);

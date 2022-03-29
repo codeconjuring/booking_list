@@ -5,10 +5,12 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Admin\Form\FormController;
 use App\Http\Requests\Login\LoginRequest;
 use App\Models\BookList;
+use App\Models\BookListCategory;
 use App\Models\Cat;
 use App\Models\Category;
 use App\Models\FormBuilder;
 use App\Models\Status;
+use App\Models\Language;
 use DB;
 use Illuminate\Http\Request;
 
@@ -47,6 +49,14 @@ class HomeController extends Controller
     {
         // Tempory Variable
         // $series_name = "";
+        if($request->selected_series_id)
+        {
+            $selected_series_id = $request->selected_series_id;  
+        }
+        else
+        {
+            $selected_series_id = Category::first()->id;   
+        }
 
         $select_status  = isset($request->status_ids) ? $request->status_ids : [];
         $select_ztf     = isset($request->ztf) ? $request->ztf : [];
@@ -129,7 +139,13 @@ class HomeController extends Controller
         $tags = Cat::orderBy('name')->get();
         $ztf  = BookList::ZTF;
 
-        return view('update_welcome', compact('page_title', 'form_builder', 'series', 'getSeriyes', 'status', 'status_array', 'row_show', 'languages', 'entry_id', 'paginate_range', 'top_scroll', 'tags', 'select_language', 'filter_data', 'select_series', 'select_status', 'get_all_series', 'ztf', 'select_ztf'));
+        if($request->load_ajax_view == 1)
+        {
+            $html = view('catalogue.new_table', ['selected_series_id' => $selected_series_id,'entry_id' => $entry_id,'row_show' => $row_show,'filter_data' => $filter_data,'get_all_series' => $get_all_series,'form_builder' => $form_builder,'select_ztf' => $select_ztf,'select_status' => $select_status, 'select_language' => $select_language,  'status_array' => $status_array])->render();
+
+            return response()->json(['html' => $html]);
+        }
+        return view('update_welcome', compact('page_title', 'form_builder', 'series', 'selected_series_id', 'getSeriyes', 'status', 'status_array', 'row_show', 'languages', 'entry_id', 'paginate_range', 'top_scroll', 'tags', 'select_language', 'filter_data', 'select_series', 'select_status', 'get_all_series', 'ztf', 'select_ztf'));
 
     }
 
@@ -160,5 +176,54 @@ class HomeController extends Controller
         auth()->logout();
         sendFlash("Successfully Logout");
         return redirect(route('login'));
+    }
+
+    public function getBookDetails(Request $request)
+    {
+        $book = BookList::find($request->id);
+        $language  = Language::where("short_hand",$book->language)->first();
+
+        $main_title    = BookList::where(['book_id' => $book->book_id, 'language' => 'EN'])->first();
+        $author        = $main_title->author;
+        $tags          = BookListCategory::where('book_list_id', $main_title->id)->get();
+
+        $done_status_id     = Status::whereStatus('Done')->first(['id'])->id;
+
+        $formats = []; $gfp_format_id = ''; $audio_format_id = '';
+        foreach($book->content as $key => $content)
+        {
+            $form_builder  = FormBuilder::where('id', $key)->first();
+            if(strtolower($form_builder->label) != 'gfp')
+            {
+                if($content['text'] == $done_status_id)
+                {
+                    $formats[$key] = $form_builder->label;  
+                }
+                if(strtolower($form_builder->label) == 'audio')
+                {
+                    $audio_format_id = $key;
+                }
+            }
+            else{$gfp_format_id = $key;}
+        }
+        $translations_query = BookList::where('book_id',$book->book_id)->get();
+        $translations       = [];
+        foreach($translations_query as $t)
+        {
+            foreach ($t->content as $key => $value) {
+                if($gfp_format_id != $key)
+                {
+                    if($value['text'] == $done_status_id)
+                    {
+                        array_push($translations, $t->language);
+                        break;
+                    }
+                }
+            }
+        }
+
+        $same_series_suggestions = BookList::where([['category_id', '=', $book->category_id], ['language', '=', $book->language],['id', '<>', $book->id]])->inRandomOrder()->get()->take(5);
+        
+        return view('book_details',compact('book','language','translations', 'author', 'tags', 'formats', 'same_series_suggestions', 'audio_format_id'));
     }
 }

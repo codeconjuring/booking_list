@@ -90,6 +90,18 @@
                                         </div>
                                     </div>
 
+                                    <div class="form-group">
+                                        <label for="exampleInputUsername1">Home Page Cover Photo</label> &nbsp;<span class="text-danger">(1873X400) px</span>
+                                        <div class="input-group">
+                                            <span class="input-group-btn">
+                                            <a id="bannerImage" data-input="banner_pic" data-preview="holder" class="btn btn-info">
+                                                <i class="fa fa-picture-o"></i> Choose
+                                            </a>
+                                            </span>
+                                            <input id="banner_pic" class="form-control" type="text"  name="banner_pic">
+                                        </div>
+                                    </div>
+
                                     <button type="submit" class="btn btn-primary mr-2">Submit</button>
                                     <a href="{{ url()->previous() }}" class="btn btn-light">Back</a>
 
@@ -119,6 +131,11 @@
                         <img width="50%" src="{{ asset(Storage::url(Settings::get('default_profile'))) }}" alt="">
                     </div>
 
+                    <div class="form-group">
+                        <label for="">Preview Home Page Cover Photo</label><br>
+                        <img width="50%" src="{{ asset(Storage::url(Settings::get('banner_pic'))) }}" alt="">
+                    </div>
+
                   </div>
                 </div>
              </div>
@@ -138,6 +155,7 @@
 
 <script>
     $('#defaultProfilePicBtn').filemanager('profile');
+    $('#bannerImage').filemanager('setting');
     $('#faviconBtn').filemanager('setting');
     $('#siteLogo').filemanager('setting');
 </script>

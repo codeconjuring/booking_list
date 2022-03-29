@@ -35,5 +35,6 @@ Route::get('set/new/password/{uuid}', 'ForgotPassword@setNewPassword')->name('se
 Route::post('set/password/{uuid}', 'ForgotPassword@createNewPassword')->name('set.password');
 
 Route::get('show-more-title', 'HomeController@showMoreTitle')->name('form.show-more-title');
+Route::get('get-book-details/{id}', 'HomeController@getBookDetails')->name('get-book-details');
 // Download PDF
 Route::get('form/download', 'HomeController@downloadPdf')->name('form.download');

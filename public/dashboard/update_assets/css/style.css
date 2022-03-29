@@ -5941,7 +5941,7 @@ table.dataTable > thead .sorting_desc_disabled::after {
 .cc-total-datatable-photo {
   position: relative;
   z-index: 1;
-  margin-top: -160px; }
+  margin-top: -240px; }
 
 .box {
   display: flex;

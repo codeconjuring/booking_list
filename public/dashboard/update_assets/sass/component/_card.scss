@@ -10,6 +10,9 @@
     }
     .card-body {
         padding: 30px;
+        @media (max-width: 991px) {
+            padding: 10px;
+        }
     }
 }
 .dz-message {

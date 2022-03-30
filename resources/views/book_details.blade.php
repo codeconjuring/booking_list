@@ -81,10 +81,10 @@
                               <!-- pages- -->
                               <div class="cc-count-app">
                                  @if($book->bookInfos != null)
-                                 <div class="cc-count-items" style="padding: 10px">
+                                 <div class="cc-count-items">
                                     <i class="icon-list"></i>
                                     <div>
-                                       <p class="cc-number mb-0" style="font-size: 26px;">
+                                       <p class="cc-number mb-0">
                                           {{ $book->bookInfos->pages }}
                                        </p>
                                        <p class="cc-name mb-0">Pages</p>
@@ -92,10 +92,10 @@
                                  </div>
                                  @endif
                                  @if($book->bookInfos != null)
-                                 <div class="cc-count-items orange" style="padding: 10px">
+                                 <div class="cc-count-items orange">
                                     <i class="icon-list"></i>
                                     <div>
-                                       <p class="cc-number mb-0" style="font-size: 26px;">
+                                       <p class="cc-number mb-0">
                                           {{ $book->bookInfos->to_read }}
                                        </p>
                                        <p class="cc-name mb-0">Hours To Read</p>
@@ -103,10 +103,10 @@
                                  </div>
                                  @endif
                                  @if($book->bookInfos != null)
-                                 <div class="cc-count-items sky" style="padding: 10px">
+                                 <div class="cc-count-items sky">
                                     <i class="icon-list"></i>
                                     <div>
-                                       <p class="cc-number mb-0" style="font-size: 26px;">
+                                       <p class="cc-number mb-0">
                                           {{ $book->bookInfos->to_listen }}
                                        </p>
                                        <p class="cc-name mb-0">Hours To Listen</p>
@@ -131,7 +131,7 @@
                                  </h3>
                                  <table class="table table-borderless books-details-table">
                                     <tr>
-                                       <td><span>Author</span></td>
+                                       <td width="5%"><span><b>Author</b></span></td>
                                        <td><span>:</span></td>
                                        <td><span>{{ $author }}</span></td>
                                     </tr>
@@ -152,7 +152,7 @@
                                     @if($book->books != null)
                                     @if($book->books->copyright_year != null)
                                     <tr>
-                                       <td><span>Copyright</span></td>
+                                       <td><span><b>Copyright</b></span></td>
                                        <td><span>:</span></td>
                                        <td><span>
                                           {{ $book->books->copyright_year }}
@@ -162,13 +162,13 @@
                                     @endif
                                     @endif
                                     <tr>
-                                       <td><span>Language</span></td>
+                                       <td><span><b>Language</b></span></td>
                                        <td><span>:</span></td>
                                        <td><span>{{ $language->name }}</span></td>
                                     </tr>
                                     @if(sizeof($translations) > 0)
                                     <tr>
-                                       <td><span>Translation</span></td>
+                                       <td><span><b>Translation</b></span></td>
                                        <td><span>:</span></td>
                                        <td>
                                           <span>
@@ -191,7 +191,7 @@
                                     </tr>
                                     @endif
                                     <tr>
-                                       <td><span>Tags</span></td>
+                                       <td><span><b>Tags</b></span></td>
                                        <td><span>:</span></td>
                                        <td>
                                           <span>
@@ -213,13 +213,13 @@
                                        </td>
                                     </tr>
                                     <tr>
-                                       <td><span>Series</span></td>
+                                       <td><span><b>Series</b></span></td>
                                        <td><span>:</span></td>
                                        <td><span>{{ $book->serise->name }}</span></td>
                                     </tr>
                                     {{-- @if(sizeof($formats) > 0)
                                     <tr>
-                                       <td><span>Formats</span></td>
+                                       <td><span><b>Formats</b></span></td>
                                        <td><span>:</span></td>
                                        <td>
                                           <div class="cc-formate">
@@ -265,7 +265,7 @@
                                     <tr>
                                        <td>
                                           <span>
-                                             Price
+                                             <b>Price</b>
                                              <select class="ic-select-details" name="" id="">
                                                 <option value="0">$</option>
                                              </select>

@@ -339,6 +339,10 @@
     // @media #{$max1280} {
     //     grid-template-columns: repeat(1, 1fr);
     // }
+    @media (max-width: 991px) {
+        grid-gap: 2px;
+        padding: 2px;
+    }
     .cc-count-items {
         background: #fff9eb;
         border-radius: 10px;
@@ -346,6 +350,9 @@
         align-items: center;
         grid-gap: 10px;
         padding: 10px;
+        @media #{$max991} {
+            padding: 6px 3px;
+        }
         i {
             font-size: 20px;
             color: #27ae60;
@@ -360,6 +367,12 @@
                 width: 30px;
                 height: 30px;
                 line-height: 30px;
+            }
+            @media #{$max991} {
+                font-size: 14px;
+                width: 20px;
+                height: 20px;
+                line-height: 20px;
             }
             &::before {
                 color: #27ae60;

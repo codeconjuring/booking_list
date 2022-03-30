@@ -131,7 +131,7 @@
                                  </h3>
                                  <table class="table table-borderless books-details-table">
                                     <tr>
-                                       <td><span><b>Author</b></span></td>
+                                       <td width="10%"><span><b>Author</b></span></td>
                                        <td><span>:</span></td>
                                        <td><span>{{ $author }}</span></td>
                                     </tr>

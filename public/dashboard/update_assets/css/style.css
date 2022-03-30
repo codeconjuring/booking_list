@@ -384,6 +384,9 @@ button:focus {
     background-color: transparent; }
   .card .card-body {
     padding: 30px; }
+    @media (max-width: 991px) {
+      .card .card-body {
+        padding: 10px; } }
 
 .dz-message i::before {
   color: #f7b104; }
@@ -6225,6 +6228,10 @@ table.dataTable > thead .sorting_desc_disabled::after {
   align-items: center;
   margin-top: 10px;
   grid-gap: 10px; }
+  @media (max-width: 991px) {
+    .cc-count-app {
+      grid-gap: 2px;
+      padding: 2px; } }
   .cc-count-app .cc-count-items {
     background: #fff9eb;
     border-radius: 10px;
@@ -6232,6 +6239,9 @@ table.dataTable > thead .sorting_desc_disabled::after {
     align-items: center;
     grid-gap: 10px;
     padding: 10px; }
+    @media only screen and (max-width: 991.98px) {
+      .cc-count-app .cc-count-items {
+        padding: 6px 3px; } }
     .cc-count-app .cc-count-items i {
       font-size: 20px;
       color: #27ae60;
@@ -6247,6 +6257,12 @@ table.dataTable > thead .sorting_desc_disabled::after {
           width: 30px;
           height: 30px;
           line-height: 30px; } }
+      @media only screen and (max-width: 991.98px) {
+        .cc-count-app .cc-count-items i {
+          font-size: 14px;
+          width: 20px;
+          height: 20px;
+          line-height: 20px; } }
       .cc-count-app .cc-count-items i::before {
         color: #27ae60; }
     .cc-count-app .cc-count-items .cc-number {

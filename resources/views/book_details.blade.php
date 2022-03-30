@@ -139,7 +139,7 @@
                                     @if($book->bookInfos != null)
                                     @if($book->bookInfos->narrators != null)
                                     <tr>
-                                       <td><span>Narrated </span></td>
+                                       <td><span>Narrator </span></td>
                                        <td><span>:</span></td>
                                        <td><span>
                                           {{ $book->bookInfos->narrators->name }}
@@ -254,11 +254,11 @@
                                           if($price->price != null)
                                           {
                                             $format_price_arr[$price->form_builder_id] = $price->price;
-                                          }
                                           
-                                          if($price_exists_flag == 0)
-                                          {
+                                            if($price_exists_flag == 0)
+                                            {
                                             $price_exists_flag = 1;
+                                            }
                                           }
                                         }
                                     @endphp

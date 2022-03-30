@@ -251,7 +251,11 @@
                                         $price_exists_flag = 0;
                                         foreach($book->bookFormatInfos as $price)
                                         {
-                                          $format_price_arr[$price->form_builder_id] = $price->price;
+                                          if($price->price != null)
+                                          {
+                                            $format_price_arr[$price->form_builder_id] = $price->price;
+                                          }
+                                          
                                           if($price_exists_flag == 0)
                                           {
                                             $price_exists_flag = 1;

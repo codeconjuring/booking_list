@@ -62,8 +62,8 @@
                   <div class="col-lg-12">
                      <div class="card">
                         <div class="card-body">
-                           <div class="cc-table-button-heads align-items-center d-flex justify-content-between">
-                              <ul class="list-unstyled d-flex ic-tables-buttons">
+                           <div class="cc-table-button-heads">
+                              <ul class="list-unstyled d-md-flex ic-tables-buttons">
                                  <li>
                                     <button onclick="downloadReport()" class="btn tb-btn btn-outline-primary"><i class="icon-download"></i>Download Report</button>
                                  </li>

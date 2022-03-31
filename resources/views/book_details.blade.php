@@ -6,7 +6,7 @@
    <div class="cc-cover-main">
       <img class="blur-image" src="https://images.pexels.com/photos/374044/pexels-photo-374044.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260" class="img-fluid" alt="">
       <!-- <div class="container-fluid"> -->
-      <div class="ic-inner-cover">
+      <div class="ic-inner-cover custom-banner-heads">
          <img src="{{ asset(Storage::url(Settings::get('banner_pic'))) }}" class="img-fluid" alt="">
          <label for="file-cover" class="cc-file-upload">
          <input type="file" id="file-cover" class="d-none">
@@ -131,8 +131,8 @@
                                  </h3>
                                  <table class="table table-borderless books-details-table">
                                     <tr>
-                                       <td width="5%"><span><b>Author</b></span></td>
-                                       <td><span>:</span></td>
+                                       <td width="1%"><span><b>Author</b></span></td>
+                                       <td class="px-0" width="1%"><span>:</span></td>
                                        <td><span>{{ $author }}</span></td>
                                     </tr>
                                     @if(array_key_exists($audio_format_id, $formats))
@@ -140,7 +140,7 @@
                                     @if($book->bookInfos->narrators != null)
                                     <tr>
                                        <td><span><b>Narrated</b> </span></td>
-                                       <td><span>:</span></td>
+                                       <td class="px-0"><span>:</span></td>
                                        <td><span>
                                           {{ $book->bookInfos->narrators->name }}
                                           </span>
@@ -153,7 +153,7 @@
                                     @if($book->books->copyright_year != null)
                                     <tr>
                                        <td><span><b>Copyright</b></span></td>
-                                       <td><span>:</span></td>
+                                       <td class="px-0"><span>:</span></td>
                                        <td><span>
                                           {{ $book->books->copyright_year }}
                                           </span>
@@ -163,13 +163,13 @@
                                     @endif
                                     <tr>
                                        <td><span><b>Language</b></span></td>
-                                       <td><span>:</span></td>
+                                       <td class="px-0"><span>:</span></td>
                                        <td><span>{{ $language->name }}</span></td>
                                     </tr>
                                     @if(sizeof($translations) > 0)
                                     <tr>
                                        <td><span><b>Translation</b></span></td>
-                                       <td><span>:</span></td>
+                                       <td class="px-0"><span>:</span></td>
                                        <td>
                                           <span>
                                           @php
@@ -192,7 +192,7 @@
                                     @endif
                                     <tr>
                                        <td><span><b>Tags</b></span></td>
-                                       <td><span>:</span></td>
+                                       <td class="px-0"><span>:</span></td>
                                        <td>
                                           <span>
                                           @php
@@ -213,14 +213,14 @@
                                        </td>
                                     </tr>
                                     <tr>
-                                       <td><span><b>Series</b></span></td>
-                                       <td><span>:</span></td>
+                                       <td ><span><b>Series</b></span></td>
+                                       <td class="px-0"><span>:</span></td>
                                        <td><span>{{ $book->serise->name }}</span></td>
                                     </tr>
                                     {{-- @if(sizeof($formats) > 0)
                                     <tr>
                                        <td><span><b>Formats</b></span></td>
-                                       <td><span>:</span></td>
+                                       <td class="px-0"><span>:</span></td>
                                        <td>
                                           <div class="cc-formate">
                                              @foreach($formats as $id => $format)

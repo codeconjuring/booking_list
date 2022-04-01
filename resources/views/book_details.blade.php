@@ -8,10 +8,10 @@
       <!-- <div class="container-fluid"> -->
       <div class="ic-inner-cover custom-banner-heads">
          <img src="{{ asset(Storage::url(Settings::get('banner_pic'))) }}" class="img-fluid" alt="">
-         <label for="file-cover" class="cc-file-upload">
+         {{-- <label for="file-cover" class="cc-file-upload">
          <input type="file" id="file-cover" class="d-none">
          Edit cover photo
-         </label>
+         </label> --}}
       </div>
       <div class="content">
          <div class="page-content">
@@ -140,7 +140,7 @@
                                     @if($book->bookInfos->narrators != null)
                                     <tr>
                                        <td><span><b>Narrator</b> </span></td>
-                                       <td><span>:</span></td>
+                                       <td class="px-0"><span>:</span></td>
                                        <td><span>
                                           {{ $book->bookInfos->narrators->name }}
                                           </span>
@@ -301,8 +301,18 @@
                                  @if($book->bookInfos != null)
                                  <div class="cc-books-details-content">
                                     <p class="synopsis">Synopsis :</p>
-                                    <p class="cc-details-books">
+                                    <p id="synopsis1" class="cc-details-books">
+                                      @if(strlen($book->bookInfos->synopsis) > 50)
+                                       {{ substr($book->bookInfos->synopsis,0,50).'...'
+                                       }} 
+                                       <a class="text-dark" href="javascript:void(0)" onclick="synopsisControl();"><b>Show More</b></a>
+                                      @else
+                                        {{ $book->bookInfos->synopsis }}
+                                      @endif
+                                    </p>
+                                    <p id="synopsis2" class="cc-details-books d-none">
                                        {{ $book->bookInfos->synopsis }}
+                                       <a class="text-dark" href="javascript:void(0)" onclick="synopsisControl();"><b>Show Less</b></a>
                                     </p>
                                  </div>
                                  @endif
@@ -345,5 +355,20 @@
 @section('js')
 <script src="{{ asset('dashboard/update_assets/js/audio.js') }}"></script>
 <script src="{{ asset('dashboard/update_assets/js/owl.carousel.min.js') }}"></script>
+<script type="text/javascript">
+  function synopsisControl()
+  {
+    if($('#synopsis1').hasClass('d-none'))
+    {
+      $('#synopsis1').removeClass('d-none')
+      $('#synopsis2').addClass('d-none')
+    }
+    else if($('#synopsis2').hasClass('d-none'))
+    {
+      $('#synopsis2').removeClass('d-none');
+      $('#synopsis1').addClass('d-none');
+    }
+  }
+</script>
 @endsection
 @section('script')

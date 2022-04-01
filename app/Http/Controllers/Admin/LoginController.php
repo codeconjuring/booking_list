@@ -55,6 +55,10 @@ class LoginController extends Controller
             }
         }
 
+        $get_gfp_format_id_query = FormBuilder::where('label','GFP')->first();
+        if($get_gfp_format_id_query){
+            $get_gfp_format_id = $get_gfp_format_id_query->id;
+        }
         $total_books_published = 0;
         $get_all_book_lists    = BookList::all();
 
@@ -62,7 +66,7 @@ class LoginController extends Controller
 
             foreach ($get_all_book_list->content as $key => $book_content) {
 
-                if ($book_content['type'] == 1) {
+                if ($book_content['type'] == 1 and $book_content['text'] != $get_gfp_format_id) {
                     $get_status = Status::findOrFail($book_content['text']);
 
                     if ($get_status && $get_status->status == "Done") {

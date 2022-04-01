@@ -93,7 +93,7 @@
             <div class="ic-card-content">
                 <p>Books (Published)</p>
                 {{-- <h3>{{ $total_books_published }}</h3> --}}
-                <h3>{{ array_sum($form_builder_name_with_counts) - $form_builder_name_with_counts['GFP'] }}</h3>
+                <h3>{{ $total_books_published }}</h3>
             </div>
         </div>
 

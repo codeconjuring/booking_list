@@ -124,9 +124,9 @@
                   </a>
                 </li>
                 @endcanany
-                @canany(['Add Add Report','Edit Add Report','Delete Add Report'])
+                @canany(['Add Report','Edit Add Report','Delete Add Report'])
                 <li class = "{{ url()->current() == url('admin/production-department/create') ? "mm-active" : '' }}">
-                  <a class="{{ url()->current() == url('admin/production-department/create') ? "active" : '' }}" href="{{ route('admin.production-department.index') }}">   Add Report
+                  <a class="{{ url()->current() == url('admin/production-department/create') ? "active" : '' }}" href="{{ route('admin.production-department.index') }}">Add Report
                   </a>
                 </li>
                 @endcanany

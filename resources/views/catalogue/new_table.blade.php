@@ -4,7 +4,7 @@
          <th class="text-center d-none">Action</th>
          <th class="text-center d-none"> Series </th>
          <th class="text-center"> No </th>
-         <th class="text-center"> Author </th>
+         <th class="text-center d-none"> Author </th>
          {{-- 
          <th class="text-center"> ZTF?</th>
          --}}
@@ -97,7 +97,7 @@
          @else
          <td class="text-center"></td>
          @endif
-         <td class="text-center">{{ $book->author }}</td>
+         {{-- <td class="text-center">{{ $book->author }}</td> --}}
          
          {{-- <td class="text-center">{!! $book->available_status!!}</td> --}}
         

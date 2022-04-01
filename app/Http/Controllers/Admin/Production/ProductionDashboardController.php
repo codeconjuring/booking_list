@@ -19,7 +19,7 @@ class ProductionDashboardController extends Controller
     //
     public function index()
     {
-        $page_title = "Analytics";
+        $page_title = "Progress in ZTF Books Production";
 
         $books  = ProductionDepartment::where('stat_type', 1)->get();
         $tracts = ProductionDepartment::where('stat_type', 2)->get();

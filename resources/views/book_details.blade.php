@@ -139,7 +139,7 @@
                                     @if($book->bookInfos != null)
                                     @if($book->bookInfos->narrators != null)
                                     <tr>
-                                       <td><span>Narrator </span></td>
+                                       <td><span><b>Narrator</b> </span></td>
                                        <td><span>:</span></td>
                                        <td><span>
                                           {{ $book->bookInfos->narrators->name }}

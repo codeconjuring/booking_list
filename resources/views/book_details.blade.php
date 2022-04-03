@@ -131,16 +131,16 @@
                                  </h3>
                                  <table class="table table-borderless books-details-table">
                                     <tr>
-                                       <td width="1%"><span><b>Author</b></span> :</td>
-                                       <!-- <td class="px-0" width="1%"><span></span></td> -->
+                                       <td width="1%"><span><b>Author</b></span></td>
+                                       <td class="px-0" width="1%"><span>:</span></td>
                                        <td><span>{{ $author }}</span></td>
                                     </tr>
                                     @if(array_key_exists($audio_format_id, $formats))
                                     @if($book->bookInfos != null)
                                     @if($book->bookInfos->narrators != null)
                                     <tr>
-                                       <td><span><b>Narrated</b> </span> :</td>
-                                       <!-- <td class="px-0"><span>:</span></td> -->
+                                       <td><span><b>Narrated</b> </span></td>
+                                       <td class="px-0"><span>:</span></td>
                                        <td><span>
                                           {{ $book->bookInfos->narrators->name }}
                                           </span>
@@ -152,8 +152,8 @@
                                     @if($book->books != null)
                                     @if($book->books->copyright_year != null)
                                     <tr>
-                                       <td><span><b>Copyright</b></span> :</td>
-                                       <!-- <td class="px-0"></td> -->
+                                       <td><span><b>Copyright</b></span></td>
+                                       <td class="px-0"><span>:</span></td>
                                        <td><span>
                                           {{ $book->books->copyright_year }}
                                           </span>
@@ -162,14 +162,14 @@
                                     @endif
                                     @endif
                                     <tr>
-                                       <td><span><b>Language</b></span> :</td>
-                                       <!-- <td class="px-0"><span>:</span></td> -->
+                                       <td><span><b>Language</b></span></td>
+                                       <td class="px-0"><span>:</span></td>
                                        <td><span>{{ $language->name }}</span></td>
                                     </tr>
                                     @if(sizeof($translations) > 0)
                                     <tr>
-                                       <td><span><b>Translation</b> :</span> </td>
-                                       <!-- <td class="px-0"><span>:</span></td> -->
+                                       <td><span><b>Translation</b></span></td>
+                                       <td class="px-0"><span>:</span></td>
                                        <td>
                                           <span>
                                           @php
@@ -191,8 +191,8 @@
                                     </tr>
                                     @endif
                                     <tr>
-                                       <td><span><b>Tags</b></span> :</td>
-                                       <!-- <td class="px-0"><span>:</span></td> -->
+                                       <td><span><b>Tags</b></span></td>
+                                       <td class="px-0"><span>:</span></td>
                                        <td>
                                           <span>
                                           @php
@@ -213,14 +213,14 @@
                                        </td>
                                     </tr>
                                     <tr>
-                                       <td ><span><b>Series</b></span> :</td>
-                                       <!-- <td class="px-0"><span>:</span></td> -->
+                                       <td ><span><b>Series</b></span></td>
+                                       <td class="px-0"><span>:</span></td>
                                        <td><span>{{ $book->serise->name }}</span></td>
                                     </tr>
                                     {{-- @if(sizeof($formats) > 0)
                                     <tr>
-                                       <td><span><b>Formats</b></span> :</td>
-                                       <!-- <td class="px-0"><span>:</span></td> -->
+                                       <td><span><b>Formats</b></span></td>
+                                       <td class="px-0"><span>:</span></td>
                                        <td>
                                           <div class="cc-formate">
                                              @foreach($formats as $id => $format)
@@ -261,13 +261,13 @@
                                     <tr>
                                        <td>
                                           <span>
-                                             <b>Price</b> :
+                                             <b>Price</b>
                                              <select class="ic-select-details" name="" id="">
                                                 <option value="0">$</option>
                                              </select>
                                           </span>
                                        </td>
-                                       <!-- <td><span></span></td> -->
+                                       <td><span></span></td>
                                        <td>
                                           <div class="cc-formate">
                                              @foreach($formats as $key => $format)

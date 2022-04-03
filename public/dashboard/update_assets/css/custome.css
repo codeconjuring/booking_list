@@ -34,3 +34,12 @@ div.dataTables_wrapper div.dataTables_paginate ul.pagination li a {
     background-color: #F7B104;
     border-color: #F7B104;
 }
+
+.books-details-table tr td {
+    padding: 5px;
+  }
+
+  .form-control.select-height {
+      height: 38px;
+      font-size: 13px;
+  }

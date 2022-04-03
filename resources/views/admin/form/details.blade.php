@@ -125,16 +125,16 @@
                         </h3>
                         <table class="table table-borderless books-details-table">
                            <tr>
-                              <td><span>Author</span></td>
-                              <td><span>:</span></td>
+                              <td  width="1%"><span>Author</span></td>
+                              <td class="px-0"><span>:</span></td>
                               <td><span>{{ $author }}</span></td>
                            </tr>
                            @if(array_key_exists($audio_format_id, $formats))
                             @if($book->bookInfos != null)
                               @if($book->bookInfos->narrators != null)
                            <tr>
-                              <td><span>Narrated By</span></td>
-                              <td><span>:</span></td>
+                              <td><span>Narrated </span></td>
+                              <td class="px-0"><span>:</span></td>
                               <td><span>
                                  {{ $book->bookInfos->narrators->name }}
                                  </span>
@@ -147,7 +147,7 @@
                               @if($book->books->copyright_year != null)
                            <tr>
                               <td><span>Copyright</span></td>
-                              <td><span>:</span></td>
+                              <td class="px-0"><span>:</span></td>
                               <td><span>  
                                  {{ $book->books->copyright_year }}
                                  </span>
@@ -157,13 +157,13 @@
                            @endif
                            <tr>
                               <td><span>Language</span></td>
-                              <td><span>:</span></td>
+                              <td class="px-0"><span>:</span></td>
                               <td><span>{{ $language->name }}</span></td>
                            </tr>
                            @if(sizeof($translations) > 0)
                            <tr>
                               <td><span>Translation</span></td>
-                              <td><span>:</span></td>
+                              <td class="px-0"><span>:</span></td>
                               <td>
                                  <span>
                                  @php 
@@ -186,7 +186,7 @@
                            @endif
                            <tr>
                               <td><span>Tags</span></td>
-                              <td><span>:</span></td>
+                              <td class="px-0"><span>:</span></td>
                               <td>
                                  <span>
                                  @php 
@@ -208,14 +208,14 @@
                            </tr>
                            <tr>
                               <td><span>Series</span></td>
-                              <td><span>:</span></td>
+                              <td class="px-0"><span>:</span></td>
                               <td><span>{{ $book->serise->name }}</span></td>
                            </tr>
                            @if($book->bookInfos != null)
                               @if($book->bookInfos->proofreaders != null)
                            <tr>
                               <td><span>Editing</span></td>
-                              <td><span>:</span></td>
+                              <td class="px-0"><span>:</span></td>
                               <td><span>
                                  {{ $book->bookInfos->proofreaders->name }}
                                  </span>
@@ -226,7 +226,7 @@
                            @if(sizeof($formats) > 0)
                            <tr>
                               <td><span>Formats</span></td>
-                              <td><span>:</span></td>
+                              <td class="px-0"><span>:</span></td>
                               <td>
                                  <div class="cc-formate">
                                     @foreach($formats as $id => $format)

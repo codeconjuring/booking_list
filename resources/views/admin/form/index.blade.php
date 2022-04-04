@@ -2,6 +2,8 @@
 @section('css')
 <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/dt/dt-1.10.12/datatables.min.css" />
 <link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.1.0/css/buttons.dataTables.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/datatables.mark.js/2.0.0/datatables.mark.min.css">
+<link rel="stylesheet" href="https://cdn.datatables.net/plug-ins/1.10.13/features/mark.js/datatables.mark.min.css">
 @endsection
 @section('content')
 <div class="page-content">
@@ -145,7 +147,7 @@
                   @foreach ($books as $b=>$book)
                   @if ($filter_data!=1)
                   @if (($main_title_flag==1) && ($entry_id!=$e->id))
-                  @break
+                  {{-- @break --}}
                   @endif
                   @endif
                   @if ($row_show!=0 && $row_count>=$row_show)
@@ -173,7 +175,7 @@
                   }
                   }
                   @endphp
-                  <tr class="tableAddTitles{{ $e->id }}">
+                  <tr class="tableAddTitles{{ $e->id }} {{ $main_title_flag ==1 ? "translation_row d-none": '' }}">
                      <td class="d-none">-</td>
                      @if ($series_flag==0)
                      <td class="text-center d-none">{{ $book->serise->name }}</td>
@@ -197,11 +199,11 @@
                         @if($tag_count <= 1) <span>{!! $categories !!}
                            </span>
                            @else
-                           <span id="spanmore{{$book->id}}">
+                           <span class="translation_tags_main" id="spanmore{{$book->id}}">
                               {!! $categories !!}
                               <small><a class="btn-sm text-dark" onclick="tag_span(1,{{$book->id}})" href="javascript:void(0)">+</a></small>
                            </span>
-                           <span class="d-none" id="spanless{{$book->id}}">
+                           <span class="translation_tags d-none" id="spanless{{$book->id}}">
                               {!! $more_tags !!}
                               <small><a class="btn-sm text-dark" onclick="tag_span(0,{{$book->id}})" data-tag-span-id="spanmore{{$book->id}}" href="javascript:void(0)">-</a></small>
                            </span>
@@ -372,6 +374,9 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
 <script src="https://cdn.datatables.net/buttons/2.1.0/js/buttons.html5.min.js"></script>
 <script src="https://cdn.datatables.net/buttons/2.1.0/js/buttons.print.min.js"></script>
+<script src="https://cdn.jsdelivr.net/g/mark.js(jquery.mark.min.js),datatables.mark.js"></script>
+<script src="https://cdn.jsdelivr.net/g/mark.js(jquery.mark.min.js)"></script>
+<script src="https://cdn.datatables.net/plug-ins/1.10.13/features/mark.js/datatables.mark.js"></script>
 @endsection
 @section('script')
 <script>
@@ -408,7 +413,12 @@
    // $(".dataTable").wrap('<div class="table-responsive"><div>');
    
        var table = $('#myTable').DataTable({
-       dom: '<"toolbar">lBftip',
+       dom: '<"toolbar">Bftip',
+       pageLength: 50,
+       columnDefs: [
+         { "searchable": false, "targets": -1 }
+       ],
+       mark: true,
        buttons:
        [
    
@@ -425,7 +435,7 @@
    });
    addSeriesDropdown({{ $selected_series_id }});
    $('.dataTable').wrap('<div class="table-responsive"></div>');
-   
+   tableAdjustments();
    // $("div.toolbar").html('<b class="float-right mt-1">Download As: &nbsp; </b>');
    
    // table.buttons().container().appendTo($('#printbar'));
@@ -433,6 +443,74 @@
    
    
    });
+   
+   function tableAdjustments()
+   {
+      $('#myTable_info').addClass('d-none');
+
+      // $("#myTable_filter").find("label input[type='search']").on('focus',function(){
+      //    if($(".translation_row").hasClass('d-none'))
+      //    {
+      //       $(".translation_row").removeClass('d-none');
+      //    }
+      // });   
+      $("#myTable_filter").find("label input[type='search']").on('blur',function(){
+         if($("#myTable_filter").find("label input[type='search']").val().length <= 0)
+         {
+            if(!$(".translation_tags").hasClass('d-none'))
+            {
+               console.log("Blur: trans tags");
+               $(".translation_tags").addClass('d-none');
+            }
+            if($(".translation_tags_main").hasClass('d-none'))
+            {
+               console.log("Blur: trans tags main");
+               $(".translation_tags_main").removeClass('d-none'); 
+            }
+            if(!$(".translation_row").hasClass('d-none'))
+            {
+               console.log("Blur: trans row");
+               $(".translation_row").addClass('d-none'); 
+            }
+         }
+      });   
+      $("#myTable_filter").find("label input[type='search']").on('keyup',function(){
+         if($("#myTable_filter").find("label input[type='search']").val().length <= 0)
+         {
+            if($(".translation_tags").hasClass('d-none') == false)
+            {
+               console.log("keyup: trans tags");
+               $(".translation_tags").addClass('d-none');
+            }
+            if($(".translation_tags_main").hasClass('d-none'))
+            { 
+               console.log("keyup: trans tags main");
+               $(".translation_tags_main").removeClass('d-none'); 
+            }
+            if(!$(".translation_row").hasClass('d-none'))
+            {
+               console.log("keyup: trans rows");
+               $(".translation_row").addClass('d-none'); 
+            }
+         }
+         else if($("#myTable_filter").find("label input[type='search']").val().length > 0)
+         {
+            if($(".translation_row").hasClass('d-none'))
+            {
+               $(".translation_row").removeClass('d-none'); 
+            }
+            if(!$(".translation_tags_main").hasClass('d-none'))
+            { 
+               $(".translation_tags_main").addClass('d-none'); 
+            }
+            if($(".translation_tags").hasClass('d-none'))
+            {
+               $(".translation_tags").removeClass('d-none');
+            }
+         }
+      });      
+   }
+
    function addSeriesDropdown(selected_series_id)
    {
       var options = ''; var current_series_id = 0;
@@ -528,7 +606,12 @@
             $('#serieswise_table_div').html('');
             $('#serieswise_table_div').html(response.html);
             $('#myTable').DataTable({
-               dom: '<"toolbar">lBftip',
+               dom: '<"toolbar">Bftip',
+               pageLength: 50,
+               columnDefs: [
+                 { "searchable": false, "targets": -1 }
+               ],
+               mark: true,
                buttons: [
 
                   {
@@ -544,6 +627,7 @@
             });
             addSeriesDropdown(series_id);
             $('.dataTable').wrap('<div class="table-responsive"></div>');
+            tableAdjustments();
          }
       });
    }

@@ -302,9 +302,14 @@
                                  <div class="cc-books-details-content">
                                     <p class="synopsis">Synopsis :</p>
                                     <p id="synopsis1" class="cc-details-books">
-                                      @if(strlen($book->bookInfos->synopsis) > 50)
-                                       {{ substr($book->bookInfos->synopsis,0,50).'...'
-                                       }} 
+                                      @php
+                                        $synopsis_arr = explode(' ',$book->bookInfos->synopsis);
+                                      @endphp
+                                      @if(sizeof($synopsis_arr) > 50)
+                                        @for($w=0; $w<50; $w++)
+                                          {{ $synopsis_arr[$w] }}
+                                        @endfor
+                                       {{ '...' }} 
                                        <a class="text-dark" href="javascript:void(0)" onclick="synopsisControl();"><b>Show More</b></a>
                                       @else
                                         {{ $book->bookInfos->synopsis }}

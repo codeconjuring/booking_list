@@ -48,7 +48,7 @@
       @foreach ($books as $b=>$book)
       @if ($filter_data!=1)
       @if (($main_title_flag==1) && ($entry_id!=$e->id))
-      @break
+      {{-- @break --}}
       @endif
       @endif
       @if ($row_show!=0 && $row_count>=$row_show)
@@ -76,7 +76,7 @@
       }
       }
       @endphp
-      <tr class="tableAddTitles{{ $e->id }}">
+      <tr class="tableAddTitles{{ $e->id }} {{ $main_title_flag ==1 ? "translation_row d-none": '' }}">
          <td class="d-none">-</td>
          @if ($series_flag==0)
          <td class="text-center d-none">{{ $book->serise->name }}</td>
@@ -101,11 +101,11 @@
             <span>{!! $categories !!}
             </span>
             @else
-            <span id="spanmore{{$book->id}}">
+            <span class="translation_tags_main" id="spanmore{{$book->id}}">
             {!! $categories !!}
             <small><a class="btn-sm text-dark" onclick="tag_span(1,{{$book->id}})" href="javascript:void(0)">+</a></small>
             </span>
-            <span class="d-none" id="spanless{{$book->id}}">
+            <span class="translation_tags d-none" id="spanless{{$book->id}}">
             {!! $more_tags !!}
             <small><a class="btn-sm text-dark" onclick="tag_span(0,{{$book->id}})" data-tag-span-id="spanmore{{$book->id}}" href="javascript:void(0)">-</a></small>
             </span>
